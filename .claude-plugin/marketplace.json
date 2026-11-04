@@ -1,0 +1,15 @@
+{
+  "name": "ai-setup",
+  "description": "0x67's setup for AI coding agents.",
+  "owner": {
+    "name": "0x67",
+    "url": "https://github.com/0x67"
+  },
+  "plugins": [
+    {
+      "name": "ai-setup",
+      "source": "./",
+      "description": "Engineering rules, Go/Rust/Tauri/C++ skills, spec-driven workflow, orchestration subagents with model tiers, and the hooks that keep them loaded."
+    }
+  ]
+}
