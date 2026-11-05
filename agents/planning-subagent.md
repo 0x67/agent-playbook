@@ -23,6 +23,7 @@ Do not decide final plan. Recommend mode, risk, verification, and handoff risks 
 0. **Memory recall** with task/file/module keywords. Surface relevant prior findings.
 1. **Research comprehensively:**
    - Start with `lat locate`/`lat expand` for architecture context
+   - Load skill `ai-setup:software-design` when the plan adds modules, layers, services, or public names
    - Use semble for semantic code search
    - Use fff-mcp tools for exact text/file search (fall back to `rg`/`find` if unavailable)
    - Use rust-analyzer for Rust symbol analysis

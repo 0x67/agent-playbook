@@ -67,6 +67,8 @@ One artifact per turn. Each turn starts by re-opening its inputs:
 
 Stops output-budget drift across artifacts. Re-grounding per turn catches hallucinations early.
 
+Turn 3 loads skill `software-design` (`ai-setup:software-design` in Claude Code) before writing `design.md`: module boundaries, dependency direction, names for new types and APIs, and the architecture style follow it and the repo's existing structure.
+
 ## Per-REQ symbol contract
 
 Each REQ must name the `crate::path::Symbol` (or `path/to/file.rs::SymbolOrFn`) it touches. Symbols not present in code fail review. EARS form is mandatory.
