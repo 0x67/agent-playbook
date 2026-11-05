@@ -54,6 +54,8 @@ Subagent prompts repeat this block: memory recall, search order, fff MCP tool na
 
 Before reading, editing, or reviewing Go, Rust, or C/C++, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` (`ai-setup:golang` / `ai-setup:rust` / `ai-setup:cpp` in Claude Code) and follow its routing table into `references/`. Run its post-write gate before reporting done.
 
+Naming, function size, module boundaries, and architecture (SOLID, layered, MVC, hexagonal, DDD, CQRS): load skill `software-design` (`ai-setup:software-design`) alongside the language skill when designing a module or service, naming new types or APIs, splitting code, or reviewing a design.
+
 # Worktree Commit Handoff
 
 Work in a git worktree or on a branch other than the user's workspace branch:

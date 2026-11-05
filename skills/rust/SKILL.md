@@ -71,4 +71,4 @@ Feature-gated code: every command carries the `--features` it validates. Not don
 
 - Symbols, references, hover, diagnostics: `rust_analyzer_*` MCP tools or `LSP` tool (rust-analyzer). Never guess signatures; `cargo doc --open` or docs.rs when unsure.
 - Exact text search: `fff-grep`/`rg`. Semantic: Semble.
-- Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`).
+- Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`). Cross-language naming, function size, and architecture: skill `software-design`.

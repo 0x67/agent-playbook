@@ -77,4 +77,4 @@ Use the repo's presets and build system (Meson: `meson compile -C build && meson
 - Definitions, references, call hierarchy, hover: `LSP` tool backed by clangd (`clangd-lsp` plugin in Claude Code) when exposed. Needs `compile_commands.json`. Rules in `references/navigation.md`.
 - Exact text search: `fff-grep`/`rg` for strings, macros, build files. Semantic: Semble.
 - Library API and which standard added it: cppreference.com or the header. Never guess a signature.
-- Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`).
+- Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`). Cross-language naming, function size, and architecture: skill `software-design`.

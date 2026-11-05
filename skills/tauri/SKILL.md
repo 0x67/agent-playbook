@@ -87,4 +87,4 @@ cargo tauri dev                                              # or: cargo tauri b
 - Crate API: `cargo doc -p tauri --open` or docs.rs pinned to the resolved version. Never guess signatures.
 - JS API: read `node_modules/@tauri-apps/api/*.d.ts`. It is the installed truth.
 - Permission discovery: `cargo tauri permission ls [plugin]`, and `src-tauri/gen/schemas/*.json` for what actually compiled in.
-- Global rules still apply: humanizer comments, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`).
+- Global rules still apply: humanizer comments, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`). Cross-language naming, function size, and architecture: skill `software-design`.

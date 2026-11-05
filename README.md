@@ -8,6 +8,7 @@ My setup for AI coding agents: engineering rules, language skills, a spec-driven
 |---|---|---|
 | `AGENTS.md` | Engineering rules: comments, tests, code growth, simplicity, search order, terminology | any agent |
 | `skills/golang`, `skills/rust`, `skills/tauri`, `skills/cpp` | Language skills with a routing table into `references/` and a post-write gate | any agent |
+| `skills/software-design` | Language-agnostic naming, function size, modularity, and architecture (SOLID, layered, MVC, hexagonal, DDD, CQRS, microservices) | any agent |
 | `skills/spec-driven` | Spec writing and implementation protocol, with templates and relay prompts | any agent |
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |
 | `agents/` | `conductor`, `planning-subagent`, `implement-subagent`, `code-review-subagent` | Claude Code |
