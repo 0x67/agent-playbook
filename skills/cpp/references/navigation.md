@@ -13,14 +13,14 @@ Loaded via `cpp` SKILL.md routing table. Text search misses overloads, template 
 
 | Need | `LSP` operation | Fallback (state why) |
 |---|---|---|
-| where it is defined | `goToDefinition` | `fff-grep` the bare name, then `Read` |
-| every use | `findReferences` | `fff-grep` the bare name, filter by hand |
+| where it is defined | `goToDefinition` | `mcp__fff__grep` the bare name, then `Read` |
+| every use | `findReferences` | `mcp__fff__grep` the bare name, filter by hand |
 | who calls this | `prepareCallHierarchy`, then `incomingCalls` | grep call sites |
 | what this calls | `outgoingCalls` | read the body |
 | type, signature, docs | `hover` | `Read` the declaration |
 | overrides of a virtual | `goToImplementation` | grep `override` plus the name |
 | symbols in a file | `documentSymbol` | `Read` |
-| find a symbol by name across the project | `workspaceSymbol` with `query` | `fff-grep` |
+| find a symbol by name across the project | `workspaceSymbol` with `query` | `mcp__fff__grep` |
 
 Errors arrive as diagnostics after edits; the build is still the authority.
 

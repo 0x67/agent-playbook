@@ -22,12 +22,13 @@ Before the first code change:
 
 For any code/symbol/file search beyond opening files explicitly named in the spec, use this order. Falling back without stating the reason = work rejected.
 
-1. **`fff-mcp`** for exact text and file search: `fff-grep`, `fff-find_files`, `fff-multi_grep`. Always first choice.
-2. **`semble`** for semantic code search when intent is fuzzier than a literal grep: `semble search "query" .`.
-3. **`rust-analyzer`** for Rust type info, definitions, references, hover, diagnostics: `rust_analyzer_*` tools.
-4. **`lat locate`** / **`lat expand`** for architecture context if `lat.md/` exists in the workspace. Never `lat search`.
-5. **Built-in `Read`** is allowed only for files whose paths are already known (from spec, from earlier search results, from `path:line` in Source verification).
-6. **Shell `rg` / `find`** is the LAST fallback, used only when 1-3 are unavailable, fail, or genuinely lack the capability. State the fallback reason in the response.
+1. **fff MCP** for exact text and file search: `mcp__fff__grep`, `mcp__fff__find_files`, `mcp__fff__multi_grep`. Always first choice.
+2. **semble MCP** (`mcp__semble__search`) for semantic code search when intent is fuzzier than a literal grep.
+3. **`codebase-memory` MCP** graph tools for callers, callees, routes, and types when it is connected.
+4. **`LSP` tool** for definitions, references, hover, and diagnostics where a language server is connected (rust-analyzer, gopls, clangd, jdtls, kotlin-lsp).
+5. **`lat locate`** / **`lat expand`** for architecture context if `lat.md/` exists in the workspace. Never `lat search`.
+6. **Built-in `Read`** is allowed only for files whose paths are already known (from spec, from earlier search results, from `path:line` in Source verification).
+7. **Shell `rg` / `find`** is the LAST fallback, used only when 1-4 are unavailable, fail, or genuinely lack the capability. State the fallback reason in the response.
 
 Never invoke shell `fff`. The MCP tool names above are the project contract.
 
@@ -37,7 +38,7 @@ Spec contracts (REQ Files, TASK Files, design interface specs) reference **symbo
 
 Rules:
 
-1. **Open files by symbol.** Use `fff-grep "fn apply"` or `rust_analyzer_definition`, not `Read path:LINE`. The `path:line` refs you see in `design.md` Source verification block are evidence of grounding at spec time, not navigation pointers.
+1. **Open files by symbol.** Use `mcp__fff__grep "fn apply"` or `LSP` `goToDefinition`, not `Read path:LINE`. The `path:line` refs you see in `design.md` Source verification block are evidence of grounding at spec time, not navigation pointers.
 2. **Do not trust line numbers in spec mid-implementation.** TASK-N's edits shift TASK-N+1's line refs. Re-locate each TASK's symbols when its turn begins.
 3. **Source verification block staleness is acceptable.** Post-implementation, the line refs in design.md will be stale. That is by design; do not "sync" them. The block is read-only history of what was true when the spec was authored.
 4. **Renames require an `Implementation correction` amendment.** If a TASK needs to rename a symbol referenced by REQ Files / TASK Files / design interface specs:

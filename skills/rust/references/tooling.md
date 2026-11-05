@@ -147,7 +147,7 @@ opt-level = 2           # fast deps in debug builds
 - `cargo doc --no-deps --open`. `RUSTDOCFLAGS="-D warnings"` in CI. `--document-private-items` while refactoring internals.
 - `cargo expand` (nightly-friendly) to see macro output. `cargo asm` / `cargo show-asm` for codegen checks.
 - `cargo metadata --format-version 1` for scripting. `cargo pkgid`.
-- rust-analyzer via `rust_analyzer_*` MCP tools or `LSP` tool: definition, references, hover, diagnostics, rename. Fall back to `rg` only when they fail; state why.
+- rust-analyzer via the `LSP` tool: definition, references, hover, diagnostics, rename. Fall back to `rg` only when they fail; state why.
 
 ## CI skeleton
 

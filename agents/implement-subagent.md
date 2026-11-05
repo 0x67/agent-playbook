@@ -19,7 +19,7 @@ Do not proceed beyond assigned shard/unit. Do not start next unit. Do not write 
 # Core Workflow
 
 0. **Memory recall** before searching/coding. Use findings to avoid repeating known bugs or decisions.
-1. **Search** using protocol order (lat locate, semble, fff-mcp, rust-analyzer). Fall back to `rg`/`find` when needed.
+1. **Search** using protocol order (lat locate, semble, fff MCP, codebase-memory, `LSP` tool). Fall back to `rg`/`find` when needed.
 2. **Tests by mode/risk** - For code behavior changes: write behavior-focused tests first, run to fail, then implement. No tests for prompt/docs/config-only unless testable behavior exists.
 3. **Write minimum change** - Only what acceptance criteria requires.
 4. **Verify** - Run verification ladder. Tests when applicable.

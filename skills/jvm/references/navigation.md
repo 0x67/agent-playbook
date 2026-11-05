@@ -14,14 +14,14 @@ Loaded via `jvm` SKILL.md routing table. Text search misses overloads, inherited
 
 | Need | `LSP` operation | Fallback (state why) |
 |---|---|---|
-| where it is defined | `goToDefinition` | `fff-grep` the bare name, then `Read` |
-| every use | `findReferences` | `fff-grep` the bare name, filter by hand |
+| where it is defined | `goToDefinition` | `mcp__fff__grep` the bare name, then `Read` |
+| every use | `findReferences` | `mcp__fff__grep` the bare name, filter by hand |
 | who calls this | `prepareCallHierarchy`, then `incomingCalls` | grep call sites |
 | what this calls | `outgoingCalls` | read the body |
 | type, signature, Javadoc | `hover` | `Read` the declaration |
 | implementations of an interface or abstract method | `goToImplementation` | grep `implements`/`extends` plus the name |
 | symbols in a file | `documentSymbol` | `Read` |
-| find a symbol by name across the project | `workspaceSymbol` with `query` | `fff-grep` |
+| find a symbol by name across the project | `workspaceSymbol` with `query` | `mcp__fff__grep` |
 
 Diagnostics after edits are a hint; the build is the authority.
 

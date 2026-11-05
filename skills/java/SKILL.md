@@ -70,6 +70,6 @@ Use the repo's tasks and modules. Not done until gate green. Report failures ver
 ## Tool preference
 
 - Definitions, references, call hierarchy, hover: `LSP` tool backed by jdtls (`jdtls-lsp` plugin in Claude Code) when exposed. Rules in the `jvm` skill's `references/navigation.md`.
-- Exact text search: `fff-grep`/`rg` for strings, annotations, config keys. Semantic: Semble.
+- Exact text search: `mcp__fff__grep`/`rg` for strings, annotations, config keys. Semantic: Semble.
 - JDK API and the release that added it: the Javadoc for that release (`docs.oracle.com/en/java/javase/<N>/docs/api/`, the "Since" line). Libraries: their docs or sources jar. Never guess a signature.
 - Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`). Cross-language naming, function size, and architecture: skill `software-design`.

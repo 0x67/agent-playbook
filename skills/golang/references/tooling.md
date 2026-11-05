@@ -170,7 +170,7 @@ go version -m bin/app          # embedded module + VCS info; -json 1.25+
 - `go doc <pkg>`, `go doc <pkg>.<Sym>`, `go doc -all <pkg>`, `go doc pkg@version` (1.27+), `go doc -http` (1.25+) local server.
 - `go list -m all`, `go list -deps ./...`, `go mod graph`, `go mod why <module>`.
 - `go env`, `go version`, `go tool dist list`.
-- LSP: `gopls` via `LSP` tool when exposed: definition, references, rename, diagnostics. Else `go doc` + `fff-grep`/`rg`.
+- LSP: `gopls` via `LSP` tool when exposed: definition, references, rename, diagnostics. Else `go doc` + `mcp__fff__grep`/`rg`.
 - `go tool trace -http` localhost-only by default (1.27+).
 
 ## CI

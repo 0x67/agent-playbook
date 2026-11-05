@@ -83,7 +83,7 @@ cargo tauri dev                                              # or: cargo tauri b
 
 ## Tool preference
 
-- Symbols, references, hover: `LSP` tool (rust-analyzer) when exposed. Else `cargo doc`, `fff-grep`, `rg`.
+- Symbols, references, hover: `LSP` tool (rust-analyzer) when exposed. Else `cargo doc`, `mcp__fff__grep`, `rg`.
 - Crate API: `cargo doc -p tauri --open` or docs.rs pinned to the resolved version. Never guess signatures.
 - JS API: read `node_modules/@tauri-apps/api/*.d.ts`. It is the installed truth.
 - Permission discovery: `cargo tauri permission ls [plugin]`, and `src-tauri/gen/schemas/*.json` for what actually compiled in.

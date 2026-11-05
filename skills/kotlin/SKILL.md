@@ -71,6 +71,6 @@ Use the repo's tasks and modules. Not done until gate green. Report failures ver
 ## Tool preference
 
 - Definitions, references, call hierarchy, hover: `LSP` tool backed by kotlin-lsp (`kotlin-lsp` plugin in Claude Code) when exposed. It is Alpha: confirm surprising empty results with text search. Java callers of Kotlin code need a text search for the JVM names (`getX`, `Companion`, `FileKt`). Details in the `jvm` skill's `references/navigation.md`.
-- Exact text search: `fff-grep`/`rg`. Semantic: Semble.
+- Exact text search: `mcp__fff__grep`/`rg`. Semantic: Semble.
 - Standard library and kotlinx APIs: kotlinlang.org API reference for the repo's version, or the sources jar. Never guess a signature.
 - Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`). Cross-language naming, function size, and architecture: skill `software-design`.

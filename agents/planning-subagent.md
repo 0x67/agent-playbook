@@ -25,8 +25,8 @@ Do not decide final plan. Recommend mode, risk, verification, and handoff risks 
    - Start with `lat locate`/`lat expand` for architecture context
    - Load skill `ai-setup:software-design` when the plan adds modules, layers, services, or public names
    - Use semble for semantic code search
-   - Use fff-mcp tools for exact text/file search (fall back to `rg`/`find` if unavailable)
-   - Use rust-analyzer for Rust symbol analysis
+   - Use the fff MCP tools (`mcp__fff__grep`, `mcp__fff__find_files`, `mcp__fff__multi_grep`) for exact text/file search (fall back to `rg`/`find` if unavailable)
+   - Use the `LSP` tool for definitions and references in Go, Rust, C/C++, Java, and Kotlin
    - Read relevant files identified in searches
    - Explore dependencies and related code
 2. **Stop at 90% confidence.** Enough when you can answer:

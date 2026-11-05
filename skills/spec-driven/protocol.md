@@ -44,12 +44,13 @@ Without this manifest, the model writes from inference, not evidence.
 
 For any code/symbol/file search during manifest-building or artifact authoring, use this order. Falling back without stating the reason = artifact rejected.
 
-1. **`fff-mcp`** for exact text and file search: `fff-grep`, `fff-find_files`, `fff-multi_grep`. Always first choice.
-2. **`semble`** for semantic code search when intent is fuzzier than a literal grep.
-3. **`rust-analyzer`** for Rust definitions, references, hover, symbols, diagnostics.
-4. **`lat locate`** / **`lat expand`** for architecture context if `lat.md/` exists in the workspace. Never `lat search`.
-5. **Built-in `Read`** is allowed only for files whose paths are already known (from prior search results, from a Source verification block, from explicit operator instruction).
-6. **Shell `rg` / `find`** is the LAST fallback when 1-3 are unavailable, fail, or genuinely lack the capability. State the fallback reason in the response.
+1. **fff MCP** for exact text and file search: `mcp__fff__grep`, `mcp__fff__find_files`, `mcp__fff__multi_grep`. Always first choice.
+2. **semble MCP** (`mcp__semble__search`) for semantic code search when intent is fuzzier than a literal grep.
+3. **`codebase-memory` MCP** graph tools for callers, callees, routes, and types when it is connected.
+4. **`LSP` tool** for definitions, references, hover, symbols, and diagnostics where a language server is connected (rust-analyzer, gopls, clangd, jdtls, kotlin-lsp).
+5. **`lat locate`** / **`lat expand`** for architecture context if `lat.md/` exists in the workspace. Never `lat search`.
+6. **Built-in `Read`** is allowed only for files whose paths are already known (from prior search results, from a Source verification block, from explicit operator instruction).
+7. **Shell `rg` / `find`** is the LAST fallback when 1-4 are unavailable, fail, or genuinely lack the capability. State the fallback reason in the response.
 
 Never invoke shell `fff`. The MCP tool names above are the project contract.
 
@@ -103,7 +104,7 @@ Anything load-bearing references a **symbol**, never a line number.
 | `path:LINE`                                 | No (drifts per edit) | Source verification block ONLY: forensic evidence of grounding at spec time  |
 | Code snippet quotes                         | No (drifts per edit) | Design illustration only; not a navigation pointer                            |
 
-Implementers locate code by symbol (`fff-grep`, `rust_analyzer_definition`, equivalent), never by line. Source verification block staleness post-implementation is acceptable: it is a snapshot, not a contract.
+Implementers locate code by symbol (`mcp__fff__grep`, `LSP` `goToDefinition`, equivalent), never by line. Source verification block staleness post-implementation is acceptable: it is a snapshot, not a contract.
 
 **Renames are the only failure mode.** If a referenced symbol is renamed mid-implementation:
 

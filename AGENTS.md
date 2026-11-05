@@ -45,7 +45,7 @@ Before planning, implementation, review, or investigation:
 3. Semantic code search: Semble MCP; if missing, `uvx --from "semble[mcp]" semble search "query" .`.
 4. Exact text/file search: fff MCP tools (`mcp__fff__grep`, `mcp__fff__find_files`, `mcp__fff__multi_grep`). Never shell `fff`. Not exposed: Grep, `rg`, or `find`; state reason.
 5. Code structure (callers, callees, routes, types) where the `codebase-memory` MCP is connected: its graph tools before multi-file reads. Repo root missing from `list_projects`: in a linked git worktree (`git rev-parse --git-dir` differs from `--git-common-dir`), query the main checkout's project and read the branch's changed files directly (`git diff --name-only <base>...HEAD`), never index the worktree; otherwise run `index_repository` once.
-6. Rust symbols: rust-analyzer tools.
+6. Definitions, references, hover, and call hierarchy in Go, Rust, C/C++, Java, and Kotlin: the `LSP` tool where a language server is connected (gopls, rust-analyzer, clangd, jdtls, kotlin-lsp).
 
 Preferred tool missing, failing, or lacking capability: use regular tools, state reason. `grep`/`find` fine for logs and configs.
 Subagent prompts repeat this block: memory recall, search order, fff MCP tool names, no shell fff, fallback rule.

@@ -77,6 +77,6 @@ Optional: `go fix -diff ./...` (1.26+) to spot modernizable idioms. `govulncheck
 
 ## Tool preference
 
-- Symbols, references, hover: `LSP` tool (gopls) when exposed. Else `go doc <pkg>.<Sym>`, `fff-grep`, `rg`.
+- Symbols, references, hover: `LSP` tool (gopls) when exposed. Else `go doc <pkg>.<Sym>`, `mcp__fff__grep`, `rg`.
 - Package API: `go doc -all <pkg>`. Never guess signatures.
 - Global rules still apply: humanizer comments, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`). Cross-language naming, function size, and architecture: skill `software-design`.
