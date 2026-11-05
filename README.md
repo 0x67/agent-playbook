@@ -7,12 +7,13 @@ My setup for AI coding agents: engineering rules, language skills, a spec-driven
 | Path | What it does | Works in |
 |---|---|---|
 | `AGENTS.md` | Engineering rules: comments, tests, code growth, simplicity, search order, terminology | any agent |
-| `skills/golang`, `skills/rust`, `skills/tauri`, `skills/cpp` | Language skills with a routing table into `references/` and a post-write gate | any agent |
+| `skills/golang`, `skills/rust`, `skills/tauri`, `skills/cpp`, `skills/java`, `skills/kotlin` | Language skills with a routing table into `references/` and a post-write gate | any agent |
+| `skills/jvm` | JVM platform shared by Java and Kotlin: Gradle, Maven, JUnit, Mockito, MockK, Spring, profiling, version compatibility, jdtls and kotlin-lsp navigation | any agent |
 | `skills/software-design` | Language-agnostic naming, function size, modularity, and architecture (SOLID, layered, MVC, hexagonal, DDD, CQRS, microservices) | any agent |
 | `skills/spec-driven` | Spec writing and implementation protocol, with templates and relay prompts | any agent |
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |
 | `agents/` | `conductor`, `planning-subagent`, `implement-subagent`, `code-review-subagent` | Claude Code |
-| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, or C/C++ skill on the first edit; lat.md and memory-search reminders | Claude Code |
+| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill on the first edit; lat.md and memory-search reminders | Claude Code |
 
 ## Install (Claude Code)
 
@@ -50,7 +51,7 @@ Each extra is used when present. Nothing breaks without it.
 | [fff](https://github.com/dmtrKovalenko/fff) MCP | Exact text and file search, first in the `AGENTS.md` search order | `brew install dmtrkovalenko/fff/fff-mcp`, then `claude mcp add -s user fff -- fff-mcp --no-update-check` | Built-in Grep and Glob; the agent says why |
 | [Semble](https://github.com/MinishLab/semble) MCP | Semantic code search | `claude mcp add -s user semble -- uvx --from "semble[mcp]" semble` (needs [uv](https://docs.astral.sh/uv/)) | Text search only |
 | [codebase-memory](https://github.com/DeusData/codebase-memory-mcp) MCP | Callers, callees, routes, and types from a code graph before multi-file reads | Install the `codebase-memory-mcp` binary per its README, then `claude mcp add -s user codebase-memory -- codebase-memory-mcp` | More file reads |
-| LSP plugins from [claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | `gopls-lsp`, `rust-analyzer-lsp`, `clangd-lsp` back the `LSP` tool the Go, Rust, and C/C++ skills prefer | `/plugin marketplace add anthropics/claude-plugins-official`, then `/plugin install clangd-lsp@claude-plugins-official` (same for the others); the language server must be on `PATH` | Grep-based code navigation |
+| LSP plugins from [claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | `gopls-lsp`, `rust-analyzer-lsp`, `clangd-lsp`, `jdtls-lsp`, `kotlin-lsp` back the `LSP` tool the Go, Rust, C/C++, and Java/Kotlin skills prefer | `/plugin marketplace add anthropics/claude-plugins-official`, then `/plugin install clangd-lsp@claude-plugins-official` (same for the others); the language server must be on `PATH` | Grep-based code navigation |
 | [rtk](https://www.rtk-ai.app/) | Compresses shell command output before it reaches the model | `brew install rtk`, then `rtk init -g --hook-only` (`--agent cursor` and others for other tools) | Full command output, more tokens |
 | [lat.md](https://www.npmjs.com/package/lat.md) | `lat` CLI for `lat.md/` architecture graphs | `npm i -g lat.md` | The lat reminder stays silent in repos without `lat.md/` |
 | [caveman](https://github.com/JuliusBrussee/caveman) | Terse chat replies | `/plugin marketplace add JuliusBrussee/caveman`, then `/plugin install caveman@caveman` | Normal replies; nothing in ai-setup depends on it |

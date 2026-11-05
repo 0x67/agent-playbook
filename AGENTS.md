@@ -52,7 +52,7 @@ Subagent prompts repeat this block: memory recall, search order, fff MCP tool na
 
 # Language Rules
 
-Before reading, editing, or reviewing Go, Rust, or C/C++, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` (`ai-setup:golang` / `ai-setup:rust` / `ai-setup:cpp` in Claude Code) and follow its routing table into `references/`. Run its post-write gate before reporting done.
+Before reading, editing, or reviewing Go, Rust, C/C++, Java, or Kotlin, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` / `java` / `kotlin` (`ai-setup:<name>` in Claude Code) and follow its routing table into `references/`. Java and Kotlin also load skill `jvm` for builds, tests, frameworks, and navigation; JVM build files and any `gradle`/`mvn` command (wrappers `./gradlew` and `./mvnw` included) load `jvm`. Run the post-write gate before reporting done.
 
 Naming, function size, module boundaries, and architecture (SOLID, layered, MVC, hexagonal, DDD, CQRS): load skill `software-design` (`ai-setup:software-design`) alongside the language skill when designing a module or service, naming new types or APIs, splitting code, or reviewing a design.
 
