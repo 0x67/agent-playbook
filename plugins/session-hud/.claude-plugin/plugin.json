@@ -1,0 +1,13 @@
+{
+  "name": "session-hud",
+  "version": "0.1.0",
+  "description": "Usage row under the prompt (context, rate limits, cost) and a TODO list shared by every session",
+  "author": {
+    "name": "0x67",
+    "url": "https://github.com/0x67"
+  },
+  "homepage": "https://github.com/0x67/ai-setup",
+  "repository": "https://github.com/0x67/ai-setup",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

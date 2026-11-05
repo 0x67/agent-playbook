@@ -16,6 +16,7 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |
 | `agents/` | `conductor`, `planning-subagent`, `implement-subagent`, `code-review-subagent` | Claude Code |
 | `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill the first time matching code comes up (a read, an edit, a build command, or search results); lat.md and memory-search reminders | Claude Code |
+| `plugins/session-hud` | Separate plugin in the same marketplace: a usage row under the prompt (context, rate limits, cost) and a TODO list shared by every session, see its [README](plugins/session-hud/README.md) | Claude Code |
 
 ## Install (Claude Code)
 
@@ -57,7 +58,8 @@ Each extra is used when present. Nothing breaks without it. [docs/benchmarks.md]
 | [open-code-review](https://github.com/alibaba/open-code-review) CLI | Per-language review checklists and file selection that `code-review-subagent` uses on big diffs (more than 800 changed lines or 25 files), through `ocr delegate`, which needs no model of its own | `npm install -g @alibaba-group/open-code-review` | Big diffs get the subagent's own checklist only |
 | [rtk](https://www.rtk-ai.app/) | Compresses shell command output before it reaches the model | `brew install rtk`, then `rtk init -g --hook-only` (`--agent cursor` and others for other tools) | Full command output, more tokens |
 | [lat.md](https://www.npmjs.com/package/lat.md) | `lat` CLI for `lat.md/` architecture graphs | `npm i -g lat.md` | The lat reminder stays silent in repos without `lat.md/` |
-| [caveman](https://github.com/JuliusBrussee/caveman) | Terse chat replies | `/plugin marketplace add JuliusBrussee/caveman`, then `/plugin install caveman@caveman` | Normal replies; nothing in ai-setup depends on it |
+| [caveman](https://github.com/JuliusBrussee/caveman) | Terse chat replies | `/plugin marketplace add JuliusBrussee/caveman`, then `/plugin install caveman@caveman`; its `[CAVEMAN]` status line badge is optional, and the mode works without it | Normal replies; nothing in ai-setup depends on it |
+| session-hud (this repo) | Usage row under the prompt and a shared TODO pane (`/todo`) | `/plugin install session-hud@ai-setup` | The built-in status line and `/usage` |
 | [tech-debt-skill](https://github.com/ksimback/tech-debt-skill) | Tech debt audits | `npx skills add ksimback/tech-debt-skill` | Nothing; ai-setup does not reference it |
 
 ## Model tiers
