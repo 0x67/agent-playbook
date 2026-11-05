@@ -5,6 +5,10 @@
     "name": "0x67",
     "url": "https://github.com/0x67"
   },
+  "allowCrossMarketplaceDependenciesOn": [
+    "humanizer",
+    "fable-method"
+  ],
   "plugins": [
     {
       "name": "ai-setup",

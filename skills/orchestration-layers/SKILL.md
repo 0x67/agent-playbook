@@ -18,6 +18,9 @@ treat as competitors; they nest.
 - After completing substantive work, or whenever any agent/tool claims work is done,
   run a fable-judge pass before presenting it as finished. "Did that actually work?"
   = fable-judge. Universal exit gate for all mechanisms below.
+- fable skills missing (another agent, or the plugin removed): the inline loop in
+  AGENTS.md replaces fable-method and fable-judge. fable-loop has no inline twin;
+  use Conductor for unattended fan-out.
 
 ## Dispatch mechanism: cost-gated ladder
 

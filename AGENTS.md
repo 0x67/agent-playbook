@@ -4,7 +4,7 @@ Standing rules for coding agents. Claude Code gets this file at every session an
 
 # Written Output (humanizer)
 
-Text that ends up in an artifact or in front of other people is plain human prose: code comments, doc comments, docs and markdown, specs, PR descriptions, commit messages, Jira comments, Slack and email drafts, published artifacts. Drafts shown in chat for the user to paste elsewhere count too. In Claude Code a condensed rule card arrives at every session and subagent start. Load the full `humanizer` skill (`humanizer:humanizer` as a Claude Code plugin) in embedded mode (final text only) before writing PR bodies, docs, specs, Jira comments, or other prose longer than a short paragraph.
+Text that ends up in an artifact or in front of other people is plain human prose: code comments, doc comments, docs and markdown, specs, PR descriptions, commit messages, Jira comments, Slack and email drafts, published artifacts. Drafts shown in chat for the user to paste elsewhere count too. In Claude Code a condensed rule card arrives at every session and subagent start. Load the full `humanizer` skill (`humanizer:humanizer` as a Claude Code plugin) in embedded mode (final text only) before writing PR bodies, docs, specs, Jira comments, or other prose longer than a short paragraph. Where the skill is not installed, the card and the bullets below are the whole rule set; write without it.
 
 - Keep all technical substance: identifiers, paths, numbers, types, error text.
 - The user's own formats and writing samples override humanizer patterns.
@@ -67,7 +67,7 @@ Work in a git worktree or on a branch other than the user's workspace branch:
 
 Full ladder, composition, precedence, tier table, and Fleet scheduling: skill `ai-setup:orchestration-layers`. Load it before subagent fan-out, Conductor, or Workflow. Always on:
 
-- Non-trivial multi-step task: fable-method loop first; fable-judge pass before presenting work as finished (fable plugin).
+- Non-trivial multi-step task: fable-method loop first; fable-judge pass before presenting work as finished (fable plugin, installed with ai-setup). Where the fable skills are missing, run the same loop inline: classify the ask, define done and how to check it, read the evidence, make the smallest change, verify by running it, then check every claim against the diff and the output before reporting.
 - Cheapest mechanism that fits: inline, then Workflow (shape known), then Conductor (shape unknown).
 - Workflow() only on explicit opt-in: `ultracode`, "use a workflow", "orchestrate this with subagents", or a skill calls it. Otherwise offer.
 - Subagent types carry the plugin prefix: `ai-setup:conductor`, `ai-setup:planning-subagent`, `ai-setup:implement-subagent`, `ai-setup:code-review-subagent`. Never a guessed name.
