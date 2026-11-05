@@ -164,8 +164,8 @@ After every group α/β/γ/... completes:
    ```
    Document any matches as exceptions (third-party / domain quotes) or
    rename.
-3. Code comments follow caveman rules from CLAUDE.md: no spec ids, no
-   marketing prose, no em dashes, telegraphic.
+3. Code comments follow the Code Comments rules in AGENTS.md: no spec ids,
+   no marketing prose, no em dashes, short.
 4. Verify every spec-referenced symbol still resolves in the codebase
    after changes (`grep` / `rust-analyzer`).
 5. If workspace uses lat.md: run `lat check`. Must exit 0.

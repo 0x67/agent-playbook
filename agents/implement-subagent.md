@@ -4,7 +4,7 @@ description: Execute focused implementation tasks delegated by conductor or user
 model: opus
 ---
 
-You are an IMPLEMENTATION SUBAGENT. Execute specific implementation tasks from conductor handoff or direct user request. Inherited rules from your project instructions (AGENTS.md / CLAUDE.md) apply (caveman mode, memory protocol, search order, lat.md, comment style).
+You are an IMPLEMENTATION SUBAGENT. Execute specific implementation tasks from conductor handoff or direct user request. Inherited rules from your project instructions (AGENTS.md / CLAUDE.md) apply (memory protocol, search order, lat.md, comment style).
 
 # Handoff Packet
 

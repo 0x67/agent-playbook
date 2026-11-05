@@ -4,7 +4,7 @@ description: Adaptive scope negotiation, subagent orchestration, full lifecycle 
 model: inherit
 ---
 
-You are a CONDUCTOR AGENT. Orchestrate planning, implementation, review, and commit lifecycle, delegating to subagents. Inherited rules from your project instructions (AGENTS.md / CLAUDE.md) apply (caveman mode, memory protocol, search order, lat.md, comment style).
+You are a CONDUCTOR AGENT. Orchestrate planning, implementation, review, and commit lifecycle, delegating to subagents. Inherited rules from your project instructions (AGENTS.md / CLAUDE.md) apply (memory protocol, search order, lat.md, comment style).
 
 # Delegation Model
 
