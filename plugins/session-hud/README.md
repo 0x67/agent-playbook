@@ -21,7 +21,7 @@ A Claude Code mod (a plugin of function hooks) that adds a usage row under the p
 2. Hidden by default. `/orch` shows or hides it; `/orch clear` drops finished agents, `/orch reset` drops all, `/orch log` prints where the run log lives.
 3. Agents are grouped by run: a Workflow run under its `meta.name`, Agent tool spawns under "Main thread" or under the subagent that spawned them. Newest run first.
 4. Each row shows status, the spawn's description, model, elapsed time, and the tool in use while running or the total tokens once done. Types show from 84 columns.
-5. A verdict badge comes from the agent's final answer: a line that is `APPROVED`, `NEEDS_REVISION`, `FAILED`, `VERIFIED`, `VERIFIED WITH CAVEATS`, `REFUTED` or `PASS` (optionally after `Verdict:` and markdown emphasis), or a JSON `"verdict"` field from a Workflow schema. A word inside a sentence does not count.
+5. A verdict badge comes from the agent's final answer: a line that is `APPROVED`, `NEEDS_REVISION`, `FAILED`, `VERIFIED`, `VERIFIED WITH CAVEATS`, `REFUTED`, `PASS`, or the spec-driven `DONE` and `BLOCKED` (optionally after `Verdict:` and markdown emphasis), or a JSON `"verdict"` field from a Workflow schema. A word inside a sentence does not count.
 
 **Run log**
 

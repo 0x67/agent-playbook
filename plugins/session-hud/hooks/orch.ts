@@ -7,6 +7,9 @@ const VERDICTS: Record<string, Verdict> = {
   VERIFIED: { label: 'VERIFIED', tone: 'success' },
   PASS: { label: 'PASS', tone: 'success' },
   PASSED: { label: 'PASS', tone: 'success' },
+  // spec-driven task statuses, which implement agents report
+  DONE: { label: 'DONE', tone: 'success' },
+  BLOCKED: { label: 'BLOCKED', tone: 'error' },
   'VERIFIED WITH CAVEATS': { label: 'CAVEATS', tone: 'warning' },
   NEEDS_REVISION: { label: 'REVISE', tone: 'warning' },
   FAILED: { label: 'FAILED', tone: 'error' },
@@ -17,7 +20,7 @@ const VERDICTS: Record<string, Verdict> = {
 // a verdict line stands alone, optionally after a "Verdict:" style label and
 // markdown emphasis, so "tests FAILED before the fix" in prose is not one
 const VERDICT_LINE =
-  /^[\s#>*_`-]*(?:(?:verdict|status|result|outcome)[\s*_`]*[:=-][\s*_`]*)?(VERIFIED WITH CAVEATS|NEEDS_REVISION|APPROVED|VERIFIED|REFUTED|FAILED|FAIL|PASSED|PASS)[*_`]*\s*(?:$|[.:(-])/i
+  /^[\s#>*_`-]*(?:(?:verdict|status|result|outcome)[\s*_`]*[:=-][\s*_`]*)?(VERIFIED WITH CAVEATS|NEEDS_REVISION|APPROVED|VERIFIED|REFUTED|FAILED|FAIL|PASSED|PASS|DONE|BLOCKED)[*_`]*\s*(?:$|[.:(-])/i
 const VERDICT_JSON = /"(?:verdict|status|result|outcome)"\s*:\s*"([A-Za-z_ ]+)"/i
 
 export function parseVerdict(answer: string): Verdict | undefined {

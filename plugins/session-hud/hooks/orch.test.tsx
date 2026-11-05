@@ -21,6 +21,9 @@ test('verdicts come from verdict lines and JSON, not from prose', () => {
     undefined,
   )
   expect(parseVerdict('Implemented the change in two files.')).toBe(undefined)
+  expect(parseVerdict('{\n  "status": "DONE",\n  "files_changed": []\n}')?.label).toBe('DONE')
+  expect(parseVerdict('Status: BLOCKED (missing fixture)')?.label).toBe('BLOCKED')
+  expect(parseVerdict('Done with the first pass, moving on.')).toBe(undefined)
 })
 
 test('model, type and workflow names are shortened', () => {

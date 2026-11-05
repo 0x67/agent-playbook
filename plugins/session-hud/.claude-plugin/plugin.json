@@ -1,6 +1,6 @@
 {
   "name": "session-hud",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Usage row under the prompt (context, rate limits, cost), an agents pane for subagents and workflow runs with verdicts and a JSONL run log, and a TODO list shared by every session",
   "author": {
     "name": "0x67",
