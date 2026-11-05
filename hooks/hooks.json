@@ -4,7 +4,8 @@
       {
         "hooks": [
           { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/inject.py\" AGENTS.md", "timeout": 5 },
-          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/inject.py\" hooks/humanizer-card.md", "timeout": 5 }
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/inject.py\" hooks/humanizer-card.md", "timeout": 5 },
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/lat-stop.py\"", "timeout": 30 }
         ]
       }
     ],
@@ -29,6 +30,20 @@
         "matcher": "Read|Edit|Write|Bash",
         "hooks": [
           { "type": "command", "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/lang-skill-reminder.sh\"", "timeout": 5, "statusMessage": "Checking for Go/Rust/C++/JVM file..." }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/lat-stop.py\"", "timeout": 60 }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/lat-stop.py\"", "timeout": 5 }
         ]
       }
     ],

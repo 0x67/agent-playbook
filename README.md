@@ -15,7 +15,7 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 | `skills/spec-driven` | Spec writing and implementation protocol, with templates and relay prompts | any agent |
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |
 | `agents/` | `conductor`, `planning-subagent`, `implement-subagent`, `code-review-subagent` | Claude Code |
-| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill the first time matching code comes up (a read, an edit, a build command, or search results); lat.md and memory-search reminders | Claude Code |
+| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill the first time matching code comes up (a read, an edit, a build command, or search results); in repos with `lat.md/`, injects the sections matching each prompt and runs lat's end-of-session check only when the session changed files; memory-search reminder | Claude Code |
 | `plugins/session-hud` | Separate plugin in the same marketplace: a usage row under the prompt (context, rate limits, cost) and a TODO list shared by every session, see its [README](plugins/session-hud/README.md) | Claude Code |
 
 ## Install (Claude Code)
