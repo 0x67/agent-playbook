@@ -1,6 +1,6 @@
 # Tauri Versions
 
-Loaded via `tauri` SKILL.md routing table. Sources: v2.tauri.app/release/tauri/all-versions, GitHub releases, docs.rs/tauri.
+Loaded via `tauri` SKILL.md routing table. Sources: v2.tauri.app/release/tauri/all-versions, GitHub releases, docs.rs/tauri. Checked 2026-11-05.
 
 ## Rule
 
@@ -26,8 +26,9 @@ Loaded via `tauri` SKILL.md routing table. Sources: v2.tauri.app/release/tauri/a
 | 2.9 | 2025-10 | `scroll_bar_style` plus `scrollBarStyle` config; mobile exit and back button events, `app.onBackButtonPress`; Android plugin hooks `onStop`, `onDestroy`, `onRestart`, `onConfigurationChanged`; async Swift plugin methods. CLI `--no-sign`, `autoIncrementVersionCode`, `ios run` / `android run`, deep-link universal domains |
 | 2.10 | 2026-02 | thin. `WebviewWindow::set_simple_fullscreen` for parity. Breaking for `with_webview` users: `webkit2gtk-rs` 2.0.2, `wry` 0.54 |
 | 2.11 | 2026-04 | `PredefinedMenuItem::bring_all_to_front` (macOS); **`rename` attribute on `#[tauri::command]`**; `data-tauri-drag-region="deep"`; `general_autofill_enabled`; `eval_with_callback`; file associations on Android and iOS; `RunEvent::Opened` on Android; `Suspended`/`Resumed` on mobile; **multiple windows on Android and iOS**; `dbus` cargo feature, default on and required for Linux theme detection. CLI `uninstallerIcon`, `bundle.windows.minimumWebview2Version`, `--archive-only` for iOS |
+| 2.12 | 2026-09 | `WebviewBuilder::limit_navigations_to_app_bound_domains` and the `WebviewWindowBuilder` twin; `app > appDirectoriesOverride` config for the `app_*_dir` path APIs; JS `exit` in `@tauri-apps/api/app` (`core:app:allow-exit`); `Webview::convert_file_src`; `Builder::activate_ignoring_other_apps` (macOS); `Image::from_app_icon_resource` (Windows); `no_redirection_bitmap` plus `noRedirectionBitmap` config (Windows); wry permission handler API with `PermissionResponse`; `set_fullscreen_on_monitor` plus JS `setFullscreenOnMonitor`; Liquid Glass `Regular` and `Clear` window effects. Security fix GHSA-w28w-mhc8-qvjv: channel IPC queue entries are bound to their webview. Breaking: MSRV 1.90, drops Windows 7 (`windows` 0.62), Android Gradle minimum 8.13, Android `$VIDEO` and `video_dir()` now resolve to the app Movies directory. `InvokeMessage::state` and `state_ref` deprecated |
 
-Latest stable at the time of writing: `tauri` 2.11.5, 2026-07-01. Ecosystem at that point: `tauri-cli` and `@tauri-apps/cli` 2.11.4, `@tauri-apps/api` 2.11.1, `tauri-build` 2.6.3, `wry` 0.55, `tao` 0.35.
+Latest stable at the time of writing: `tauri` 2.12.5, 2026-10-21. Ecosystem as of 2026-11-05: `tauri-cli` and `@tauri-apps/cli` 2.12.4, `@tauri-apps/api` 2.12.4, `tauri-build` 2.7.4, `wry` 0.57.1, `tao` 0.37.2.
 
 If the pinned version is newer than this table, read the changelog rather than assuming. This table ends where its sources did.
 
@@ -43,12 +44,12 @@ Two default-on cargo features hide platform capability if disabled: `x11` (2.6) 
 
 ## MSRV
 
-Declared `rust-version` is **1.77.2** and has not moved across the whole shipped 2.x line. 2.0.0 briefly required 1.78; 2.0.1 reverted to 1.77.2 to keep Windows 7 support, and that revert still stands. There is no per minor MSRV bump policy in 2.x.
+Declared `rust-version` was **1.77.2** across 2.0 through 2.11, and 2.12 sets it to **1.90**. 2.0.0 briefly required 1.78; 2.0.1 reverted to 1.77.2 to keep Windows 7 support, and that held until 2.12, which also drops Windows 7. There is no per minor MSRV bump policy in 2.x.
 
-The declared MSRV understates the effective one: `tauri-cli`'s dependency tree already requires a higher toolchain on Windows. If you are pinning a toolchain, test it rather than trusting 1.77.2.
+The declared MSRV understates the effective one: `tauri-cli`'s dependency tree already requires a higher toolchain on Windows. If you are pinning a toolchain, test it rather than trusting the declared value.
 
 ## Tauri 3
 
-The 3.0 milestone is open with no due date and nearly every item labelled breaking. The forcing function is Linux GTK: GTK3 is unmaintained and has a known unsoundness in glib, so the migration to GTK4 and WebKitGTK 6.0 cascades through the crate graph. Other milestone items include dropping Windows 7 support, which is exactly what pinned MSRV at 1.77.2, `schemars` 1.x, `WebviewUrl` navigation changes, removal of v1 compatibility code, and cleanup of top level exports.
+The 3.0 milestone is open with no due date and nearly every item labelled breaking. The forcing function is Linux GTK: GTK3 is unmaintained and has a known unsoundness in glib, so the migration to GTK4 and WebKitGTK 6.0 cascades through the crate graph. Other milestone items include `schemars` 1.x, `WebviewUrl` navigation changes, removal of v1 compatibility code, and cleanup of top level exports.
 
-`tauri 3.0.0-alpha.0` and `alpha.1` are published on crates.io (September 2026), with `@tauri-apps/api` and `@tauri-apps/cli` alphas on the npm `next` tag. **`max_stable_version` is still 2.11.5**, so do not write production code against them. Note the v3 alphas declare `rust-version = 1.95`, a large jump from 2.x's 1.77.2. Do not assume a v2 API survives into v3 without checking.
+`tauri 3.0.0-alpha.0` through `alpha.5` are published on crates.io (September and October 2026), with `@tauri-apps/api` and `@tauri-apps/cli` alphas on the npm `next` tag. **`max_stable_version` is still 2.12.5**, so do not write production code against them. Note the v3 alphas declare `rust-version = 1.95`, a jump from 2.12's 1.90. Do not assume a v2 API survives into v3 without checking.
