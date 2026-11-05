@@ -53,6 +53,39 @@ Two questions that name no identifiers. The broad one asks how the system handle
 1. fff costs the same as Grep. Its value is that agents use it when it is always loaded, so `alwaysLoad` is set in the README install line.
 2. semble and codebase-memory cut cost by about 40% on broad questions in a large codebase and break even or cost more on targeted ones. semble exposes two tools, so it is also set to `alwaysLoad`. codebase-memory exposes 17 and stays behind tool search.
 
+## lat.md
+
+### As a search tool
+
+In the 254k-line Rust workspace, with the lat MCP server available next to the other search tools, agents called lat once in 9 runs over three questions, and total cost came out 2.7% higher than without it, with the same answers. Session history agrees: about 12 `lat locate` and 6 `lat search` calls against about 3,900 shell searches. An instruction to "run `lat locate` first" does not change what agents do.
+
+### Injecting matching sections
+
+The ai-setup prompt hook runs `lat search` on each prompt itself and injects up to three sections, each with its summary and code links. A first version injected the top three matches unfiltered; on one broad question it sent one run of three to the wrong subsystem, so the hook now filters matches.
+
+The filter was tuned on 48 questions across three repos. Agents wrote the questions from the code without opening `lat.md`, mixing design, flow, and "where is X" questions. A match counts as relevant when its section mentions a file or symbol from the question's answer key.
+
+| Rule for injecting a section | Precision | Helpful | Misleading | Silent |
+|---|---|---|---|---|
+| similarity of at least 0.45 | 45% | 36 | 11 | 1 |
+| similarity of at least 0.50 | 51% | 32 | 9 | 7 |
+| similarity of at least 0.55 | 50% | 23 | 9 | 16 |
+| at least 0.50, and the section links to code that exists | 59% | 31 | 5 | 12 |
+| at least 0.60, and the section links to code that exists | 71% | 19 | 2 | 27 |
+
+"Helpful" counts questions that got at least one relevant section, "misleading" questions that got sections with none relevant, and "silent" questions that got nothing. The repos differed: lat's top six matches held a relevant section for 15 of 15, 13 of 15, and 10 of 18 questions. The weakest repo's `lat.md` documents an older reference implementation in another language, which the code-link filter removes. `lat search --min-similarity` does not filter keyword matches, so the hook reads each match's score and applies the cutoff itself.
+
+End to end with the shipped rule (at least 0.50, linked code exists), 12 questions with 2 runs each:
+
+| Repo | Without injection | With injection | Mean answer score |
+|---|---|---|---|
+| Large Rust workspace (865 lat sections) | $1.85 | $1.46 | 0.52 to 0.54 |
+| Medium Rust workspace (69 sections) | $1.73 | $1.45 | 0.67 to 0.71 |
+| Small Rust and TypeScript app (43 sections) | $1.27 | $1.30 | 0.97 to 0.95 |
+| Total | $4.85 | $4.21 (13% less) | |
+
+Questions that got nothing injected still moved 6% in cost between arms, so the noise floor is around 6 to 10%. Injection pays in medium and large repos whose `lat.md` sections link to code; in a small repo agents find the answer fast either way. No run in this set followed an injected section to the wrong code.
+
 ## caveman
 
 Same chat question with caveman off and on, answer length counted in words:
