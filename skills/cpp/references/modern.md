@@ -1,6 +1,6 @@
 # Modern C++ by Standard
 
-Loaded via `cpp` SKILL.md routing table. Sources: cppreference per-standard pages (cppreference.com/w/cpp/17, /20, /23, /26) and compiler support tables (cppreference.com/w/cpp/compiler_support).
+Loaded via `cpp` SKILL.md routing table. Sources: cppreference per-standard pages (cppreference.com/w/cpp/17, /20, /23, /26) and compiler support tables (cppreference.com/w/cpp/compiler_support). Checked 2026-11-05.
 
 ## Rule
 
@@ -41,7 +41,7 @@ First version with the feature, from cppreference's compiler support tables (rea
 | relaxed `constexpr` | 5 | 3.4 | 19.10 |
 | **C++17** structured bindings, `if constexpr` | 7 | 4 (`if constexpr` 3.9) | 19.11 |
 | class template argument deduction | 7 | 5 | 19.14 |
-| `optional`, `variant`, `string_view` | 7.1 | 4 | 19.11 |
+| `optional`, `variant`, `string_view` | 7.1 | 4 | 19.10 |
 | `std::filesystem` | 8 (link `-lstdc++fs` until 9) | 7 | 19.14 |
 | `from_chars`/`to_chars` integer / floating point | 8 / 11 | 7 / 14 | 19.14 / 19.24 |
 | `std::pmr` | 9.1 | 16 | 19.13 |
@@ -49,9 +49,9 @@ First version with the feature, from cppreference's compiler support tables (rea
 | **C++20** concepts | 10 | 10 | 19.23 partial |
 | ranges | 10 | 13 partial | 19.29 |
 | `std::span` | 10 | 7 | 19.26 |
-| `<=>` | 10 | 8 partial | 19.20 |
+| `<=>` | 10 | 10 | 19.20 |
 | `constinit` | 10 | 10 | 19.29 |
-| `consteval` | 10 partial | 11 partial | 19.28 |
+| `consteval` | 10 partial | 17 | 19.29 |
 | `std::format` | 13 | 17 | 19.29 |
 | `std::jthread`, `stop_token` | 10 | 17 partial | 19.28 |
 | `std::source_location` | 11 | 15 partial | 19.29 |
@@ -64,8 +64,8 @@ First version with the feature, from cppreference's compiler support tables (rea
 | `std::unreachable`, `std::move_only_function` | 12 | 15 / no | 19.32 |
 | `if consteval` | 12 | 14 | 19.44 |
 | multidimensional `operator[]` | 12 | 15 | 19.42 |
-| `views::zip` / `views::enumerate` | 13 | 15 partial / 23 | 19.33 partial / 19.37 |
-| `[[assume]]` | 13 | 19 | 19.51 |
+| `views::zip` / `views::enumerate` | 13 | 15 partial / 23 | 19.35 partial / 19.37 |
+| `[[assume]]` | 13 | 19 | no |
 | `std::print` | 14 | 17 partial | 19.37 |
 | deducing this | 14 | 18 | 19.32 partial, 19.43 |
 | `std::ranges::to` | 14 partial | 17 | 19.34 |
