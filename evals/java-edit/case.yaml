@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: java-edit
+description: Editing Java code loads the java skill.
+tags: [lang, java, hooks]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Glob, Grep, Skill, Edit, Write]
+  prompt: |
+    Add a plus(Money other) method to src/main/java/com/example/Money.java that adds two amounts and rejects different currencies.
+graders:
+  - name: java-skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?java"'
+    arm: both
+  - name: plus-written
+    type: regex
+    pattern: 'plus\s*\(\s*Money'
+    target:
+      source: file
+      path: src/main/java/com/example/Money.java

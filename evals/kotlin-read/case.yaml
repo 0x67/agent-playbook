@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: kotlin-read
+description: Reading Kotlin code loads the kotlin skill, and the answer catches swallowed cancellation.
+tags: [lang, kotlin, hooks]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Is there a problem with how retry() in src/main/kotlin/Retry.kt behaves when the calling coroutine is cancelled? Do not change any files.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?kotlin"'
+    arm: both
+  - name: finds-cancellation-bug
+    type: llm
+    criteria: |
+      PASS if the answer explains that runCatching catches CancellationException, so a cancelled coroutine keeps retrying
+      (or returns null) instead of propagating cancellation, and suggests rethrowing CancellationException or not using
+      runCatching around suspend calls. FAIL otherwise.

@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: jvm-build
+description: Editing a Gradle build file loads the jvm skill.
+tags: [lang, jvm, hooks]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Glob, Grep, Skill, Edit, Write]
+  prompt: |
+    Set up unit testing with JUnit in build.gradle.kts so that ./gradlew test runs JUnit tests. Edit only the build file.
+graders:
+  - name: jvm-skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?jvm"'
+    arm: both
+  - name: junit-platform
+    type: regex
+    pattern: 'useJUnitPlatform'
+    target:
+      source: file
+      path: build.gradle.kts

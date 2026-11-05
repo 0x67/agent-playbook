@@ -63,6 +63,10 @@ Each extra is used when present. Nothing breaks without it.
 
 Each subagent declares a default tier in its frontmatter: `planning-subagent` runs on sonnet, `implement-subagent` and `code-review-subagent` on opus, and `conductor` inherits the session model. `ai-setup:orchestration-layers` holds the table for choosing a tier per handoff. To pin the version an alias resolves to, set `ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL`, `ANTHROPIC_DEFAULT_HAIKU_MODEL`, or `ANTHROPIC_DEFAULT_FABLE_MODEL` in the `env` block of your Claude Code settings.
 
+## Evals
+
+`evals/` holds a `claude plugin eval` suite with one case per skill trigger and standing rule. Each case runs with and without the plugin, so the report shows what the plugin changes. Run `evals/run.sh`, adding `--case <name>`, `--runs <n>`, or `--model <alias>` as needed. Eval sandboxes load only the plugin under test, and ai-setup will not load without its humanizer and fable dependencies, so the script evals a temporary copy with those dependencies removed. Results go to `evals/results/`, which git ignores.
+
 ## License
 
 MIT. `hooks/humanizer-card.md` condenses rules from [blader/humanizer](https://github.com/blader/humanizer) (MIT).

@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: terminology-guard
+description: AGENTS.md terminology guard keeps banned terms out of new identifiers and docstrings.
+tags: [rules, agents-md]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 10
+  allowed_tools: [Read, Glob, Grep, Skill, Edit, Write]
+  prompt: |
+    In symbols.py, add a function that turns ticker inputs like " bbca ", "BBCA.JK" and "bbca.jk" into one single standard representation (upper case, no exchange suffix), with a one-line docstring.
+graders:
+  - name: no-banned-terms
+    type: regex
+    pattern: 'canonical|semantic|golden|facade'
+    flags: i
+    match: not_contains
+    target:
+      source: file
+      path: symbols.py
+    arm: both
+  - name: function-written
+    type: regex
+    pattern: 'def \w+\('
+    target:
+      source: file
+      path: symbols.py

@@ -1,0 +1,24 @@
+schema_version: "1.1"
+name: software-design
+description: A design review request loads software-design and the review names concrete structural problems.
+tags: [design]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Review the design of orders.py: naming, function size, and module boundaries. Give me a short list of concrete changes. Do not edit anything.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?software-design"'
+    arm: both
+  - name: names-real-problems
+    type: llm
+    criteria: |
+      PASS if the review flags at least three of: the boolean `flag` parameter (should be a named discount or separate
+      operation), the vague names (`data`, `d`, `i`, `s`, `OrderManager`), `process` mixing parsing, validation, pricing,
+      persistence, and email in one function, and hard-wired I/O (sqlite3 connection and SMTP created inside the method)
+      that should sit behind boundaries. FAIL if it only gives generic advice without pointing at these.

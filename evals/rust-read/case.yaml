@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: rust-read
+description: Reading Rust code loads the rust skill, and the answer finds the unpadded fraction bug.
+tags: [lang, rust, hooks]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    In src/lib.rs, what does parse_price return for the input "12.5", and is that correct? Do not change any files.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?rust"'
+    arm: both
+  - name: finds-bug
+    type: llm
+    criteria: |
+      PASS if the answer says parse_price("12.5") returns Some(1205), says the correct value is 1250, and blames the
+      fractional part being added as a plain integer instead of being scaled to cents.
+      FAIL if it says the result is 1250, or blames something else.

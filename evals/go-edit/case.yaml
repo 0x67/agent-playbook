@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: go-edit
+description: Editing Go code loads the golang skill before the edit.
+tags: [lang, go, hooks]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Glob, Grep, Skill, Edit, Write]
+  prompt: |
+    Add a Sum function to mathx.go that returns the sum of a slice of ints, and a table-driven test for it in mathx_test.go.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?golang"'
+    arm: both
+  - name: sum-written
+    type: regex
+    pattern: 'func Sum\('
+    target:
+      source: file
+      path: mathx.go
