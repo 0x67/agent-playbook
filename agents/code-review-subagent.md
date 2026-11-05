@@ -17,10 +17,12 @@ Accept from conductor:
 
 # Review Workflow
 
-0. **Memory recall** with module/file names from changes. Surface prior review decisions, known gotchas, past bugs.
-1. **Analyze changes** via `git diff`, file reads. Match effort to mode, risk, review depth.
-2. **Verify implementation** against checklist below.
-3. **Return structured review** (see output format).
+0. **Memory recall** with module/file names from changes. Surface prior review decisions, known gotchas, past bugs. Inside a spec folder, also read `## Rejected findings` in its `decision-log.md`; do not re-raise a listed finding without new evidence.
+1. **Size and coverage.** Run `git diff --shortstat <range>` and `git diff --name-only <range>`. The name list is your coverage list: mark each file reviewed or skipped with a reason. Never return APPROVED while an in-scope file is unreviewed.
+2. **Big diff: use open-code-review.** A diff is big when it changes more than 800 lines (insertions plus deletions) OR touches more than 25 files; either one is enough. For a big diff, when `command -v ocr` succeeds, you must run `ocr delegate preview <range>` for open-code-review's file list, then `ocr delegate rule <range> -f json <files>` for its per-file checklists. `<range>` is `--commit <sha>` or `--from <base> --to <head>` (no flag for workspace changes). Run each `ocr` command on its own, without pipes or chaining, so permission rules match it. Review each listed file against its checklist as well as the checklist below. Report only: never run OCR's fix step or its plugin commands. Files OCR excludes (docs, configs) still get the normal review and count in Coverage. Otherwise skip this step. Either way, fill in the `OCR` line of the report.
+3. **Analyze changes** via `git diff`, file reads. Match effort to mode, risk, review depth.
+4. **Verify implementation** against checklist below.
+5. **Return structured review** (see output format).
 
 # Verification Checklist
 
@@ -86,6 +88,10 @@ Content bans: work-unit/plan refs, em dash (U+2014), articles/filler, restating 
 **Prior Context:** {Memory findings or fallback reason}
 
 **Risk / Depth:** {risk level, review depth}
+
+**Coverage:** {reviewed}/{total} changed files reviewed; skipped: {file: reason, or "none"}
+
+**OCR:** {used: {n} files, {m} checklists | not needed: {files} files, {lines} lines | unavailable: `ocr` not on PATH}
 
 **Strengths:**
 - {What was done well}
