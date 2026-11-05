@@ -1,7 +1,18 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-import type { Limit, Todo, Usage } from '../types'
+import type { Limit, Orch, OrchAgent, OrchStatus, Todo, Usage } from '../types'
+import {
+  STATUS_MARK,
+  elapsed,
+  groupAgents,
+  parseVerdict,
+  shortModel,
+  shortType,
+  tokens,
+  verdictTone,
+  workflowTitle,
+} from './orch'
 
 const PANE = 'todo'
 const TITLE = 'Shared TODO'
@@ -10,6 +21,13 @@ const PANE_COLUMNS = 34
 const FILE_NAME = '.claude-todo.md'
 const POLL_MS = 2000
 const USAGE_EVERY_TICKS = 15
+const ORCH_PANE = 'orch'
+const ORCH_TITLE = 'Agents'
+const ORCH_COLUMNS = 70
+// older finished agents drop off past this many
+const ORCH_KEEP = 150
+// one JSONL file per session and day, so sessions never write the same file
+const LOG_DIR = '.claude-orch-log'
 
 const todos = atom({ plugin: 'session-hud', key: 'todos' } as const, [], {
   shape: 'todos-1',
@@ -17,6 +35,12 @@ const todos = atom({ plugin: 'session-hud', key: 'todos' } as const, [], {
 const usage = atom({ plugin: 'session-hud', key: 'usage' } as const, null, {
   shape: 'usage-1',
 })
+const EMPTY_ORCH: Orch = { agents: [], titles: {} }
+const orch = atom({ plugin: 'session-hud', key: 'orch' } as const, EMPTY_ORCH, {
+  shape: 'orch-1',
+})
+// ticks while an agent runs, so the pane's elapsed times move
+const orchNow = atom({ plugin: 'session-hud', key: 'orchNow' } as const, 0)
 
 const ITEM = /^(\s*[-*]\s+\[)( |x|X)(\]\s+)(.*)$/
 
@@ -58,17 +82,77 @@ function meter(percent: number, cells: number): [string, string] {
   return ['█'.repeat(filled), '░'.repeat(cells - filled)]
 }
 
-// module state; a reload starts it over, which only re-reads the file
-let file = ''
+function keep(agents: OrchAgent[]): OrchAgent[] {
+  let extra = agents.length - ORCH_KEEP
+  if (extra <= 0) return agents
+  return agents.filter(one => {
+    if (extra > 0 && one.status !== 'running') {
+      extra -= 1
+      return false
+    }
+    return true
+  })
+}
+
+function endStatus(reason: string): OrchStatus {
+  if (reason === 'answer') return 'done'
+  if (reason === 'aborted') return 'aborted'
+  return 'failed'
+}
+
+// module state; a reload starts it over, which only re-reads the files
+let home = ''
 let lastMtime = -1
+let sessionCwd = ''
+let logReady: Promise<{ path: string; lines: string[] }> | null = null
+
+async function homeDir($: EngineInterface) {
+  if (home === '') {
+    home = (await $.env.get('HOME')) ?? (await $.env.get('USERPROFILE')) ?? '.'
+  }
+  return home
+}
 
 async function todoFile($: EngineInterface) {
-  if (file === '') {
-    const home =
-      (await $.env.get('HOME')) ?? (await $.env.get('USERPROFILE')) ?? '.'
-    file = `${home}/${FILE_NAME}`
-  }
-  return file
+  return `${await homeDir($)}/${FILE_NAME}`
+}
+
+async function openLog($: EngineInterface) {
+  const day = new Date(await $.clock.now()).toISOString().slice(0, 10)
+  const id = (await $.session.id()).slice(0, 8)
+  const path = `${await homeDir($)}/${LOG_DIR}/${day}-${id}.jsonl`
+  const lines = (await $.fs.exists(path))
+    ? (await $.fs.read(path)).split('\n').filter(line => line !== '')
+    : []
+  return { path, lines }
+}
+
+async function appendLog($: EngineInterface, entry: Record<string, unknown>) {
+  // one shared promise, so two agents ending together both land
+  const log = await (logReady ??= openLog($))
+  log.lines.push(JSON.stringify(entry))
+  await $.fs.write(log.path, `${log.lines.join('\n')}\n`)
+}
+
+async function tickOrch($: EngineInterface) {
+  const state = await read($, orch)
+  if (!state.agents.some(one => one.status === 'running')) return
+  const now = await $.clock.now()
+  await update($, orchNow, () => now)
+}
+
+async function noteTool($: EngineInterface, agentId: string, tool: string) {
+  const state = await read($, orch)
+  const isTracked = state.agents.some(
+    one => one.id === agentId && one.status === 'running',
+  )
+  if (!isTracked) return
+  await update($, orch, current => ({
+    ...current,
+    agents: current.agents.map(one =>
+      one.id === agentId ? { ...one, lastTool: tool } : one,
+    ),
+  }))
 }
 
 async function readLines($: EngineInterface): Promise<string[]> {
@@ -132,6 +216,13 @@ export const register: Register = on => {
         'Shared TODO list: /todo shows or hides it; add <text>, done <n>, rm <n>, clear',
       argumentHint: '[show | hide | add <text> | done <n> | rm <n> | clear]',
     })
+    await $.command.register({
+      name: 'orch',
+      description:
+        'Subagents and workflow agents of this session: /orch shows or hides the pane; clear, reset, log',
+      argumentHint: '[show | hide | clear | reset | log]',
+    })
+    sessionCwd = e.cwd
     await load($, true)
     await measure($)
 
@@ -141,6 +232,7 @@ export const register: Register = on => {
       void load($).then(() =>
         ticks % USAGE_EVERY_TICKS === 0 ? measure($) : undefined,
       )
+      void tickOrch($)
     })
 
     return next(e)
@@ -206,6 +298,148 @@ export const register: Register = on => {
     }
   })
 
+  on('command.run', { command: 'orch' }, async ($, e) => {
+    const verb = e.args.trim()
+    switch (verb) {
+      case '':
+      case 'show':
+      case 'hide': {
+        const isShown = (await $.ui.panes()).some(pane => pane.id === ORCH_PANE)
+        const isShowing = verb === '' ? !isShown : verb === 'show'
+        if (!isShowing) {
+          await $.ui.close({ id: ORCH_PANE })
+          return { text: 'Agents pane hidden.' }
+        }
+        await $.ui.open({ id: ORCH_PANE, title: ORCH_TITLE, columns: ORCH_COLUMNS })
+        const state = await read($, orch)
+        const running = state.agents.filter(one => one.status === 'running').length
+        return { text: `Agents pane shown (${running} running).` }
+      }
+      case 'clear':
+      case 'reset': {
+        await update($, orch, state => {
+          const agents =
+            verb === 'reset' ? [] : state.agents.filter(one => one.status === 'running')
+          const groups = new Set(agents.map(one => one.group))
+          const titles = Object.fromEntries(
+            Object.entries(state.titles).filter(([key]) => groups.has(key)),
+          )
+          return { agents, titles }
+        })
+        return { text: verb === 'reset' ? 'Agents list reset.' : 'Finished agents cleared.' }
+      }
+      case 'log':
+        return { text: `Run log: ${await homeDir($)}/${LOG_DIR}/ (one JSONL file per session and day)` }
+      default:
+        return { text: 'Usage: /orch [show | hide | clear | reset | log]' }
+    }
+  })
+
+  // a Workflow call's id is shared by every agent of its run: name the group
+  on('tool.call', async ($, e, next) => {
+    if (e.tool === 'Workflow') {
+      const title = workflowTitle(e) ?? 'Workflow'
+      await update($, orch, state => ({
+        ...state,
+        titles: { ...state.titles, [e.tool_use_id]: title },
+      }))
+    } else if (e.agentId !== undefined) {
+      void noteTool($, e.agentId, String(e.tool)).catch(() => undefined)
+    }
+    return next(e)
+  }).catch(($, e, next) => next(e))
+
+  on('agent.spawn', async ($, e, next) => {
+    const started = await next(e)
+    if (started.deny !== undefined || started.agentId === undefined) return started
+    if (e.isTeammate) return started
+    const id = started.agentId
+    const now = await $.clock.now()
+    const group = e.workflow
+      ? e.tool_use_id || e.workflow.runId
+      : (e.parentAgentId ?? 'main')
+    const fresh: OrchAgent = {
+      id,
+      description: e.description,
+      type: e.subagentType,
+      model: started.model,
+      group,
+      ...(e.workflow ? { runId: e.workflow.runId } : {}),
+      status: 'running',
+      startedAt: now,
+      tokens: 0,
+    }
+    await update($, orch, state => {
+      const parent = state.agents.find(one => one.id === group)
+      const title =
+        state.titles[group] ??
+        (group === 'main'
+          ? 'Main thread'
+          : e.workflow
+            ? `Workflow ${e.workflow.runId}`
+            : (parent?.description ?? 'Subagent'))
+      // a resumed agent keeps its row, start time and tokens
+      const previous = state.agents.find(one => one.id === id)
+      const agent: OrchAgent = previous
+        ? { ...previous, status: 'running' }
+        : fresh
+      return {
+        titles: { ...state.titles, [group]: title },
+        agents: keep([...state.agents.filter(one => one.id !== id), agent]),
+      }
+    })
+    return started
+  }).catch(($, e, next) => next(e))
+
+  on('turn.complete', async ($, e, next) => {
+    const result = await next(e)
+    const id = e.agentId
+    if (id === undefined) return result
+    const state = await read($, orch)
+    const agent = state.agents.find(one => one.id === id)
+    if (!agent) return result
+
+    const now = await $.clock.now()
+    const used = e.usage
+    const spent = used
+      ? used.input_tokens +
+        used.output_tokens +
+        used.cache_read_input_tokens +
+        used.cache_creation_input_tokens
+      : 0
+    const verdict = parseVerdict(e.answer)
+    const finished: OrchAgent = {
+      ...agent,
+      status: endStatus(e.reason),
+      endedAt: now,
+      tokens: agent.tokens + spent,
+      ...(used ? { model: used.model } : {}),
+      ...(verdict ? { verdict: verdict.label } : {}),
+    }
+    await update($, orch, current => ({
+      ...current,
+      agents: current.agents.map(one => (one.id === id ? finished : one)),
+    }))
+    await appendLog($, {
+      ts: new Date(now).toISOString(),
+      cwd: sessionCwd,
+      group: state.titles[agent.group] ?? agent.group,
+      runId: agent.runId,
+      agentId: id,
+      description: agent.description,
+      type: agent.type,
+      model: finished.model,
+      status: finished.status,
+      verdict: finished.verdict,
+      durationMs: e.durationMs,
+      input_tokens: used?.input_tokens ?? 0,
+      output_tokens: used?.output_tokens ?? 0,
+      cache_read_input_tokens: used?.cache_read_input_tokens ?? 0,
+      cache_creation_input_tokens: used?.cache_creation_input_tokens ?? 0,
+    }).catch(() => undefined)
+    return result
+  })
+
   // usage sits on the hint line under the prompt, a row below the engine's
   // own hints; the TODO pane stays hidden until /todo shows it
   on('ui.render', { component: 'PromptHint' }, async ($, e, next) => {
@@ -216,6 +450,8 @@ export const register: Register = on => {
     const { Box, Text } = $.ui.resolve(e)
     const list = await read($, todos)
     const open = list.filter(one => !one.isDone).length
+    const agents = await read($, orch)
+    const running = agents.agents.filter(one => one.status === 'running').length
     const columns = e.viewport?.columns ?? 80
     const cells = columns >= 140 ? 8 : columns >= 110 ? 5 : 0
 
@@ -249,6 +485,14 @@ export const register: Register = on => {
           <Text>Cost </Text>
           <Text color="claude" bold>
             ${figures.costUsd.toFixed(2)}
+          </Text>
+        </Text>
+      ),
+      running > 0 && (
+        <Text>
+          <Text>Agents </Text>
+          <Text color="warning" bold>
+            {running} running
           </Text>
         </Text>
       ),
@@ -316,6 +560,85 @@ export const register: Register = on => {
         <Text>
           <Text color="suggestion">/todo add</Text> · done n · rm n · clear
         </Text>
+      </Box>
+    )
+  })
+
+  on('ui.render', { component: 'Pane', requestId: ORCH_PANE }, async ($, e) => {
+    const { Box, Text } = $.ui.resolve(e)
+    const state = await read($, orch)
+    const ticked = await read($, orchNow)
+    const groups = groupAgents(state.agents, state.titles)
+    if (groups.length === 0) {
+      return <Text>No subagents yet this session. /orch hides this pane.</Text>
+    }
+    const latest = Math.max(
+      ticked,
+      ...state.agents.map(one => one.endedAt ?? one.startedAt),
+    )
+    const isWide = e.props.bodyColumns >= 84
+
+    const row = (agent: OrchAgent) => {
+      const mark = STATUS_MARK[agent.status]
+      const isRunning = agent.status === 'running'
+      return (
+        <Box key={agent.id} flexDirection="row" columnGap={1}>
+          <Text color={mark.tone}>{mark.mark}</Text>
+          <Box flexGrow={1} flexShrink={1}>
+            <Text wrap="truncate" bold={isRunning}>
+              {agent.description}
+            </Text>
+          </Box>
+          {isWide && (
+            <Box width={11}>
+              <Text wrap="truncate">{shortType(agent.type)}</Text>
+            </Box>
+          )}
+          <Box width={9}>
+            <Text wrap="truncate">{shortModel(agent.model)}</Text>
+          </Box>
+          <Box width={7} justifyContent="flex-end">
+            <Text>{elapsed((agent.endedAt ?? latest) - agent.startedAt)}</Text>
+          </Box>
+          <Box width={8} justifyContent="flex-end">
+            {isRunning ? (
+              <Text color="suggestion" wrap="truncate">
+                {agent.lastTool ?? 'starting'}
+              </Text>
+            ) : (
+              <Text>{tokens(agent.tokens)}</Text>
+            )}
+          </Box>
+          <Box width={8}>
+            {agent.verdict !== undefined && (
+              <Text color={verdictTone(agent.verdict)} bold>
+                {agent.verdict}
+              </Text>
+            )}
+          </Box>
+        </Box>
+      )
+    }
+
+    return (
+      <Box flexDirection="column">
+        {groups.map(group => (
+          <Box key={group.key} flexDirection="column" marginBottom={1}>
+            <Box flexDirection="row" columnGap={1}>
+              <Box flexGrow={1} flexShrink={1}>
+                <Text color="claude" bold wrap="truncate">
+                  {group.title}
+                </Text>
+              </Box>
+              <Text>
+                {group.done}/{group.agents.length} ·{' '}
+                {elapsed((group.endedAt ?? latest) - group.startedAt)} ·{' '}
+                {tokens(group.tokens)}
+              </Text>
+            </Box>
+            {group.agents.map(row)}
+          </Box>
+        ))}
       </Box>
     )
   })
