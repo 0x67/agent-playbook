@@ -1,22 +1,24 @@
+"""UserPromptSubmit hook: short memory and search-order reminder for the model.
+
+additionalContext reaches the model; systemMessage would only show the user a
+banner. The full rules arrive with AGENTS.md at session start.
+"""
 import json
 import sys
+
+CONTEXT = (
+    "Before planning, coding, reviewing, or investigating: check the MEMORY.md "
+    "index, then search in the AGENTS.md order (lat, Semble, fff, codebase-memory, "
+    "language server). Missing tool: use built-in tools and say why."
+)
 
 
 def main() -> None:
     try:
-        json.load(sys.stdin)
-    except Exception:
-        pass
-
-    message = (
-        "Memory/search protocol reminder: check the native auto memory index "
-        "(MEMORY.md) before planning, implementation, review, or investigation. "
-        "Search order: lat for architecture, Semble for semantic code search, "
-        "fff for exact/file search, rust-analyzer for Rust symbols. If preferred "
-        "tool is missing, fails, or lacks needed capability, use regular tools "
-        "and state reason."
-    )
-    print(json.dumps({"continue": True, "systemMessage": message}))
+        event = json.load(sys.stdin).get("hook_event_name", "UserPromptSubmit")
+    except (json.JSONDecodeError, AttributeError):
+        event = "UserPromptSubmit"
+    print(json.dumps({"hookSpecificOutput": {"hookEventName": event, "additionalContext": CONTEXT}}))
 
 
 if __name__ == "__main__":

@@ -4,8 +4,7 @@
       {
         "hooks": [
           { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/inject.py\" AGENTS.md", "timeout": 5 },
-          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/inject.py\" hooks/humanizer-card.md", "timeout": 5 },
-          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/memory-search-reminder.py\"", "timeout": 5 }
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/inject.py\" hooks/humanizer-card.md", "timeout": 5 }
         ]
       }
     ],
