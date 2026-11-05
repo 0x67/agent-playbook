@@ -46,12 +46,12 @@ Hooks and subagents are Claude Code only, so nothing injects the rules automatic
 
 ## Optional extras
 
-Each extra is used when present. Nothing breaks without it.
+Each extra is used when present. Nothing breaks without it. [docs/benchmarks.md](docs/benchmarks.md) has measured token and cost numbers for rtk, the search tools, and caveman.
 
 | Extra | What it adds | Install (macOS; other platforms in each project's docs) | Without it |
 |---|---|---|---|
-| [fff](https://github.com/dmtrKovalenko/fff) MCP | Exact text and file search, first in the `AGENTS.md` search order | `brew install dmtrkovalenko/fff/fff-mcp`, then `claude mcp add -s user fff -- fff-mcp --no-update-check` | Built-in Grep and Glob; the agent says why |
-| [Semble](https://github.com/MinishLab/semble) MCP | Semantic code search | `claude mcp add -s user semble -- uvx --from "semble[mcp]" semble` (needs [uv](https://docs.astral.sh/uv/)) | Text search only |
+| [fff](https://github.com/dmtrKovalenko/fff) MCP | Exact text and file search, first in the `AGENTS.md` search order | `brew install dmtrkovalenko/fff/fff-mcp`, then `claude mcp add-json -s user fff '{"type":"stdio","command":"fff-mcp","args":["--no-update-check"],"alwaysLoad":true}'` (`alwaysLoad` keeps its three tools out of tool search, so agents use them without a lookup first) | Built-in Grep and Glob; the agent says why |
+| [Semble](https://github.com/MinishLab/semble) MCP | Semantic code search | `claude mcp add-json -s user semble '{"type":"stdio","command":"uvx","args":["--from","semble[mcp]","semble"],"alwaysLoad":true}'` (needs [uv](https://docs.astral.sh/uv/)) | Text search only |
 | [codebase-memory](https://github.com/DeusData/codebase-memory-mcp) MCP | Callers, callees, routes, and types from a code graph before multi-file reads | Install the `codebase-memory-mcp` binary per its README, then `claude mcp add -s user codebase-memory -- codebase-memory-mcp` | More file reads |
 | LSP plugins from [claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | `gopls-lsp`, `rust-analyzer-lsp`, `clangd-lsp`, `jdtls-lsp`, `kotlin-lsp` back the `LSP` tool the Go, Rust, C/C++, and Java/Kotlin skills prefer | `/plugin marketplace add anthropics/claude-plugins-official`, then `/plugin install clangd-lsp@claude-plugins-official` (same for the others); the language server must be on `PATH` | Grep-based code navigation |
 | [rtk](https://www.rtk-ai.app/) | Compresses shell command output before it reaches the model | `brew install rtk`, then `rtk init -g --hook-only` (`--agent cursor` and others for other tools) | Full command output, more tokens |
