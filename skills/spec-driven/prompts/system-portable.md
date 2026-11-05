@@ -58,5 +58,5 @@ specs/<slug>/
 ## When stuck
 
 - Cannot find the right symbol → grep / file search before guessing.
-- Cannot decide between two designs → write both into a `decision-log.md` and ask.
+- Cannot decide between 2 to 5 designs and the choice is worth measuring → run an approach trial (`<skill-dir>/trial.md`: shared tests and benchmark, one spike per candidate, fixed weights, decision in `trial.md`). Not worth measuring → write the options into `decision-log.md` and ask.
 - Cannot map a REQ to a validation step → either the REQ is too vague (refine it) or the validation hook is missing (add it).

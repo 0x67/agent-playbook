@@ -22,6 +22,7 @@ specs/<slug>/
   design.md         architecture, interfaces, invariants, error strategy, validation map
   tasks.md          TASK-* with files, outcome, validation, deps; dep graph
   validation.md     ladder, AC table, regression guard
+  trial.md          only when an approach trial ran (`<skill-dir>/trial.md`)
   decision-log.md   only if decisions diverge from design
   artifacts/        preserved logs and evidence
 ```
@@ -61,6 +62,7 @@ One artifact per turn. Each turn starts by re-opening its inputs:
 | 1    | code + prior-art                   | Files-to-Read manifest  |
 | 2    | manifest + code                    | requirements.md         |
 | 3    | requirements.md + code             | design.md               |
+| 3t   | requirements.md + design.md + code | trial.md (optional)     |
 | 4    | requirements.md + design.md + code | tasks.md                |
 | 5    | all prior artifacts                | validation.md           |
 | 6    | all artifacts + code               | adversarial review pass |
@@ -68,6 +70,8 @@ One artifact per turn. Each turn starts by re-opening its inputs:
 Stops output-budget drift across artifacts. Re-grounding per turn catches hallucinations early.
 
 Turn 3 loads skill `software-design` (`ai-setup:software-design` in Claude Code) before writing `design.md`: module boundaries, dependency direction, names for new types and APIs, and the architecture style follow it and the repo's existing structure.
+
+Turn 3t is optional. When 2 to 5 approaches stay viable after reading the code and the choice is worth spikes (a performance budget, a decision costly to reverse, a readability dispute), or the user asks for a comparison, follow `<skill-dir>/trial.md`: frame the candidates, gates, and fixed weights; spike each candidate against one shared harness; measure; record the decision in `trial.md`; then finish `design.md` with the winner. Skip it for everything else.
 
 ## Per-REQ symbol contract
 
@@ -155,7 +159,7 @@ Enables cross-session continuity. Subsequent sessions load these before starting
 Don't advance to the next artifact until the prior one passes:
 
 - `design.md` requires `requirements.md` present with at least one REQ.
-- `tasks.md` requires `design.md` with interfaces, error matrix, validation map.
+- `tasks.md` requires `design.md` with interfaces, error matrix, validation map, and a chosen approach (no `pending trial` left; when `trial.md` exists, its Decision section is filled).
 - `validation.md` requires `tasks.md` with dep graph and per-task validation.
 - Every REQ traces to at least one AC entry.
 - Every TASK traces to at least one REQ and one validation step.

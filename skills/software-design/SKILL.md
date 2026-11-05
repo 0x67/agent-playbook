@@ -53,6 +53,7 @@ Multiple matches: read all matched. Unsure: read `naming.md` and `functions.md`.
 - An interface (port) exists only when a second implementation exists now; a fake that tests use counts. Otherwise depend on the concrete type and extract the interface when the second one arrives. Open/closed extension points and dependency inversion follow the same rule (`references/architecture.md`).
 - Duplication beats the wrong abstraction. Extract on the third copy.
 - The simplest architecture that carries today's team, domain, and load; the repo's existing one first.
+- Several approaches (2 to 5) still viable and the choice worth measuring: run the spec-driven approach trial (`spec-driven` skill, `trial.md`) instead of arguing from taste.
 
 ## Review checklist
 

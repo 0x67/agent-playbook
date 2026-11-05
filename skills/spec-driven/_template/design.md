@@ -30,7 +30,7 @@ Brief prose: <2-3 sentences naming the change touchpoints>.
 
 ### 2.3 Rationale
 
-<why this shape; what alternatives were considered; tradeoffs>
+<why this shape; what alternatives were considered; tradeoffs. Approach trial ran: winner, one-line reason, link to `trial.md`. Considered and skipped: `No trial: <reason>`>
 
 ## 3. <Workstream B> design
 

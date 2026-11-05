@@ -6,7 +6,7 @@ When the Conductor (or any orchestrator) dispatches subagents for spec work, the
 
 ```
 spec_slug:          <kebab-case-slug>
-current_artifact:   manifest | requirements | design | tasks | validation | adversarial
+current_artifact:   manifest | requirements | design | trial | tasks | validation | adversarial
 protocol_path:      <skill-dir>/protocol.md
 template_path:      <skill-dir>/_template/<artifact>.md
 prior_artifacts:    [<absolute paths to completed artifacts in this spec>]
@@ -28,6 +28,7 @@ One subagent per artifact, fresh context each time. Conductor verifies between d
 | 1    | planning / explore           | manifest         | task slug exists; user intent captured        |
 | 2    | implement / write            | requirements     | manifest accepted                             |
 | 3    | implement / write            | design           | requirements.md present + passes review       |
+| 3t   | implement / write (optional) | trial            | design.md marks the approach `pending trial`; spikes follow `<skill-dir>/trial.md` |
 | 4    | implement / write            | tasks            | design.md present + passes review             |
 | 5    | implement / write            | validation       | tasks.md present + passes review              |
 | 6    | code-review / adversarial    | adversarial      | all four artifacts present                    |

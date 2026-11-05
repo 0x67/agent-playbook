@@ -1,6 +1,6 @@
 ---
 name: spec-driven
-description: Use when writing, revising, or IMPLEMENTING spec artifacts (requirements.md, design.md, tasks.md, validation.md) under any `specs/<slug>/` folder (legacy `plans/<slug>/` and `docs/plans/<slug>/` also recognized), or when the user invokes `/plan`, `/spec`, `/spec-driven`, says "write spec for", "phase N spec", "implement spec", "implement plan", "implement phase N", "requirements for", or references `REQ-*` / `TASK-*` / `AC-*` ids. Two phases: (1) spec writing, which enforces per-artifact turn boundaries, Files-to-Read manifest, EARS-form REQs with per-REQ symbol contracts, Source verification blocks in design.md, adversarial review pass, and template-driven structure; (2) implementation, which enforces grounding, group dispatch order, per-TASK turn boundaries, per-task validation gates, per-group regression review, spec↔code sync direction, lat.md sync, and final adversarial pass. Skip for typo fixes, one-line edits, doc-only changes, or single-test additions.
+description: Use when writing, revising, or IMPLEMENTING spec artifacts (requirements.md, design.md, tasks.md, validation.md) under any `specs/<slug>/` folder (legacy `plans/<slug>/` and `docs/plans/<slug>/` also recognized), or when the user invokes `/plan`, `/spec`, `/spec-driven`, says "write spec for", "phase N spec", "implement spec", "implement plan", "implement phase N", "requirements for", or references `REQ-*` / `TASK-*` / `AC-*` ids, or asks during design to "compare approaches", "A/B the options", "spike and benchmark", or run a "trial". Two phases: (1) spec writing, which enforces per-artifact turn boundaries, Files-to-Read manifest, EARS-form REQs with per-REQ symbol contracts, Source verification blocks in design.md, adversarial review pass, and template-driven structure; (2) implementation, which enforces grounding, group dispatch order, per-TASK turn boundaries, per-task validation gates, per-group regression review, spec↔code sync direction, lat.md sync, and final adversarial pass. Skip for typo fixes, one-line edits, doc-only changes, or single-test additions.
 ---
 
 # Spec-Driven Workflow
@@ -9,6 +9,7 @@ This skill enforces the canonical spec-driven workflow. `<skill-dir>` below is t
 
 - `<skill-dir>/protocol.md`: **spec writing** (requirements, design, tasks, validation, adversarial pass).
 - `<skill-dir>/implement.md`: **implementation** (group dispatch, per-TASK turns, validation gates, regression review, sync rules, final adversarial pass).
+- `<skill-dir>/trial.md`: **approach trial**, optional inside spec writing: 2 to 5 candidate approaches spiked against one shared test and benchmark harness, scored on fixed weights, decided with evidence.
 
 ## When this skill is loaded
 
@@ -32,6 +33,7 @@ This skill enforces the canonical spec-driven workflow. `<skill-dir>` below is t
 - Re-Read inputs at the start of each artifact turn.
 - EARS form for every REQ; stable `REQ-*` ids; per-REQ symbol contract.
 - `design.md` ends with a Source verification block.
+- Approach trial only when 2 to 5 approaches stay viable and the choice is worth spikes, or the user asks (`trial.md`).
 - Meta-talk uses `[meta]` prefix; never bare "turn N" in spec output.
 - Copy templates from `<skill-dir>/_template/<artifact>.md`; do not restructure.
 - Traceability: user ask → REQ-* → TASK-* → code → validation.
@@ -44,6 +46,7 @@ Located at `<skill-dir>/_template/`:
 - `design.md`
 - `tasks.md`
 - `validation.md`
+- `trial.md` (only when an approach trial runs)
 
 Use `cp <skill-dir>/_template/<artifact>.md <plan-folder>/<artifact>.md` to initialize.
 
