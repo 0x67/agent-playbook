@@ -23,7 +23,7 @@ specs/<slug>/
   tasks.md          TASK-* with files, outcome, validation, deps; dep graph
   validation.md     ladder, AC table, regression guard
   trial.md          only when an approach trial ran (`<skill-dir>/trial.md`)
-  decision-log.md   only if decisions diverge from design
+  decision-log.md   only if decisions diverge from design or review findings are rejected
   artifacts/        preserved logs and evidence
 ```
 
@@ -73,6 +73,8 @@ Stops output-budget drift across artifacts. Re-grounding per turn catches halluc
 Turn 3 loads skill `software-design` (`ai-setup:software-design` in Claude Code) before writing `design.md`: module boundaries, dependency direction, names for new types and APIs, and the architecture style follow it and the repo's existing structure.
 
 Turn 3t is optional. When 2 to 5 approaches stay viable after reading the code and the choice is worth spikes (a performance budget, a decision costly to reverse, a readability dispute), or the user asks for a comparison, follow `<skill-dir>/trial.md`: frame the candidates, gates, and fixed weights; spike each candidate against one shared harness; measure; record the decision in `trial.md`; then finish `design.md` with the winner. Skip it for everything else.
+
+Turn 4 records `git rev-parse --short HEAD` as `Base commit` in the `tasks.md` header and starts every TASK at `Status: TODO`. Implementation compares against that base to catch files that changed after the spec was written.
 
 ## Per-REQ symbol contract
 

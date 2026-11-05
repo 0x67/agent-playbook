@@ -1,6 +1,6 @@
 ---
 name: spec-driven
-description: Use when writing, revising, or IMPLEMENTING spec artifacts (requirements.md, design.md, tasks.md, validation.md) under any `specs/<slug>/` folder (legacy `plans/<slug>/` and `docs/plans/<slug>/` also recognized), or when the user invokes `/plan`, `/spec`, `/spec-driven`, says "write spec for", "phase N spec", "implement spec", "implement plan", "implement phase N", "requirements for", or references `REQ-*` / `TASK-*` / `AC-*` ids, or asks during design to "compare approaches", "A/B the options", "spike and benchmark", or run a "trial". Two phases: (1) spec writing, which enforces per-artifact turn boundaries, Files-to-Read manifest, EARS-form REQs with per-REQ symbol contracts, Source verification blocks in design.md, adversarial review pass, and template-driven structure; (2) implementation, which enforces grounding, group dispatch order, per-TASK turn boundaries, per-task validation gates, per-group regression review, spec↔code sync direction, lat.md sync, and final adversarial pass. Skip for typo fixes, one-line edits, doc-only changes, or single-test additions.
+description: Use when writing, revising, or IMPLEMENTING spec artifacts (requirements.md, design.md, tasks.md, validation.md) under `specs/<slug>/` (legacy `plans/<slug>/` and `docs/plans/<slug>/` also recognized), or when the user invokes `/plan`, `/spec`, `/spec-driven`, says "write spec for", "phase N spec", "implement spec", "implement plan", "implement phase N", "requirements for", references `REQ-*` / `TASK-*` / `AC-*` ids, asks during design to "compare approaches", "A/B the options", "spike and benchmark", or run a "trial", or asks to "reconcile" or "resume" a spec. Covers spec writing (turn boundaries, Files-to-Read manifest, EARS REQs with symbol contracts, Source verification, adversarial pass, templates) and implementation (grounding, group order, per-TASK turns and validation, drift checks, regression review, spec-code sync, lat.md sync, reconcile). Skip for typo fixes, one-line edits, doc-only changes, or single-test additions.
 ---
 
 # Spec-Driven Workflow
@@ -16,6 +16,7 @@ This skill enforces the canonical spec-driven workflow. `<skill-dir>` below is t
 1. **Detect the phase.** Spec writing or implementation?
    - User says "write spec", "phase N spec", "requirements for", or there is no `tasks.md` yet under the slug → **spec writing phase**. Open `protocol.md`.
    - User says "implement spec", "implement phase N", "implement <slug>", or `tasks.md` already exists and is finalized → **implementation phase**. Open `implement.md`.
+   - User says "reconcile" or "resume <slug>", or a new session picks up a spec that already has `DONE` tasks → **implementation phase**, starting with the Reconcile section of `implement.md`.
    - Ambiguous → ask.
 
 2. **Open the chosen protocol first.** Source of truth; this skill file is only the binding.
@@ -37,6 +38,8 @@ This skill enforces the canonical spec-driven workflow. `<skill-dir>` below is t
 - Meta-talk uses `[meta]` prefix; never bare "turn N" in spec output.
 - Copy templates from `<skill-dir>/_template/<artifact>.md`; do not restructure.
 - Traceability: user ask → REQ-* → TASK-* → code → validation.
+- `tasks.md` records its `Base commit`; every TASK carries a `Status` (TODO, DONE, BLOCKED, RETIRED) and starts with a drift check against that base.
+- Rejected review findings live in `decision-log.md` under `## Rejected findings` and are not re-raised without new evidence.
 
 ## Templates
 

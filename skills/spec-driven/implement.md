@@ -61,12 +61,14 @@ Follow `tasks.md` "Parallelizable groups" section verbatim:
 
 One TASK per response. Each TASK turn:
 
-1. Re-Read the files in the TASK's `Files` block.
-2. Re-Read the linked REQ entries in `requirements.md`.
-3. Apply edits.
-4. Run the exact `Validation` commands from the TASK.
-5. On failure: fix and re-run. Do not move on with a failing validation.
-6. Report: name the TASK, list files changed, paste validation output.
+1. Drift check: `git log --oneline <Base commit>..HEAD -- <TASK files>`. Commits other than this spec's earlier TASKs mean the files changed after the spec was written: re-verify the TASK's symbols against the code (Source verification in `protocol.md`) before editing, and say so in the report.
+2. Re-Read the files in the TASK's `Files` block.
+3. Re-Read the linked REQ entries in `requirements.md`.
+4. Apply edits.
+5. Run the exact `Validation` commands from the TASK.
+6. On failure: fix and re-run. Do not move on with a failing validation. If something outside the TASK blocks it, set its `Status` to `BLOCKED (<reason>)` and stop.
+7. Set the TASK's `Status` to `DONE` in `tasks.md`.
+8. Report: name the TASK, list files changed, paste validation output.
    **Do NOT commit.** Operator commits manually after reviewing the
    diff.
 
@@ -173,6 +175,8 @@ After every group α/β/γ/... completes:
 
 If any check fails, fix before next group.
 
+Review findings that get rejected (by design, false positive, out of scope) go into `decision-log.md` under `## Rejected findings`, one line each: the finding, its `path::Symbol`, the reason, and the evidence. Every later review gets that section as prior context and does not re-raise a listed finding unless it cites new evidence.
+
 ## Spec ↔ code sync
 
 Spec is intent. Code follows spec. Two rules:
@@ -226,6 +230,16 @@ After all groups complete, run the spec-driven adversarial review
 If clean, declare the implementation phase complete and produce a
 summary listing commits per TASK.
 
+## Reconcile (resuming a spec)
+
+Run this when work on a spec resumes in a new session, or when the user asks to reconcile or resume a spec. It brings `tasks.md` back in line with the code before any new TASK starts.
+
+1. **DONE tasks:** re-run each one's `Validation` commands. A failure sets the TASK back to `TODO` with a one-line reconcile note.
+2. **BLOCKED tasks:** re-check the recorded reason. Set the TASK to `TODO` when the reason no longer holds; otherwise keep it and ask the operator.
+3. **TODO tasks:** run the drift check against `Base commit`. For files that changed, re-verify the TASK's symbols and amend its Scope with a reconcile note.
+4. **Dead tasks and findings:** a TASK or rejected finding whose premise no longer holds (code removed, requirement dropped) becomes `RETIRED (<reason>)`, with an entry in `decision-log.md`.
+5. **Report** a table of task, old status, new status, and evidence, then continue with the first `TODO` in group order.
+
 ## When stuck
 
 - Cannot decide between two implementations → write both into
@@ -242,6 +256,7 @@ summary listing commits per TASK.
 ## Anti-patterns
 
 - Multiple TASKs in one commit.
+- Re-raising a rejected finding without new evidence.
 - `--no-verify` to bypass pre-commit failures.
 - Silent spec-to-code sync without "Implementation correction" note.
 - Skipping the per-group review because "the next group is small".

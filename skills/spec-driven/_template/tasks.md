@@ -4,6 +4,7 @@
 | ------------ | -------------------------------------- |
 | Status       | Draft                                  |
 | Requirements | REQ-A1..A<n>, REQ-B1..B<n>, ...        |
+| Base commit  | <`git rev-parse --short HEAD` when written> |
 
 ## Dependency graph
 
@@ -26,6 +27,7 @@ TASK-B1 ──────────► TASK-B2
 
 ## TASK-A1: <short title>
 
+**Status**: TODO (TODO | DONE | BLOCKED (<reason>) | RETIRED (<reason>))
 **Requirements**: REQ-A1, REQ-A2
 **Files**:
 - `path/to/file.rs` (extend | new | rewrite)
@@ -48,6 +50,7 @@ TASK-B1 ──────────► TASK-B2
 
 ## TASK-A2: <short title>
 
+**Status**: TODO
 **Requirements**: REQ-A3
 **Files**:
 - `path/to/other.rs`

@@ -41,7 +41,7 @@ specs/<slug>/
   README.md       overview + motivation + outcomes + non-goals + x-refs
   requirements.md REQ-* in EARS form, stable ids, symbol contract
   design.md       architecture, interfaces, error matrix, risks, validation map, source verification
-  tasks.md        TASK-* with files/outcome/validation/deps, dep graph, parallelizable groups
+  tasks.md        TASK-* with files/outcome/validation/deps/status, dep graph, parallelizable groups, base commit
   validation.md   ladder, AC- table, regression guard
 ```
 
