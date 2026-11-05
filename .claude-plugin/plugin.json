@@ -1,12 +1,12 @@
 {
-  "name": "ai-setup",
+  "name": "agent-playbook",
   "description": "Engineering rules, Go/Rust/Tauri/C++ skills, spec-driven workflow, orchestration subagents with model tiers, and the hooks that keep them loaded.",
   "author": {
     "name": "0x67",
     "url": "https://github.com/0x67"
   },
-  "homepage": "https://github.com/0x67/ai-setup",
-  "repository": "https://github.com/0x67/ai-setup",
+  "homepage": "https://github.com/0x67/agent-playbook",
+  "repository": "https://github.com/0x67/agent-playbook",
   "license": "MIT",
   "dependencies": [
     "humanizer@humanizer",

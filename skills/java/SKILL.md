@@ -18,7 +18,7 @@ description: >
 
 Write Java a careful maintainer would merge without comment: immutable data, explicit nullness, exceptions handled at the layer that can act, every resource closed by try-with-resources, zero compiler warnings, and tests that fail for real bugs. The repo's `--release` level is the ceiling, the way `go.mod` and `rust-version` are.
 
-Build tools, the test platform, frameworks, and runtime profiling are JVM concerns shared with Kotlin: load skill `jvm` (`ai-setup:jvm` in Claude Code) for those. Kotlin files in the same repo follow skill `kotlin`.
+Build tools, the test platform, frameworks, and runtime profiling are JVM concerns shared with Kotlin: load skill `jvm` (`agent-playbook:jvm` in Claude Code) for those. Kotlin files in the same repo follow skill `kotlin`.
 
 ## Routing table (mandatory)
 

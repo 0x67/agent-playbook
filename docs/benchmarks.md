@@ -61,7 +61,7 @@ In the 254k-line Rust workspace, with the lat MCP server available next to the o
 
 ### Injecting matching sections
 
-The ai-setup prompt hook runs `lat search` on each prompt itself and injects up to three sections, each with its summary and code links. A first version injected the top three matches unfiltered; on one broad question it sent one run of three to the wrong subsystem, so the hook now filters matches.
+The agent-playbook prompt hook runs `lat search` on each prompt itself and injects up to three sections, each with its summary and code links. A first version injected the top three matches unfiltered; on one broad question it sent one run of three to the wrong subsystem, so the hook now filters matches.
 
 The filter was tuned on 48 questions across three repos. Agents wrote the questions from the code without opening `lat.md`, mixing design, flow, and "where is X" questions. A match counts as relevant when its section mentions a file or symbol from the question's answer key.
 
@@ -102,7 +102,7 @@ Output tokens did fall slightly with caveman on, but the drop was in thinking to
 
 `evals/run.sh` with two runs per case and a no-plugin baseline arm, Sonnet as both agent and judge:
 
-| Check | With ai-setup | Without |
+| Check | With agent-playbook | Without |
 |---|---|---|
 | Language or workflow skill loaded (rust, go, java, jvm, kotlin, cpp, spec-driven, software-design) | 16 of 16 runs | 0 of 16 |
 | Spec written to `specs/<slug>/requirements.md` | 2 of 2 | 0 of 2 |

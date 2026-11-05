@@ -33,7 +33,7 @@ Accept from the orchestrator:
 - Error handling follows Rust Error Handling rules (when Rust error paths changed)
 - Comments follow the humanizer plain style from global CLAUDE.md (when code files changed)
 - No work-unit/plan refs leaked into code
-- Design: apply the Review checklist in skill `ai-setup:software-design` when the change adds modules, types, public APIs, or layers. Code Simplicity Discipline hits = NEEDS_REVISION; other design findings get a concrete fix
+- Design: apply the Review checklist in skill `agent-playbook:software-design` when the change adds modules, types, public APIs, or layers. Code Simplicity Discipline hits = NEEDS_REVISION; other design findings get a concrete fix
 
 # Code Comment Verification (Rust/code changes)
 

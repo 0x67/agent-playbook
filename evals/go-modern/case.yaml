@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: go-modern
+description: A Go 1.23 review finds the real data race and does not report the loop-variable capture or time.After pitfalls that Go 1.22 and 1.23 fixed.
+tags: [lang, go, modern]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Review worker.go and list only the real bugs for this module's Go version. Do not change any files.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?golang"'
+    arm: both
+  - name: real-bugs-only
+    type: llm
+    criteria: |
+      The module declares go 1.23. PASS if the review reports the data race on `errs` (append from many goroutines
+      without a mutex) AND does not report as a current bug either the goroutine closure capturing the loop variable
+      `it` (per-iteration since Go 1.22) or `time.After` inside the polling loop leaking timers (collected since Go
+      1.23). Mentioning that these were problems before those versions is fine. FAIL if it misses the race or reports
+      either fixed pitfall as a bug in this code.

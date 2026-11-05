@@ -30,7 +30,7 @@ test('model, type and workflow names are shortened', () => {
   expect(shortModel('claude-opus-5-5')).toBe('opus 5.5')
   expect(shortModel('claude-haiku-4-5-20251001')).toBe('haiku 4.5')
   expect(shortModel('sonnet')).toBe('sonnet')
-  expect(shortType('ai-setup:implement-subagent')).toBe('implement')
+  expect(shortType('agent-playbook:implement-subagent')).toBe('implement')
   expect(shortType('general-purpose')).toBe('general')
   expect(
     workflowTitle({
@@ -99,8 +99,8 @@ test('a workflow agent shows under its run, with tokens and verdict', async ($, 
     tool_use_id: 'toolu_wf',
     prompt: 'verify the release notes',
     description: 'notes-verify',
-    subagentType: 'ai-setup:code-review-subagent',
-    provider: { plugin: 'ai-setup', tier: 'user' },
+    subagentType: 'agent-playbook:code-review-subagent',
+    provider: { plugin: 'agent-playbook', tier: 'user' },
     parentModel: 'claude-opus-5-5',
     background: true,
     fork: false,

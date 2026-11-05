@@ -26,7 +26,7 @@ if not os.path.isdir(os.path.join(cwd, "lat.md")) or not shutil.which("lat"):
     sys.exit(0)
 
 session = "".join(c for c in str(payload.get("session_id", "")) if c.isalnum() or c == "-")
-marker = os.path.join(tempfile.gettempdir(), f"ai-setup-lat-stop-{session}") if session else None
+marker = os.path.join(tempfile.gettempdir(), f"agent-playbook-lat-stop-{session}") if session else None
 
 
 def fingerprint():

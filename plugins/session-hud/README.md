@@ -4,8 +4,8 @@ A Claude Code mod (a plugin of function hooks) that adds a usage row under the p
 
 **Install**
 
-1. `/plugin marketplace add 0x67/ai-setup` (skip if ai-setup is already added)
-2. `/plugin install session-hud@ai-setup`
+1. `/plugin marketplace add 0x67/agent-playbook` (skip if the 0x67 marketplace is already added)
+2. `/plugin install session-hud@0x67`
 3. Start a new session.
 
 **Usage row**

@@ -87,8 +87,8 @@ session) at 1.25x or 2x the input price, instead of reading it at 0.1x or less.
 
 ## Subagent naming
 
-This plugin's subagent types carry the plugin prefix: `ai-setup:planning-subagent`,
-`ai-setup:implement-subagent`, `ai-setup:code-review-subagent`. Spawn those exact names. An
+This plugin's subagent types carry the plugin prefix: `agent-playbook:planning-subagent`,
+`agent-playbook:implement-subagent`, `agent-playbook:code-review-subagent`. Spawn those exact names. An
 unmatched `subagent_type` silently falls back to `general-purpose` / `claude`, which is the
 "wrong agent" failure.
 
@@ -100,9 +100,9 @@ Pick the tier by the work, not by habit. Pass it explicitly (`model:` on the Age
 | Work handed off | Tier | Default agent |
 |---|---|---|
 | Locate code, list files, one-file mechanical edit | `haiku` | Explore, quick lookups |
-| Read-only research with a clear question | `sonnet` | `ai-setup:planning-subagent` |
-| Implementation from a written spec or task | `opus` | `ai-setup:implement-subagent` |
-| Review, adversarial verification, security-sensitive change | `opus` | `ai-setup:code-review-subagent` |
+| Read-only research with a clear question | `sonnet` | `agent-playbook:planning-subagent` |
+| Implementation from a written spec or task | `opus` | `agent-playbook:implement-subagent` |
+| Review, adversarial verification, security-sensitive change | `opus` | `agent-playbook:code-review-subagent` |
 | Orchestration across work units | session model | the main thread |
 | Hardest reasoning, only when the user asks for it | `fable` | any |
 

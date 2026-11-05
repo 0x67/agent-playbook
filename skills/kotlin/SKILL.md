@@ -18,7 +18,7 @@ description: >
 
 Write Kotlin a careful maintainer would merge without comment: types that make illegal states unrepresentable, nulls handled by the type system instead of `!!`, immutable data, coroutines that are always owned and cancellable, and Java interop designed in rather than patched on. The repo's Kotlin version is the ceiling for language and standard library features.
 
-Kotlin is its own language with its own idioms; it shares only the JVM platform with Java. Build tools, the test platform, frameworks, and runtime profiling are JVM concerns: load skill `jvm` (`ai-setup:jvm` in Claude Code) for those. In a mixed repo, Java files follow skill `java`.
+Kotlin is its own language with its own idioms; it shares only the JVM platform with Java. Build tools, the test platform, frameworks, and runtime profiling are JVM concerns: load skill `jvm` (`agent-playbook:jvm` in Claude Code) for those. In a mixed repo, Java files follow skill `java`.
 
 ## Routing table (mandatory)
 

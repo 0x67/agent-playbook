@@ -70,7 +70,7 @@ One artifact per turn. Each turn starts by re-opening its inputs:
 
 Stops output-budget drift across artifacts. Re-grounding per turn catches hallucinations early.
 
-Turn 3 loads skill `software-design` (`ai-setup:software-design` in Claude Code) before writing `design.md`: module boundaries, dependency direction, names for new types and APIs, and the architecture style follow it and the repo's existing structure.
+Turn 3 loads skill `software-design` (`agent-playbook:software-design` in Claude Code) before writing `design.md`: module boundaries, dependency direction, names for new types and APIs, and the architecture style follow it and the repo's existing structure.
 
 Turn 3t is optional. When 2 to 5 approaches stay viable after reading the code and the choice is worth spikes (a performance budget, a decision costly to reverse, a readability dispute), or the user asks for a comparison, follow `<skill-dir>/trial.md`: frame the candidates, gates, and fixed weights; spike each candidate against one shared harness; measure; record the decision in `trial.md`; then finish `design.md` with the winner. Skip it for everything else.
 

@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: java-modern
+description: A Java 25 review finds the HashMap race and does not report virtual-thread pinning in synchronized, which JDK 24 removed.
+tags: [lang, java, modern]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Review src/main/java/app/Fetcher.java and list only the real bugs for this project's Java version. Do not change any files.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?(?:java|jvm)"'
+    arm: both
+  - name: real-bugs-only
+    type: llm
+    criteria: |
+      The project compiles for Java 25. PASS if the review reports that `sizes` is a plain HashMap written from many
+      virtual threads at once (a data race; ConcurrentHashMap or similar is the fix) AND does not report the blocking
+      write inside `synchronized` as pinning the virtual thread's carrier on this version (JEP 491 removed that
+      pinning in JDK 24). Saying it would pin on JDK 21 to 23 is fine. FAIL if it misses the HashMap race or reports
+      synchronized pinning as a current bug.

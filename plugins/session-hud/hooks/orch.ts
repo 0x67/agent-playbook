@@ -43,7 +43,7 @@ export function shortModel(model: string): string {
   return match[3] ? `${match[1]} ${match[2]}.${match[3]}` : `${match[1]} ${match[2]}`
 }
 
-// ai-setup:implement-subagent -> implement
+// agent-playbook:implement-subagent -> implement
 export function shortType(type: string): string {
   const bare = type.includes(':') ? type.slice(type.indexOf(':') + 1) : type
   return bare.replace(/-subagent$/, '').replace(/^general-purpose$/, 'general')

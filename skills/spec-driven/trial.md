@@ -68,7 +68,7 @@ Build on a trial base branch `trial/<slug>/base` cut from the work branch:
 
 ## 3. Spikes
 
-- One branch and worktree per candidate: `trial/<slug>/<candidate-id>` off the trial base. In Claude Code, dispatch one `ai-setup:implement-subagent` per candidate in parallel with `isolation: "worktree"`, the same model tier for all, and identical packets apart from the candidate sketch. Other tools: one worktree at a time.
+- One branch and worktree per candidate: `trial/<slug>/<candidate-id>` off the trial base. In Claude Code, dispatch one `agent-playbook:implement-subagent` per candidate in parallel with `isolation: "worktree"`, the same model tier for all, and identical packets apart from the candidate sketch. Other tools: one worktree at a time.
 - A spike is the smallest implementation that passes the shared tests and runs the benchmark. It compiles warning-free and touches nothing outside the trial scope. It is not polished.
 - Equal effort for every candidate. Tuning the favorite and not the others invalidates the trial.
 - Inside a worktree, code navigation follows the AGENTS.md worktree rule: query the main checkout's `codebase-memory` index and read changed files directly.
@@ -77,7 +77,7 @@ Build on a trial base branch `trial/<slug>/base` cut from the work branch:
 
 - Run benchmarks one candidate at a time on the same machine, with the same build mode and flags and an otherwise idle system. Never run candidates in parallel. Save raw output to `artifacts/trial/<candidate-id>/`.
 - Report median and spread. Call a difference real only when the tool's statistics support it (benchstat p-value, criterion change detection, JMH error intervals that do not overlap). Otherwise write "no measurable difference".
-- Readability: one reviewer (`ai-setup:code-review-subagent`, one tier for all candidates) scores every candidate in a single pass against the `software-design` review checklist. It sees the diffs side by side, labeled A, B, C rather than by approach name, so the label does not anchor the score.
+- Readability: one reviewer (`agent-playbook:code-review-subagent`, one tier for all candidates) scores every candidate in a single pass against the `software-design` review checklist. It sees the diffs side by side, labeled A, B, C rather than by approach name, so the label does not anchor the score.
 - Collect for each candidate: diff stats against base, new dependencies, public API additions.
 
 ## 5. Decide

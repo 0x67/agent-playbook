@@ -55,7 +55,7 @@ case "$lang" in
 esac
 extra=""
 case "$lang" in
-  java|kotlin) extra=" Builds, tests, frameworks, and navigation: also skill ai-setup:jvm." ;;
+  java|kotlin) extra=" Builds, tests, frameworks, and navigation: also skill agent-playbook:jvm." ;;
 esac
 skills="$(cd "$(dirname "$0")/../skills" && pwd)"
 if [ "$lang" = rust ]; then
@@ -67,7 +67,7 @@ if [ "$lang" = rust ]; then
   if printf '%s\n' "$deps" | grep -qxE 'disruptor|io-uring|rtrb|core_affinity|hdrhistogram|zerocopy'; then
     pages=$(printf '%s\n' "$deps" | sed -E 's/^crossbeam.*|^rtrb$/crossbeam/; s/^(bytes|zerocopy)$/bytes-zerocopy/; s/^(criterion|hdrhistogram|loom)$/measure/; s/^core_affinity$/pinning/' |
       sort -u | sed 's|.*|references/rust/&.md|' | tr '\n' ' ' | sed 's/ $//')
-    extra="$extra Latency crates in this repo ($(printf '%s' "$deps" | tr '\n' ' ' | sed 's/ $//')): also load skill ai-setup:low-latency ($skills/low-latency/SKILL.md) and read $pages."
+    extra="$extra Latency crates in this repo ($(printf '%s' "$deps" | tr '\n' ' ' | sed 's/ $//')): also load skill agent-playbook:low-latency ($skills/low-latency/SKILL.md) and read $pages."
   fi
 fi
-printf '{"hookSpecificOutput":{"hookEventName":"%s","additionalContext":"%s code in play. If skill `ai-setup:%s` not loaded this session: invoke it now (Skill tool, name ai-setup:%s), read %s/%s/SKILL.md routing table, and Read the matching references/*.md before reading further or editing. After any edit, run its post-write gate (%s) before reporting done.%s"}}\n' "$event" "$lang" "$lang" "$lang" "$skills" "$lang" "$gate" "$extra"
+printf '{"hookSpecificOutput":{"hookEventName":"%s","additionalContext":"%s code in play. If skill `agent-playbook:%s` not loaded this session: invoke it now (Skill tool, name agent-playbook:%s), read %s/%s/SKILL.md routing table, and Read the matching references/*.md before reading further or editing. After any edit, run its post-write gate (%s) before reporting done.%s"}}\n' "$event" "$lang" "$lang" "$lang" "$skills" "$lang" "$gate" "$extra"
