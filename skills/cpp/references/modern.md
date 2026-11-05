@@ -75,10 +75,11 @@ First version with the feature, from cppreference's compiler support tables (rea
 | `std::flat_map` | 15 | 20 | 19.51 |
 | `std::mdspan` | 16 | 17 partial | 19.39 |
 | **C++26** placeholder `_` | 14 | 18 | no |
-| pack indexing, `= delete("reason")`, `#embed` | 15 | 19 | no |
+| pack indexing, `= delete("reason")` | 15 | 19 | no |
+| `#embed` in C++ | 15 | not released (listed for Clang 24; Clang 19 has it for C23 only) | no |
 | saturation arithmetic (`saturating_*` names) | 16 (`add_sat` names from 14) | 23 (`add_sat` names from 18) | no |
 | `std::optional<T&>` | 16 | 22 | no |
-| `std::function_ref` | 16 | 24 | no |
+| `std::function_ref` | 16 | not released (listed for 24) | no |
 | reflection, contracts | 16 | no | no |
 | `std::inplace_vector` | 16 | no | no |
 | `std::simd` | 16 partial | no | no |
