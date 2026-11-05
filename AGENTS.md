@@ -52,7 +52,7 @@ Subagent prompts repeat this block: memory recall, search order, fff MCP tool na
 
 # Language Rules
 
-Before reading, editing, or reviewing Go or Rust, and before any `go` or `cargo` command, load skill `golang` / `rust` (`ai-setup:golang` / `ai-setup:rust` in Claude Code) and follow its routing table into `references/`. Run its post-write gate before reporting done.
+Before reading, editing, or reviewing Go, Rust, or C/C++, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` (`ai-setup:golang` / `ai-setup:rust` / `ai-setup:cpp` in Claude Code) and follow its routing table into `references/`. Run its post-write gate before reporting done.
 
 # Worktree Commit Handoff
 
