@@ -17,7 +17,7 @@ A Claude Code mod (a plugin of function hooks) that adds a usage row under the p
 
 **Agents pane**
 
-1. Tracks every subagent the session starts: Agent tool spawns from the main thread or from another subagent (a conductor's), and each `agent()` of a Workflow run. Teammates are left out.
+1. Tracks every subagent the session starts: Agent tool spawns from the main thread or from another subagent, and each `agent()` of a Workflow run. Teammates are left out.
 2. Hidden by default. `/orch` shows or hides it; `/orch clear` drops finished agents, `/orch reset` drops all, `/orch log` prints where the run log lives.
 3. Agents are grouped by run: a Workflow run under its `meta.name`, Agent tool spawns under "Main thread" or under the subagent that spawned them. Newest run first.
 4. Each row shows status, the spawn's description, model, elapsed time, and the tool in use while running or the total tokens once done. Types show from 84 columns.

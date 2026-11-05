@@ -58,4 +58,16 @@ case "$lang" in
   java|kotlin) extra=" Builds, tests, frameworks, and navigation: also skill ai-setup:jvm." ;;
 esac
 skills="$(cd "$(dirname "$0")/../skills" && pwd)"
+if [ "$lang" = rust ]; then
+  # direct dependencies only (Cargo.toml, not Cargo.lock), so a transitive bytes or crossbeam does not count;
+  # the skill loads only when a latency crate is present, the shared crates then add their pages
+  deps=$(git ls-files -- 'Cargo.toml' '*/Cargo.toml' 2>/dev/null | head -400 | tr '\n' '\0' |
+    xargs -0 grep -hoE '^[[:space:]]*(disruptor|io-uring|rtrb|core_affinity|hdrhistogram|zerocopy|crossbeam[a-z-]*|bytes|criterion|loom)[[:space:]]*=' 2>/dev/null |
+    sed -E 's/^[[:space:]]*//; s/[[:space:]]*=$//' | sort -u)
+  if printf '%s\n' "$deps" | grep -qxE 'disruptor|io-uring|rtrb|core_affinity|hdrhistogram|zerocopy'; then
+    pages=$(printf '%s\n' "$deps" | sed -E 's/^crossbeam.*|^rtrb$/crossbeam/; s/^(bytes|zerocopy)$/bytes-zerocopy/; s/^(criterion|hdrhistogram|loom)$/measure/; s/^core_affinity$/pinning/' |
+      sort -u | sed 's|.*|references/rust/&.md|' | tr '\n' ' ' | sed 's/ $//')
+    extra="$extra Latency crates in this repo ($(printf '%s' "$deps" | tr '\n' ' ' | sed 's/ $//')): also load skill ai-setup:low-latency ($skills/low-latency/SKILL.md) and read $pages."
+  fi
+fi
 printf '{"hookSpecificOutput":{"hookEventName":"%s","additionalContext":"%s code in play. If skill `ai-setup:%s` not loaded this session: invoke it now (Skill tool, name ai-setup:%s), read %s/%s/SKILL.md routing table, and Read the matching references/*.md before reading further or editing. After any edit, run its post-write gate (%s) before reporting done.%s"}}\n' "$event" "$lang" "$lang" "$lang" "$skills" "$lang" "$gate" "$extra"

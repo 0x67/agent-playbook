@@ -54,7 +54,7 @@ If a referenced symbol cannot be found by search, that is a spec error (the symb
 Follow `tasks.md` "Parallelizable groups" section verbatim:
 
 - Group α → β → γ → δ → ε → ζ → η → θ (or whatever the spec uses).
-- Single-implementer flow: do NOT parallelize unless the orchestrator (Conductor) explicitly dispatches.
+- Single-implementer flow: do NOT parallelize unless the orchestrator explicitly dispatches; parallel groups then follow the Parallel fan-out rules in skill `orchestration-layers`, warm prompt cache included.
 - Group order is binding. Skipping ahead breaks the dep graph and causes rework.
 
 ## Per-TASK rules
@@ -219,7 +219,7 @@ If workspace lacks `lat.md/`: skip all lat.md steps.
 ## Final step: adversarial pass
 
 After all groups complete, run the spec-driven adversarial review
-(same procedure as `prompts/conductor-relay.md` step 6):
+(same procedure as `prompts/relay.md` step 6):
 
 1. Enumerate every external symbol (functions, types, paths) the spec
    references.

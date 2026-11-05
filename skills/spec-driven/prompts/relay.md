@@ -1,6 +1,6 @@
-# Conductor Relay: Spec-Driven Dispatch
+# Relay: Spec-Driven Dispatch
 
-When the Conductor (or any orchestrator) dispatches subagents for spec work, the handoff packet must conform to this shape. Pass it verbatim into the subagent prompt.
+When the orchestrator (the main thread, or a subagent that dispatches others) sends subagents spec work, the handoff packet must conform to this shape. Pass it verbatim into the subagent prompt.
 
 ## Relay packet fields
 
@@ -21,7 +21,7 @@ code_rules:         "comment rules (no REQ-*/TASK-*/AC-*/phase/em dash); Code Gr
 
 ## Dispatch order
 
-One subagent per artifact, fresh context each time. Conductor verifies between dispatches.
+One subagent per artifact, fresh context each time. The orchestrator verifies between dispatches.
 
 | Step | Subagent kind                | current_artifact | Pre-conditions                                |
 | ---- | ---------------------------- | ---------------- | --------------------------------------------- |
@@ -71,7 +71,7 @@ Do not paraphrase code; quote it.
 
 ## Verification gates
 
-Between each dispatch, Conductor performs:
+Between each dispatch, the orchestrator performs:
 
 1. **File present**: artifact file exists at expected path.
 2. **Required sections**: artifact contains its mandatory headings (see templates).
@@ -91,7 +91,7 @@ Final adversarial pass (step 6) reviews the spec against the codebase:
 
 ## Parallel dispatch caveat
 
-Per `Fleet Parallel Scheduling` rules, spec-writing tasks are inherently
+Per the Parallel fan-out rules in skill `orchestration-layers`, spec-writing tasks are inherently
 serial (requirements → design → tasks → validation). Parallel opportunity
 only exists during the implementation phase derived from tasks.md, not
 during spec writing itself. Do not parallelize the dispatch order above.

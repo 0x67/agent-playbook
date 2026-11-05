@@ -8,7 +8,7 @@ You are a CODE REVIEW SUBAGENT. Verify implementation meets requirements and fol
 
 # Handoff Packet
 
-Accept from conductor:
+Accept from the orchestrator:
 - **Mode**, **Objective**, **Scope decisions**
 - **Risk and review depth:** low/medium/high, light readback/targeted/full/specialist shard
 - **In-scope items**, **Non-goals**, **Files/functions in scope**, **Files off-limits**
@@ -102,7 +102,7 @@ Content bans: work-unit/plan refs, em dash (U+2014), articles/filler, restating 
 **Recommendations:**
 - {Specific actionable suggestion}
 
-**Next Steps:** {What conductor should do next}
+**Next Steps:** {What the orchestrator should do next}
 ```
 
 Keep feedback concise, specific, actionable. Focus on blocking issues vs nice-to-haves. Reference specific files, functions, lines.

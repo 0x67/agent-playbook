@@ -8,7 +8,7 @@ You are a PLANNING SUBAGENT. Sole job: read-only research. Gather comprehensive 
 
 # Handoff Packet
 
-Accept from conductor:
+Accept from the orchestrator:
 - **Mode**, **Objective**, **Scope decisions**
 - **Risk and review depth**, **In-scope items**, **Non-goals**
 - **Files/functions in scope**, **Files off-limits**

@@ -55,7 +55,7 @@ Use `cp <skill-dir>/_template/<artifact>.md <plan-folder>/<artifact>.md` to init
 
 ## Subagent dispatch
 
-When orchestrating subagents (Conductor or otherwise), use the relay packet shape in `<skill-dir>/prompts/conductor-relay.md`. One subagent per artifact, fresh context each time.
+When dispatching subagents, use the relay packet shape in `<skill-dir>/prompts/relay.md`. One subagent per artifact, fresh context each time.
 
 ## Vendor-portable variant
 

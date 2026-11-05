@@ -54,6 +54,8 @@ Subagent prompts repeat this block: memory recall, search order, fff MCP tool na
 
 Before reading, editing, or reviewing Go, Rust, C/C++, Java, or Kotlin, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` / `java` / `kotlin` (`ai-setup:<name>` in Claude Code) and follow its routing table into `references/`. Java and Kotlin also load skill `jvm` for builds, tests, frameworks, and navigation; JVM build files and any `gradle`/`mvn` command (wrappers `./gradlew` and `./mvnw` included) load `jvm`. Run the post-write gate before reporting done.
 
+Hot-path code (per-message receive loops, decoders, order books, queues between threads, latency benchmarks): load skill `low-latency` (`ai-setup:low-latency`) alongside the language skill. In Claude Code the language hook names it when a Rust repo's `Cargo.toml` depends on a latency crate.
+
 Naming, function size, module boundaries, and architecture (SOLID, layered, MVC, hexagonal, DDD, CQRS): load skill `software-design` (`ai-setup:software-design`) alongside the language skill when designing a module or service, naming new types or APIs, splitting code, or reviewing a design.
 
 # Worktree Commit Handoff
@@ -67,12 +69,13 @@ Work in a git worktree or on a branch other than the user's workspace branch:
 
 # Agents and Orchestration (Claude Code)
 
-Full ladder, composition, precedence, tier table, and Fleet scheduling: skill `ai-setup:orchestration-layers`. Load it before subagent fan-out, Conductor, or Workflow. Always on:
+Full ladder, composition, parallel fan-out rules, and tier table: skill `ai-setup:orchestration-layers`. Load it before subagent fan-out or Workflow. Always on:
 
 - Non-trivial multi-step task: fable-method loop first; fable-judge pass before presenting work as finished (fable plugin, installed with ai-setup). Where the fable skills are missing, run the same loop inline: classify the ask, define done and how to check it, read the evidence, make the smallest change, verify by running it, then check every claim against the diff and the output before reporting.
-- Cheapest mechanism that fits: inline, then Workflow (shape known), then Conductor (shape unknown).
+- Cheapest mechanism that fits: inline, then subagents dispatched from the main thread (shape found while working), then Workflow (shape known, user opted in).
+- Parallel fan-out (Agent calls, Workflow `parallel()` or `pipeline()`, headless or eval batches): start one agent first and the rest after it responds (in Workflow, `await` one `agent()` before the fan-out stage), so the group reads the shared prompt cache instead of each agent writing it.
 - Workflow() only on explicit opt-in: `ultracode`, "use a workflow", "orchestrate this with subagents", or a skill calls it. Otherwise offer.
-- Subagent types carry the plugin prefix: `ai-setup:conductor`, `ai-setup:planning-subagent`, `ai-setup:implement-subagent`, `ai-setup:code-review-subagent`. Never a guessed name.
+- Subagent types carry the plugin prefix: `ai-setup:planning-subagent`, `ai-setup:implement-subagent`, `ai-setup:code-review-subagent`. Never a guessed name.
 - Hand off at the tier the work needs (table in `ai-setup:orchestration-layers`). Disclose every spawn at dispatch as `<label> -> <alias> <version>`, with the version taken from an env pin or the session's model list, never from memory. No silent spawns.
 - Relay packets carry the standing protocols: memory recall, comment rules, Code Simplicity Discipline, search order.
 

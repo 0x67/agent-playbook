@@ -1,0 +1,28 @@
+schema_version: "1.1"
+name: low-latency-hook
+description: In a Rust repo whose Cargo.toml depends on disruptor, a review loads low-latency and its disruptor page without the prompt mentioning latency.
+tags: [lang, rust, hooks, low-latency]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Review src/pipeline.rs before it ships. Give me a short list of problems. Do not change any files.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?low-latency"'
+    arm: both
+  - name: page-read
+    type: tool_used
+    tool: Read
+    input_match: 'low-latency/references/rust/disruptor\.md'
+    arm: both
+  - name: flags-busy-spin
+    type: llm
+    criteria: |
+      PASS if the review says the BusySpin handler keeps a CPU core at 100% even when idle and that the handler thread
+      should be pinned to an isolated core or given a different wait strategy. FAIL if it does not mention the cost
+      of BusySpin, or names the cost but proposes neither fix.

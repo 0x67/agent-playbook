@@ -120,3 +120,4 @@ The eval suite runs with `evals/run.sh`. The search and caveman comparisons ran 
 2. Give each arm its search tool with `--allowedTools mcp__<server>` and block the others with `--disallowedTools mcp__<server>`. A forced arm adds a sentence to the prompt naming the tool.
 3. Turn caveman off for the baseline with `--settings '{"enabledPlugins":{"caveman@caveman":false}}'`.
 4. Read cost, turns, and tool calls from the final `result` event and the `tool_use` blocks, and score answers against anchors you found by hand first.
+5. To run arms in parallel, start one run per arm first and the rest after it has produced output. A prompt cache entry is only readable once the response that wrote it has started, so runs launched in the same instant each pay the shared prefix (about 42k tokens in a fresh session) as a cache write, which inflates their cost. Give both arms of a comparison the same concurrency.
