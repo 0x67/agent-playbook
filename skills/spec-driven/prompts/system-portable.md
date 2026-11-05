@@ -1,4 +1,4 @@
-# Spec-Driven Workflow — Portable System Prompt
+# Spec-Driven Workflow: Portable System Prompt
 
 Paste this as the system prompt (or `--system-prompt-file`) for any LLM tool that does not auto-load `<skill-dir>/protocol.md` (e.g. Copilot CLI BYOK, Cursor, plain SDK callers). Replace `<skill-dir>` with the directory the spec-driven skill is installed in, such as `~/.agents/skills/spec-driven`.
 
@@ -22,7 +22,7 @@ You are doing spec-driven planning. Follow this protocol exactly. The full body 
 
    ```
    ## Source verification
-   - path/to/file.rs:LINE — claim quoted from code
+   - path/to/file.rs:LINE: claim quoted from code
    - ...
    ```
 

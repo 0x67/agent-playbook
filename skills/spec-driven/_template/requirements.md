@@ -1,4 +1,4 @@
-# <Spec Name> — Requirements
+# <Spec Name>: Requirements
 
 | Field      | Value                       |
 | ---------- | --------------------------- |
@@ -13,7 +13,7 @@ Workstreams (if multi-stream):
 
 ---
 
-## A — <workstream A title>
+## A: <workstream A title>
 
 ### REQ-A1: <short title>
 
@@ -39,7 +39,7 @@ Severity: **Medium**
 
 ---
 
-## B — <workstream B title>
+## B: <workstream B title>
 
 ### REQ-B1: <short title>
 

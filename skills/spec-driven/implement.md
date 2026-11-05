@@ -110,7 +110,7 @@ JSDoc, runtime log strings, panic messages, doc strings, test names):
 
 These belong in commit messages and PR descriptions, NEVER in code.
 
-**Per-TASK validation gate (mandatory)** — before declaring a TASK
+**Per-TASK validation gate (mandatory)**: before declaring a TASK
 complete, run:
 
 ```bash
@@ -150,7 +150,7 @@ These reference code by stable identifier, not by spec process state.
 // TODO: handle backpressure once dispatcher emits ready signal
 // timestamp policy: nanos since session midnight, see SessionContext
 // drain at the sink's pace, not source pace
-// (no comment needed — code self-explanatory after rename)
+// (no comment needed: code self-explanatory after rename)
 ```
 
 ## Per-GROUP review

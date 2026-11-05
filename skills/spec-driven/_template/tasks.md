@@ -1,4 +1,4 @@
-# <Spec Name> — Tasks
+# <Spec Name>: Tasks
 
 | Field        | Value                                  |
 | ------------ | -------------------------------------- |
@@ -18,9 +18,9 @@ TASK-B1 ──────────► TASK-B2
 
 ## Milestones
 
-- **M1 — <name>** (TASK-A1, A2): <brief outcome>
-- **M2 — <name>** (TASK-A3): <brief outcome>
-- **M3 — <name>** (TASK-B1, B2): <brief outcome>
+- **M1: <name>** (TASK-A1, A2): <brief outcome>
+- **M2: <name>** (TASK-A3): <brief outcome>
+- **M3: <name>** (TASK-B1, B2): <brief outcome>
 
 ---
 

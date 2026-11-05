@@ -1,4 +1,4 @@
-# <Spec Name> — Design
+# <Spec Name>: Design
 
 | Field        | Value                                  |
 | ------------ | -------------------------------------- |
@@ -70,6 +70,6 @@ Brief prose: <2-3 sentences naming the change touchpoints>.
 
 ## Source verification
 
-- `path/to/file.rs:LINE` — <claim quoted from code>
-- `path/to/other.rs:LINE` — <claim quoted from code>
+- `path/to/file.rs:LINE`: <claim quoted from code>
+- `path/to/other.rs:LINE`: <claim quoted from code>
 - ...

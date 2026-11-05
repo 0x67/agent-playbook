@@ -1,4 +1,4 @@
-# <Spec Name> — Validation
+# <Spec Name>: Validation
 
 | Field        | Value                                  |
 | ------------ | -------------------------------------- |
@@ -7,7 +7,7 @@
 
 ## Validation ladder
 
-### Level 1 — Compile
+### Level 1: Compile
 
 ```bash
 cargo check -p <crate>
@@ -16,7 +16,7 @@ cargo check --workspace
 
 Zero warnings in changed crates.
 
-### Level 2 — Unit tests
+### Level 2: Unit tests
 
 ```bash
 cargo test -p <crate>
@@ -27,7 +27,7 @@ cargo test -p <crate>
 | `<module>::<test_name>`                         | A1         | <one-line behavior>                         |
 | `<module>::<test_name>`                         | A2, B1     | <one-line behavior>                         |
 
-### Level 3 — Integration tests
+### Level 3: Integration tests
 
 ```bash
 cargo test -p <crate> -- --ignored
@@ -37,7 +37,7 @@ cargo test -p <crate> -- --ignored
 | ----------------------------------------------- | ---------- | ------------------------------------------- |
 | `<test_name>`                                   | B1         | <end-to-end behavior over fixture>          |
 
-### Level 4 — Manual / E2E
+### Level 4: Manual / E2E
 
 ```bash
 # <description>

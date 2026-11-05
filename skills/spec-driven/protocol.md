@@ -96,10 +96,10 @@ Anything load-bearing references a **symbol**, never a line number.
 | Reference kind                              | Stable across edits? | Allowed location                                                              |
 | ------------------------------------------- | -------------------- | ----------------------------------------------------------------------------- |
 | `crate::module::Symbol`, `path::Symbol`     | Yes (until rename)   | REQ Files, TASK Files, design interface specs, anything normative             |
-| `path:LINE`                                 | No (drifts per edit) | Source verification block ONLY — forensic evidence of grounding at spec time  |
+| `path:LINE`                                 | No (drifts per edit) | Source verification block ONLY: forensic evidence of grounding at spec time  |
 | Code snippet quotes                         | No (drifts per edit) | Design illustration only; not a navigation pointer                            |
 
-Implementers locate code by symbol (`fff-grep`, `rust_analyzer_definition`, equivalent), never by line. Source verification block staleness post-implementation is acceptable — it is a snapshot, not a contract.
+Implementers locate code by symbol (`fff-grep`, `rust_analyzer_definition`, equivalent), never by line. Source verification block staleness post-implementation is acceptable: it is a snapshot, not a contract.
 
 **Renames are the only failure mode.** If a referenced symbol is renamed mid-implementation:
 
@@ -111,7 +111,7 @@ Implementers locate code by symbol (`fff-grep`, `rust_analyzer_definition`, equi
 
 Project vocab collides with process vocab. Tag accordingly:
 
-- `REQ-*`, `TASK-*`, `AC-*`, `phase N` — always artifact ids.
+- `REQ-*`, `TASK-*`, `AC-*`, `phase N`: always artifact ids.
 - For conversation/process refs, prefix with `[meta]` or use "iteration"/"round".
 - Never use bare "turn N" in spec output (collides with REQ/TASK numbering).
 
@@ -122,8 +122,8 @@ Project vocab collides with process vocab. Tag accordingly:
 ```
 ## Source verification
 
-- path/to/file.rs:LINE — claim quoted from code
-- path/to/other.rs:LINE — claim quoted from code
+- path/to/file.rs:LINE: claim quoted from code
+- path/to/other.rs:LINE: claim quoted from code
 - ...
 ```
 

@@ -1,4 +1,4 @@
-# Conductor Relay — Spec-Driven Dispatch
+# Conductor Relay: Spec-Driven Dispatch
 
 When the Conductor (or any orchestrator) dispatches subagents for spec work, the handoff packet must conform to this shape. Pass it verbatim into the subagent prompt.
 

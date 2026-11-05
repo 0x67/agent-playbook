@@ -2,6 +2,8 @@
 
 My setup for AI coding agents: engineering rules, language skills, a spec-driven workflow, and orchestration subagents. It installs as a Claude Code plugin. The skills and `AGENTS.md` also work in Cursor, Codex, Copilot, OpenCode and other agents that read `SKILL.md` or `AGENTS.md`.
 
+I use this setup in my own daily work, and it took shape over a long stretch of real projects before it moved into this repo. The version references (each skill's release ladder and the JVM tool compatibility table) are checked weekly: a scheduled agent reads the official release notes, a reviewer on the highest model tier available re-checks every change against its source, and the result arrives as a pull request that I review before merging.
+
 ## Contents
 
 | Path | What it does | Works in |
