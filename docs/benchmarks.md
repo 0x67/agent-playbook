@@ -283,6 +283,17 @@ The `security-guard` hook (1.1.0) runs before every Bash, Edit, and Write call a
 
 AWS's documentation example keys pass gitleaks on purpose (they are allowlisted); real-format tokens are caught.
 
+## UI copy and typography skills
+
+[better-writing and better-typography](https://github.com/jakubkrehel/skills) review interface copy and how text renders. A React and Tailwind component with seven copy problems (an "Oops" error, an empty state with no next step, a plural built by concatenation, "Click here", mixed capitalization, "Are you sure?" with Yes and No, a negative toggle label) and four typography problems (weight 300 at 14px, line-height in px, a live total without `tabular-nums`, a heading smaller than the body), two runs per arm with the full setup loaded in both:
+
+| Arm | Problems found | Cost |
+|---|---|---|
+| Skills in `.claude/skills/` | 11, 11 | $0.24, $0.19 |
+| Without | 11, 11 | $0.15, $0.15 |
+
+The skills loaded in every run and found nothing the model missed without them. Subtler, project-wide checks, such as one term used across all locale files or a team's own type scale, were not tested.
+
 ## Plugin evals
 
 `evals/run.sh` with two runs per case and a no-plugin baseline arm, Sonnet as both agent and judge:
