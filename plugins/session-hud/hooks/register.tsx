@@ -77,6 +77,11 @@ function levelColor(percent: number) {
   return 'success'
 }
 
+// a window with a little use reads "<1%", so a rounded 0 is not mistaken for no data
+function percentText(percent: number): string {
+  return percent > 0 && percent < 0.5 ? '<1%' : `${Math.round(percent)}%`
+}
+
 function meter(percent: number, cells: number): [string, string] {
   const filled = Math.min(cells, Math.max(0, Math.round((percent / 100) * cells)))
   return ['█'.repeat(filled), '░'.repeat(cells - filled)]
@@ -187,6 +192,12 @@ async function measure($: EngineInterface) {
       ...(Number.isNaN(resetsAt) ? {} : { resetsAt }),
     }
   })
+  // right after a reset the engine reports no five_hour window until a request lands in the new
+  // one; keep the slot at 0% so the row does not change shape. Accounts with no windows at all
+  // report no seven_day either and get no slot.
+  if (limits.some(one => one.kind === 'seven_day') && !limits.some(one => one.kind === 'five_hour')) {
+    limits.unshift({ kind: 'five_hour', percent: 0 })
+  }
   const next: Usage = {
     ...(figures.context.percent === undefined
       ? {}
@@ -465,7 +476,7 @@ export const register: Register = on => {
           <Text>{label} </Text>
           {cells > 0 && <Text color={color}>{filled + empty} </Text>}
           <Text color={color} bold>
-            {Math.round(percent)}%
+            {percentText(percent)}
           </Text>
           {resetsAt !== undefined && (
             <Text> ↻ {duration(resetsAt - figures.measuredAt)}</Text>
