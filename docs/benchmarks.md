@@ -6,8 +6,8 @@ Measurements behind the optional extras in the README, taken on 2026-11-05 and 2
 
 1. **Worth it on these numbers:** lat section injection in medium and large repos, semble on broad questions in big repos, starting one agent before a parallel group, and the built-in `/code-review`.
 2. **Neutral:** fff (same cost as Grep; it keeps agents off shell grep).
-3. **Cost more than they returned here:** forced subagents on a multi-question prompt, spec-driven on a small task, code-review-subagent, the LSP tool in a fresh session, and rtk on outputs just over Claude Code's 30 KB preview limit.
-4. **No measured quality gain yet:** the language skills (they load reliably, and Sonnet 5.5 already knew the answers), the fable skills (never invoked), and the humanizer rules (no tells with or without them). The low-latency skill is the one skill that changed an answer.
+3. **Cost more than they returned here:** forced subagents on a multi-question prompt, spec-driven on small and three-module tasks, code-review-subagent, the LSP tool (it found nothing in a fresh session and matched Grep at higher cost once indexed), and rtk on outputs just over Claude Code's 30 KB preview limit.
+4. **No measured quality gain yet:** the language skills (Sonnet 5.5 already knew every version fact tested, including Rust 1.99 and Go 1.27 APIs), the fable skills (never invoked), and the humanizer rules (no tells with or without them). The low-latency skill is the one skill that changed an answer.
 
 ## rtk
 
@@ -152,8 +152,12 @@ Two eval cases where the fixture holds one real bug next to a pitfall that a new
 | `go-modern` without | | 2 of 2 | $0.07 |
 | `java-modern` with agent-playbook | 2 of 2 | 2 of 2 | $0.17 |
 | `java-modern` without | | 2 of 2 | $0.10 |
+| `rust-newest` (Rust 1.99 `String::from_utf8_lossy_owned`) with agent-playbook | 0 of 2 | 2 of 2 named it | $0.12 to $0.13 |
+| `rust-newest` without | | 2 of 2 named it | $0.08 to $0.09 |
+| `go-newest` (Go 1.27 `strings.CutLast`) with agent-playbook | 1 of 2 | 2 of 2 used it | $0.13 to $0.18 |
+| `go-newest` without | | 2 of 2 used it | $0.08 to $0.09 |
 
-Sonnet 5.5 already knows these version changes, so the skills changed no answer and added 70 to 80% to cost. In `go-modern` the agent answered without loading the golang skill.
+The last two cases target APIs from the newest releases the skills document, picked because they are likely newer than the model's training. Sonnet 5.5 knew them too. Across all four cases the skills changed no answer, loaded in 3 of 8 runs, and added about 70% to cost.
 
 ## Subagents on a numbered prompt
 
@@ -188,8 +192,9 @@ No run in any arm invoked a fable skill, so the first two arms differ only by no
 | LSP tool required | 0, 0 | $0.16 |
 | Grep only | 8, 8 | $0.12 to $0.13 |
 | Agent's choice | 8, 8 (it used Grep) | $0.12 |
+| LSP tool required, allowed to `sleep 30` and retry while indexing | 8, 8 | $0.17 |
 
-rust-analyzer had not finished indexing when the fresh session asked ("No symbols found in workspace"), so the LSP tool returned nothing. Given the choice, the agent used Grep. A warm language server in a long interactive session was not measured.
+rust-analyzer had not finished indexing when the fresh session asked ("No symbols found in workspace"), so the LSP tool returned nothing. Allowed to wait, it found every call site after two or three retries, at about a third more than Grep. Given the choice, the agent used Grep.
 
 ## humanizer
 
@@ -211,19 +216,30 @@ Implement `parse_duration` from a short README, then check it against 17 hidden 
 | Direct | 17, 17 | 8, 6 | $0.22, $0.14 |
 | spec-driven (four spec artifacts first) | 17, 17 | 26, 25 | $0.35, $0.37 |
 
-On a small task with a complete spec, writing the spec first doubled the cost and added no correctness. Larger work with unclear scope, where the workflow is meant to help, was not tested.
+A larger task: a key-value store in three modules (TTL, least-recently-used eviction, stats counters, JSON snapshots) from a one-page README, checked against 20 hidden tests:
+
+| Arm | Hidden tests passed | Turns | Cost |
+|---|---|---|---|
+| Direct | 20, 20 | 13, 13 | $0.27, $0.30 |
+| spec-driven | 20, 20 | 36, 32 | $0.55, $0.50 |
+
+Both times, writing the spec first cost about twice as much for the same result. Work whose scope is unclear when it starts, where the workflow is meant to help, was not tested.
 
 ## Code review
 
-A 971-line commit adding a network client with five planted bugs (an off-by-one length check, a `std::sync::Mutex` guard held across `.await`, `unwrap` on server input, a swallowed `flush` error, and a framing bug that leaves the length prefix in the buffer), reviewed as the staged diff, two runs per arm. A bug counts when the review names it.
+Three commits with planted bugs, each reviewed as the staged diff, two runs per arm. A bug counts when the review names it.
 
-| Arm | Bugs found | Cost |
-|---|---|---|
-| `code-review-subagent` | 4, 4 | $1.39, $1.30 |
-| Built-in `/code-review medium` | 5, 5 | $0.24, $0.16 |
-| Inline review, no subagent | 4, 5 | $0.24, $0.25 |
+1. A 971-line network client with five bugs: an off-by-one length check, a `std::sync::Mutex` guard held across `.await`, `unwrap` on server input, a swallowed `flush` error, and a framing bug that leaves the length prefix in the buffer.
+2. 827 lines of binary message parsers with four bugs: overlapping field offsets, a little-endian read in a big-endian format, an `assert_unchecked` one byte short of the slices it guards, and a parser with its length check removed.
+3. 789 lines of summary workers with four bugs: a wrong average denominator, a division that can hit zero, a sell field filled from the buy average, and `=` where the total must accumulate with `+=`.
 
-The built-in review found every bug at about a seventh of the subagent's cost. Both subagent runs missed the swallowed `flush` error, and neither ran the open-code-review step its instructions require for diffs over 800 lines (one checked `command -v ocr` and went no further).
+| Arm | Client (5) | Parsers (4) | Workers (4) | Bugs found | Mean cost |
+|---|---|---|---|---|---|
+| `code-review-subagent` | 4, 4 | 3, 3 | 4, 4 | 22 of 26 | $1.33 |
+| Built-in `/code-review medium` | 5, 5 | 3, 3 | 4, 4 | 24 of 26 | $0.18 |
+| Inline review, no subagent | 4, 5 | 3, 4 | 4, 4 | 24 of 26 | $0.23 |
+
+The built-in review matched the best recall at about a seventh of the subagent's cost. The subagent's open-code-review step for diffs over 800 lines ran in 1 of 4 eligible runs: on the first diff its `command -v ocr` check needed a permission the harness had not granted, so it reported ocr as unavailable. Where it did run, the subagent found no extra bug.
 
 ## Plugin evals
 
@@ -237,6 +253,7 @@ The built-in review found every bug at about a seventh of the subagent's cost. B
 | No banned terms in new identifiers | 2 of 2 | 2 of 2 |
 | PR description free of em dashes, attribution, and filler | 3 of 3 | 3 of 3 |
 | Real bug found, fixed version pitfall not reported (`go-modern`, `java-modern`) | 4 of 4 | 4 of 4 |
+| Newest std API named (`rust-newest`, `go-newest`) | 4 of 4 | 4 of 4 |
 | Hot-path review flags allocation, logging, and the unbounded queue, and asks for numbers (`low-latency-review`) | 1 of 1 | 0 of 1 |
 | low-latency skill and disruptor page load from the `Cargo.toml` hook (`low-latency-hook`) | 2 of 2 | 0 of 2 |
 

@@ -1,0 +1,25 @@
+schema_version: "1.1"
+name: rust-newest
+description: On a Rust 1.99 toolchain, the answer names String::from_utf8_lossy_owned, a std API newer than most model training data.
+tags: [lang, rust, modern]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    This crate builds with the toolchain pinned in rust-toolchain.toml. Is there a standard library function in that
+    toolchain that replaces the body of `decode` in src/lib.rs and avoids copying input that is already valid UTF-8?
+    Name it and show the new body. Do not change any files.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?rust"'
+    arm: both
+  - name: names-new-api
+    type: llm
+    criteria: |
+      PASS if the answer names `String::from_utf8_lossy_owned` as the replacement, taking the Vec<u8> by value.
+      FAIL if it says no such function exists, or only offers a hand-written alternative such as String::from_utf8
+      with a fallback.

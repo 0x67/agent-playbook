@@ -1,0 +1,23 @@
+schema_version: "1.1"
+name: go-newest
+description: On a Go 1.27 module, the simplification uses strings.CutLast, a std API newer than most model training data.
+tags: [lang, go, modern]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Simplify splitAtLast in path.go using the standard library available for this module's Go version, keeping its
+    behavior. Show the new function body. Do not change any files.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?golang"'
+    arm: both
+  - name: uses-new-api
+    type: llm
+    criteria: |
+      PASS if the new body uses `strings.CutLast(s, sep)`. FAIL if it keeps strings.LastIndex with slicing, or says
+      the standard library has no such function.
