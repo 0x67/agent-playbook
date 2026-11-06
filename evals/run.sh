@@ -29,6 +29,6 @@ status=0
 # Sonnet judges the llm graders, since Haiku failed correct answers on wording.
 (cd "$work/agent-playbook" && claude plugin eval . --scaffold --trust-plugin --no-publish \
     --allow-tools Edit Write --judge-model sonnet \
-    --output-dir "$out" --report "$out/report.html" --json "$out/result.json" "$@") || status=$?
+    --output-dir "$out" --report "$out/report.html" --json "$out/result.json" "$@" < /dev/null) || status=$?
 echo "results: $out"
 exit "$status"

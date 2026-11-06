@@ -265,7 +265,7 @@ A full run costs about $2.60. The last two rows pass without the plugin too, so 
 
 The eval suite runs with `evals/run.sh`. The search and caveman comparisons ran against private repositories, so the harness is not in this repo; the method is enough to repeat them on your own code:
 
-1. Run `claude -p "<question>" --model sonnet --output-format stream-json --verbose` from the repository root, with `--disallowedTools Bash Edit Write` to keep runs read-only.
+1. Run `claude -p "<question>" --model sonnet --output-format stream-json --verbose` from the repository root, with `--disallowedTools Bash Edit Write` to keep runs read-only. Close stdin (`< /dev/null`, or `stdin=DEVNULL` from a script): `claude -p` appends whatever is piped to it to the prompt, so a harness that runs it with an open stdin can leak its own source, answer key included, into the question.
 2. Give each arm its search tool with `--allowedTools mcp__<server>` and block the others with `--disallowedTools mcp__<server>`. A forced arm adds a sentence to the prompt naming the tool.
 3. Turn caveman off for the baseline with `--settings '{"enabledPlugins":{"caveman@caveman":false}}'`.
 4. Read cost, turns, and tool calls from the final `result` event and the `tool_use` blocks, and score answers against anchors you found by hand first.
