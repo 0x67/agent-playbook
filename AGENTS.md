@@ -45,14 +45,14 @@ Before planning, implementation, review, or investigation:
 3. Semantic code search: Semble MCP; if missing, `semble search "query" .` (or `uvx --from "semble[mcp]" semble search "query" .` when semble is not installed).
 4. Exact text/file search: fff MCP tools (`mcp__fff__grep`, `mcp__fff__find_files`, `mcp__fff__multi_grep`). Never shell `fff`. Not exposed: Grep, `rg`, or `find`; state reason.
 5. Code structure (callers, callees, routes, types) where the `codebase-memory` MCP is connected: its graph tools before multi-file reads. Repo root missing from `list_projects`: in a linked git worktree (`git rev-parse --git-dir` differs from `--git-common-dir`), query the main checkout's project and read the branch's changed files directly (`git diff --name-only <base>...HEAD`), never index the worktree; otherwise run `index_repository` once.
-6. Definitions, references, hover, and call hierarchy in Go, Rust, C/C++, Java, and Kotlin: the `LSP` tool where a language server is connected (gopls, rust-analyzer, clangd, jdtls, kotlin-lsp).
+6. Hover, types, and call hierarchy in Go, Rust, C/C++, Java, and Kotlin: the `LSP` tool where a language server is connected (gopls, rust-analyzer, clangd, jdtls, kotlin-lsp). For call sites and references, text search finds the same at lower cost, and in a fresh session the server returns nothing until it has finished indexing.
 
 Preferred tool missing, failing, or lacking capability: use regular tools, state reason. `grep`/`find` fine for logs and configs.
 Subagent prompts repeat this block: memory recall, search order, fff MCP tool names, no shell fff, fallback rule.
 
 # Language Rules
 
-Before reading, editing, or reviewing Go, Rust, C/C++, Java, or Kotlin, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` / `java` / `kotlin` (`agent-playbook:<name>` in Claude Code) and follow its routing table into `references/`. Java and Kotlin also load skill `jvm` for builds, tests, frameworks, and navigation; JVM build files and any `gradle`/`mvn` command (wrappers `./gradlew` and `./mvnw` included) load `jvm`. Run the post-write gate before reporting done.
+Before editing Go, Rust, C/C++, Java, or Kotlin, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` / `java` / `kotlin` (`agent-playbook:<name>` in Claude Code) and follow its routing table into `references/`. Java and Kotlin also load skill `jvm` for builds, tests, frameworks, and navigation; JVM build files and any `gradle`/`mvn` command (wrappers `./gradlew` and `./mvnw` included) load `jvm`. Run the post-write gate before reporting done. Reading and reviewing do not need these skills: in benchmarks they changed no review answer and added about 70% to cost (`docs/benchmarks.md`).
 
 Hot-path code (per-message receive loops, decoders, order books, queues between threads, latency benchmarks): load skill `low-latency` (`agent-playbook:low-latency`) alongside the language skill. In Claude Code the language hook names it when a Rust repo's `Cargo.toml` depends on a latency crate.
 
@@ -71,11 +71,12 @@ Work in a git worktree or on a branch other than the user's workspace branch:
 
 Full ladder, composition, parallel fan-out rules, and tier table: skill `agent-playbook:orchestration-layers`. Load it before subagent fan-out or Workflow. Always on:
 
-- Non-trivial multi-step task: fable-method loop first; fable-judge pass before presenting work as finished (fable plugin, installed with agent-playbook). Where the fable skills are missing, run the same loop inline: classify the ask, define done and how to check it, read the evidence, make the smallest change, verify by running it, then check every claim against the diff and the output before reporting.
+- Non-trivial multi-step task: classify the ask, define done and how to check it, read the evidence, make the smallest change, verify by running it, then check every claim against the diff and the output before reporting.
 - Cheapest mechanism that fits: inline, then subagents dispatched from the main thread (shape found while working), then Workflow (shape known, user opted in).
 - Parallel fan-out (Agent calls, Workflow `parallel()` or `pipeline()`, headless or eval batches): start one agent first and the rest after it responds (in Workflow, `await` one `agent()` before the fan-out stage), so the group reads the shared prompt cache instead of each agent writing it.
 - Workflow() only on explicit opt-in: `ultracode`, "use a workflow", "orchestrate this with subagents", or a skill calls it. Otherwise offer.
-- Subagent types carry the plugin prefix: `agent-playbook:planning-subagent`, `agent-playbook:implement-subagent`, `agent-playbook:code-review-subagent`. Never a guessed name.
+- Subagent types carry the plugin prefix: `agent-playbook:planning-subagent`, `agent-playbook:implement-subagent`. Never a guessed name.
+- Code review: the built-in `code-review` skill (`/code-review <level>`, low for a single task, medium for a feature, high before a release). It found every planted bug at a fraction of a review subagent's cost (`docs/benchmarks.md`).
 - Hand off at the tier the work needs (table in `agent-playbook:orchestration-layers`). Disclose every spawn at dispatch as `<label> -> <alias> <version>`, with the version taken from an env pin or the session's model list, never from memory. No silent spawns.
 - Relay packets carry the standing protocols: memory recall, comment rules, Code Simplicity Discipline, search order.
 

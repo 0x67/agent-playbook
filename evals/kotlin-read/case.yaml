@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: kotlin-read
-description: Reading Kotlin code loads the kotlin skill, and the answer catches swallowed cancellation.
+description: Reading Kotlin code, the answer catches swallowed cancellation.
 tags: [lang, kotlin, hooks]
 context:
   scaffold_script: fixture.sh
@@ -10,11 +10,6 @@ execution:
   prompt: |
     Is there a problem with how retry() in src/main/kotlin/Retry.kt behaves when the calling coroutine is cancelled? Do not change any files.
 graders:
-  - name: skill-fired
-    type: tool_used
-    tool: Skill
-    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?kotlin"'
-    arm: both
   - name: finds-cancellation-bug
     type: llm
     criteria: |

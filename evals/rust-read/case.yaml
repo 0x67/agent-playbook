@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: rust-read
-description: Reading Rust code loads the rust skill, and the answer finds the unpadded fraction bug.
+description: Reading Rust code, the answer finds the unpadded fraction bug.
 tags: [lang, rust, hooks]
 context:
   scaffold_script: fixture.sh
@@ -10,11 +10,6 @@ execution:
   prompt: |
     In src/lib.rs, what does parse_price return for the input "12.5", and is that correct? Do not change any files.
 graders:
-  - name: skill-fired
-    type: tool_used
-    tool: Skill
-    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?rust"'
-    arm: both
   - name: finds-bug
     type: llm
     criteria: |

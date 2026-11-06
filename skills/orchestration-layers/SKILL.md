@@ -1,23 +1,21 @@
 ---
 name: orchestration-layers
-description: Dispatch ladder and rules for multi-agent work - fable discipline, inline vs subagents vs Workflow(), composition, parallel fan-out with a warm prompt cache, subagent naming, model tiers, and model disclosure. Load before spawning subagents, fanning out in parallel, or authoring a Workflow.
+description: Dispatch ladder and rules for multi-agent work - the verify-before-done loop, inline vs subagents vs Workflow(), composition, parallel fan-out with a warm prompt cache, subagent naming, model tiers, and model disclosure. Load before spawning subagents, fanning out in parallel, or authoring a Workflow.
 ---
 
-# Orchestration layers (fable / subagents / Workflow)
+# Orchestration layers (discipline / subagents / Workflow)
 
-fable-method and fable-judge are the discipline layer: they wrap every non-trivial task,
+The loop in `AGENTS.md` is the discipline layer: it wraps every non-trivial task,
 whatever runs it. Subagents dispatched from the main thread and dynamic Workflow() are the
 dispatch mechanisms; pick one by the shape of the work. They nest, they do not compete.
 
 ## Discipline layer (always, mechanism-agnostic)
 
-- Before any non-trivial multi-step task, apply the fable-method loop (classify -> define
-  done -> evidence -> decide -> act -> prove). It runs BEFORE picking a dispatch mechanism.
-- After completing substantive work, or whenever any agent or tool claims work is done, run
-  a fable-judge pass before presenting it as finished. "Did that actually work?" = fable-judge.
-  Universal exit gate for every mechanism below.
-- fable skills missing (another agent, or the plugin removed): the inline loop in AGENTS.md
-  replaces fable-method and fable-judge.
+- Before any non-trivial multi-step task: classify the ask, define done and how to check it,
+  read the evidence, then pick a dispatch mechanism.
+- After substantive work, or whenever an agent or tool claims work is done, check every claim
+  against the diff and the command output before presenting it as finished. This is the exit
+  gate for every mechanism below.
 
 ## Dispatch mechanism: cost-gated ladder
 
@@ -25,9 +23,11 @@ Escalate only when the cheaper tier can't hold the work. Minimal mechanism that 
 
 1. Inline (main thread): trivial, single-file, one-shot, lookup.
 2. Subagents from the main thread (Agent tool): when inline overflows and the shape is only
-   discoverable by doing. The main thread orchestrates: it dispatches planning,
-   implement, and review subagents one unit at a time, with a relay packet per unit, and
-   verifies between dispatches.
+   discoverable by doing, and only for independent, read-heavy units. A few related questions
+   in one prompt stay inline: one subagent per question cost about twice as much with no steady
+   gain (`docs/benchmarks.md`). The main thread orchestrates: it dispatches planning and
+   implement subagents one unit at a time, with a relay packet per unit, runs `/code-review`
+   on the result, and verifies between dispatches.
 3. Dynamic Workflow(): when the shape is known before dispatch and the fan-out is large
    (list fan-out, N-file migrate, multi-dimension review), and the user opted in.
    Deterministic control flow in JS, resumable, reproducible.
@@ -46,8 +46,8 @@ predictable: a single Workflow can spawn dozens of agents.
 
 - The main thread MAY hand a list it discovered to Workflow() for deterministic fan-out.
   Pattern: scout with subagents -> pipeline over the result.
-- Workflow verify-stages ARE the fable-judge pattern (adversarial refute agents per
-  finding). Bake fable-judge into the script's final stage.
+- Workflow verify stages are the exit gate: adversarial refute agents per finding in the
+  script's final stage.
 - Relay packets AND Workflow agent prompts both carry the standing protocols: memory
   recall, comment rules (no REQ-*/TASK-*/em-dash), Code Simplicity Discipline (smallest
   change, no unrequested backwards-compat, no slop), search order.
@@ -87,8 +87,8 @@ session) at 1.25x or 2x the input price, instead of reading it at 0.1x or less.
 
 ## Subagent naming
 
-This plugin's subagent types carry the plugin prefix: `agent-playbook:planning-subagent`,
-`agent-playbook:implement-subagent`, `agent-playbook:code-review-subagent`. Spawn those exact names. An
+This plugin's subagent types carry the plugin prefix: `agent-playbook:planning-subagent` and
+`agent-playbook:implement-subagent`. Spawn those exact names. An
 unmatched `subagent_type` silently falls back to `general-purpose` / `claude`, which is the
 "wrong agent" failure.
 
@@ -102,7 +102,8 @@ Pick the tier by the work, not by habit. Pass it explicitly (`model:` on the Age
 | Locate code, list files, one-file mechanical edit | `haiku` | Explore, quick lookups |
 | Read-only research with a clear question | `sonnet` | `agent-playbook:planning-subagent` |
 | Implementation from a written spec or task | `opus` | `agent-playbook:implement-subagent` |
-| Review, adversarial verification, security-sensitive change | `opus` | `agent-playbook:code-review-subagent` |
+| Code review of a diff | the skill's own | built-in `code-review` skill (`/code-review <level>`) |
+| Adversarial verification, security-sensitive change | `opus` | `general-purpose` with an explicit brief |
 | Orchestration across work units | session model | the main thread |
 | Hardest reasoning, only when the user asks for it | `fable` | any |
 

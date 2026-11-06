@@ -1,9 +1,11 @@
 ---
 name: spec-driven
-description: Use when writing, revising, or IMPLEMENTING spec artifacts (requirements.md, design.md, tasks.md, validation.md) under `specs/<slug>/` (legacy `plans/<slug>/` and `docs/plans/<slug>/` also recognized), or when the user invokes `/plan`, `/spec`, `/spec-driven`, says "write spec for", "phase N spec", "implement spec", "implement plan", "implement phase N", "requirements for", references `REQ-*` / `TASK-*` / `AC-*` ids, asks during design to "compare approaches", "A/B the options", "spike and benchmark", or run a "trial", or asks to "reconcile" or "resume" a spec. Covers spec writing (turn boundaries, Files-to-Read manifest, EARS REQs with symbol contracts, Source verification, adversarial pass, templates) and implementation (grounding, group order, per-TASK turns and validation, drift checks, regression review, spec-code sync, lat.md sync, reconcile). Skip for typo fixes, one-line edits, doc-only changes, or single-test additions.
+description: Use when writing, revising, or IMPLEMENTING spec artifacts (requirements.md, design.md, tasks.md, validation.md) under `specs/<slug>/` (legacy `plans/<slug>/` and `docs/plans/<slug>/` also recognized), or when the user invokes `/plan`, `/spec`, `/spec-driven`, says "write spec for", "phase N spec", "implement spec", "implement plan", "implement phase N", "requirements for", references `REQ-*` / `TASK-*` / `AC-*` ids, asks during design to "compare approaches", "A/B the options", "spike and benchmark", or run a "trial", or asks to "reconcile" or "resume" a spec. Covers spec writing (turn boundaries, Files-to-Read manifest, EARS REQs with symbol contracts, Source verification, adversarial pass, templates) and implementation (grounding, group order, per-TASK turns and validation, drift checks, regression review, spec-code sync, lat.md sync, reconcile). Skip for typo fixes, one-line edits, doc-only changes, single-test additions, or tasks whose requirements already sit complete in one document.
 ---
 
 # Spec-Driven Workflow
+
+Use it when scope is unclear or the work spans sessions. On a small task and on a three-module task that each came with a complete README, writing the spec first cost about twice as much for the same hidden-test results (`docs/benchmarks.md`), so implement those directly.
 
 This skill enforces the canonical spec-driven workflow. `<skill-dir>` below is this skill's own directory; Claude Code prints it as the skill's base directory when the skill loads, and relay packets carry it as an absolute path. Two protocol bodies:
 

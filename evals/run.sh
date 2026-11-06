@@ -1,8 +1,8 @@
 #!/bin/sh
 # Run the agent-playbook eval suite with a no-plugin baseline arm.
 #
-# `claude plugin eval` loads only the plugin under test, so the humanizer and fable dependencies
-# declared in plugin.json are missing and Claude Code refuses to load agent-playbook. This script evals a
+# `claude plugin eval` loads only the plugin under test, so the humanizer dependency
+# declared in plugin.json is missing and Claude Code refuses to load agent-playbook. This script evals a
 # temporary copy with the dependencies removed and copies the results back to evals/results/.
 #
 # usage: evals/run.sh [extra `claude plugin eval` flags], e.g. --case rust-read --runs 1 --model sonnet

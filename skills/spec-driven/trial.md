@@ -77,7 +77,7 @@ Build on a trial base branch `trial/<slug>/base` cut from the work branch:
 
 - Run benchmarks one candidate at a time on the same machine, with the same build mode and flags and an otherwise idle system. Never run candidates in parallel. Save raw output to `artifacts/trial/<candidate-id>/`.
 - Report median and spread. Call a difference real only when the tool's statistics support it (benchstat p-value, criterion change detection, JMH error intervals that do not overlap). Otherwise write "no measurable difference".
-- Readability: one reviewer (`agent-playbook:code-review-subagent`, one tier for all candidates) scores every candidate in a single pass against the `software-design` review checklist. It sees the diffs side by side, labeled A, B, C rather than by approach name, so the label does not anchor the score.
+- Readability: one reviewer (`agent-playbook:planning-subagent`, one tier for all candidates) scores every candidate in a single pass against the `software-design` review checklist. It sees the diffs side by side, labeled A, B, C rather than by approach name, so the label does not anchor the score.
 - Collect for each candidate: diff stats against base, new dependencies, public API additions.
 
 ## 5. Decide

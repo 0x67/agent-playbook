@@ -10,11 +10,6 @@ execution:
   prompt: |
     Review src/main/java/app/Fetcher.java and list only the real bugs for this project's Java version. Do not change any files.
 graders:
-  - name: skill-fired
-    type: tool_used
-    tool: Skill
-    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?(?:java|jvm)"'
-    arm: both
   - name: real-bugs-only
     type: llm
     criteria: |

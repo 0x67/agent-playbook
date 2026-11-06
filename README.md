@@ -15,8 +15,8 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 | `skills/low-latency` | Hot-path rules for any language (measure first, one writer, no per-message allocation, overflow policy, wait strategy, thread placement), with Rust pages for disruptor, crossbeam and rtrb, bytes and zerocopy, io-uring, measurement (criterion, hdrhistogram, loom, Miri), and CPU pinning | any agent |
 | `skills/spec-driven` | Spec writing and implementation protocol, with templates and relay prompts | any agent |
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |
-| `agents/` | `planning-subagent`, `implement-subagent`, `code-review-subagent` | Claude Code |
-| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill the first time matching code comes up (a read, an edit, a build command, or search results), plus the low-latency skill and its matching pages when a Rust repo's `Cargo.toml` depends on a latency crate; in repos with `lat.md/`, injects the sections matching each prompt and runs lat's end-of-session check only when the session changed files; memory-search reminder | Claude Code |
+| `agents/` | `planning-subagent`, `implement-subagent` | Claude Code |
+| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill and run its post-write gate the first time matching code is edited or built, and points at the low-latency skill and its matching pages on the first read in a Rust repo whose `Cargo.toml` depends on a latency crate; in repos with `lat.md/`, injects the sections matching each prompt and runs lat's end-of-session check only when the session changed files; memory-search reminder | Claude Code |
 | `plugins/session-hud` | Separate plugin in the same marketplace: a usage row under the prompt (context, rate limits, cost) and a TODO list shared by every session, see its [README](plugins/session-hud/README.md) | Claude Code |
 
 ## Install (Claude Code)
@@ -25,12 +25,11 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 
    ```
    /plugin marketplace add blader/humanizer
-   /plugin marketplace add Sahir619/fable-method
    /plugin marketplace add 0x67/agent-playbook
    /plugin install agent-playbook@0x67
    ```
 
-   agent-playbook declares [humanizer](https://github.com/blader/humanizer) and [fable-method](https://github.com/Sahir619/fable-method) as dependencies, so the install also brings in `humanizer@humanizer` and `fable@fable-method`. Claude Code installs dependencies only from marketplaces you have added, which is why those two lines come first. If you skip them, agent-playbook installs but does not load; adding the two marketplaces afterwards installs the missing plugins and fixes it.
+   agent-playbook declares [humanizer](https://github.com/blader/humanizer) as a dependency, so the install also brings in `humanizer@humanizer`. Claude Code installs dependencies only from marketplaces you have added, which is why that line comes first. If you skip it, agent-playbook installs but does not load; adding the humanizer marketplace afterwards installs it and fixes that.
 2. Start a new session. Nothing else to configure: the hooks inject `AGENTS.md` and the humanizer rule card, and skills and subagents show up with the plugin prefix (`agent-playbook:golang`, `agent-playbook:planning-subagent`).
 3. Optional: add any of the extras below.
 
@@ -44,7 +43,7 @@ Cursor, Codex, Copilot, OpenCode and the rest get the skills through the [skills
 npx skills add 0x67/agent-playbook
 ```
 
-Hooks and subagents are Claude Code only, so nothing injects the rules automatically, and the humanizer and fable plugins are not there. `AGENTS.md` covers both gaps: its own writing rules apply without the humanizer skill, and it spells out the fable loop inline for when the fable skills are missing.
+Hooks and subagents are Claude Code only, so nothing injects the rules automatically, and the humanizer plugin is not there. `AGENTS.md` covers that gap: its own writing rules apply without the humanizer skill.
 
 ## Optional extras
 
@@ -56,16 +55,15 @@ Each extra is used when present. Nothing breaks without it. [docs/benchmarks.md]
 | [Semble](https://github.com/MinishLab/semble) MCP | Semantic code search | `uv tool install 'semble[mcp]'`, then `claude mcp add-json -s user semble '{"type":"stdio","command":"semble","args":[],"alwaysLoad":true}'` (needs [uv](https://docs.astral.sh/uv/); launched through `uvx` instead, each running server holds uv's cache lock, so `uv cache prune` cannot run while sessions are open) | Text search only |
 | [codebase-memory](https://github.com/DeusData/codebase-memory-mcp) MCP | Callers, callees, routes, and types from a code graph before multi-file reads | Install the `codebase-memory-mcp` binary per its README, then `claude mcp add -s user codebase-memory -- codebase-memory-mcp` | More file reads |
 | LSP plugins from [claude-plugins-official](https://github.com/anthropics/claude-plugins-official) | `gopls-lsp`, `rust-analyzer-lsp`, `clangd-lsp`, `jdtls-lsp`, `kotlin-lsp` back the `LSP` tool the Go, Rust, C/C++, and Java/Kotlin skills prefer | `/plugin marketplace add anthropics/claude-plugins-official`, then `/plugin install clangd-lsp@claude-plugins-official` (same for the others); the language server must be on `PATH` | Grep-based code navigation |
-| [open-code-review](https://github.com/alibaba/open-code-review) CLI | Per-language review checklists and file selection that `code-review-subagent` uses on big diffs (more than 800 changed lines or 25 files), through `ocr delegate`, which needs no model of its own | `npm install -g @alibaba-group/open-code-review` | Big diffs get the subagent's own checklist only |
-| [rtk](https://www.rtk-ai.app/) | Compresses shell command output before it reaches the model | `brew install rtk`, then `rtk init -g --hook-only` (`--agent cursor` and others for other tools) | Full command output, more tokens |
+| [rtk](https://www.rtk-ai.app/) | Compresses shell command output before it reaches the model. Claude Code already cuts outputs over about 30 KB to a short preview, and rtk can shrink such an output back under that limit so more of it lands in context; an A/B run in [docs/benchmarks.md](docs/benchmarks.md) cost 46% more for that reason | `brew install rtk`, then `rtk init -g --hook-only` (`--agent cursor` and others for other tools) | Full command output, more tokens |
 | [lat.md](https://www.npmjs.com/package/lat.md) | `lat` CLI for `lat.md/` architecture graphs | `npm i -g lat.md` | The lat reminder stays silent in repos without `lat.md/` |
-| [caveman](https://github.com/JuliusBrussee/caveman) | Terse chat replies | `/plugin marketplace add JuliusBrussee/caveman`, then `/plugin install caveman@caveman`; its `[CAVEMAN]` status line badge is optional, and the mode works without it | Normal replies; nothing in agent-playbook depends on it |
+| [caveman](https://github.com/JuliusBrussee/caveman) | Terse chat replies. Measured: answers about 10% shorter, no cost saving, and about 5.9k extra prompt tokens per session | `/plugin marketplace add JuliusBrussee/caveman`, then `/plugin install caveman@caveman`; its `[CAVEMAN]` status line badge is optional, and the mode works without it | Normal replies; nothing in agent-playbook depends on it |
 | session-hud (this repo) | Usage row under the prompt and a shared TODO pane (`/todo`) | `/plugin install session-hud@0x67` | The built-in status line and `/usage` |
 | [tech-debt-skill](https://github.com/ksimback/tech-debt-skill) | Tech debt audits | `npx skills add ksimback/tech-debt-skill` | Nothing; agent-playbook does not reference it |
 
 ## Model tiers
 
-Each subagent declares a default tier in its frontmatter: `planning-subagent` runs on sonnet, `implement-subagent` and `code-review-subagent` on opus. `agent-playbook:orchestration-layers` holds the table for choosing a tier per handoff. To pin the version an alias resolves to, set `ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL`, `ANTHROPIC_DEFAULT_HAIKU_MODEL`, or `ANTHROPIC_DEFAULT_FABLE_MODEL` in the `env` block of your Claude Code settings.
+Each subagent declares a default tier in its frontmatter: `planning-subagent` runs on sonnet and `implement-subagent` on opus. Code review uses the built-in `/code-review` skill. `agent-playbook:orchestration-layers` holds the table for choosing a tier per handoff. To pin the version an alias resolves to, set `ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL`, `ANTHROPIC_DEFAULT_HAIKU_MODEL`, or `ANTHROPIC_DEFAULT_FABLE_MODEL` in the `env` block of your Claude Code settings.
 
 ## Evals
 

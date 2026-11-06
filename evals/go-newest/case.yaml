@@ -11,11 +11,6 @@ execution:
     Simplify splitAtLast in path.go using the standard library available for this module's Go version, keeping its
     behavior. Show the new function body. Do not change any files.
 graders:
-  - name: skill-fired
-    type: tool_used
-    tool: Skill
-    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?golang"'
-    arm: both
   - name: uses-new-api
     type: llm
     criteria: |

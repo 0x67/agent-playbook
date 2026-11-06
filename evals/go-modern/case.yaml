@@ -10,11 +10,6 @@ execution:
   prompt: |
     Review worker.go and list only the real bugs for this module's Go version. Do not change any files.
 graders:
-  - name: skill-fired
-    type: tool_used
-    tool: Skill
-    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?golang"'
-    arm: both
   - name: real-bugs-only
     type: llm
     criteria: |

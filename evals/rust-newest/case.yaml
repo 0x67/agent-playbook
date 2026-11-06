@@ -12,11 +12,6 @@ execution:
     toolchain that replaces the body of `decode` in src/lib.rs and avoids copying input that is already valid UTF-8?
     Name it and show the new body. Do not change any files.
 graders:
-  - name: skill-fired
-    type: tool_used
-    tool: Skill
-    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?rust"'
-    arm: both
   - name: names-new-api
     type: llm
     criteria: |

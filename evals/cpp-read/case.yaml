@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: cpp-read
-description: Reading C++ code loads the cpp skill, and the answer finds the full-buffer check bug.
+description: Reading C++ code, the answer finds the full-buffer check bug.
 tags: [lang, cpp, hooks]
 context:
   scaffold_script: fixture.sh
@@ -10,11 +10,6 @@ execution:
   prompt: |
     Review push() in ring_buffer.hpp. What happens when the buffer is full? Do not change any files.
 graders:
-  - name: skill-fired
-    type: tool_used
-    tool: Skill
-    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?cpp"'
-    arm: both
   - name: finds-full-check-bug
     type: llm
     criteria: |
