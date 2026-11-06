@@ -239,7 +239,7 @@ Three commits with planted bugs, each reviewed as the staged diff, two runs per 
 | Built-in `/code-review medium` | 5, 5 | 3, 3 | 4, 4 | 24 of 26 | $0.18 |
 | Inline review, no subagent | 4, 5 | 3, 4 | 4, 4 | 24 of 26 | $0.23 |
 
-The built-in review matched the best recall at about a seventh of the subagent's cost. The subagent's open-code-review step for diffs over 800 lines ran in 1 of 4 eligible runs: on the first diff its `command -v ocr` check needed a permission the harness had not granted, so it reported ocr as unavailable. Where it did run, the subagent found no extra bug.
+The built-in review matched the best recall at about a seventh of the subagent's cost. The subagent's open-code-review step for diffs over 800 lines ran in 1 of 4 eligible runs. In one client run its `command -v ocr` check needed a permission the harness had not granted, so it reported ocr as unavailable; the other two runs skipped the step without checking. The one run that used it found no extra bug.
 
 ## Plugin evals
 
