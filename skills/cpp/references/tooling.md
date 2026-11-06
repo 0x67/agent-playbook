@@ -209,6 +209,8 @@ InsertBraces: true
 
 ## Install missing tools
 
+Ask the user before installing anything; these change the system.
+
 ```sh
 brew install llvm cmake ninja                 # macOS; Homebrew llvm is keg-only: add $(brew --prefix llvm)/bin to PATH
 sudo apt install clang clangd clang-tidy clang-format cmake ninja-build   # Debian/Ubuntu

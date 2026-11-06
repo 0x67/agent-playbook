@@ -21,6 +21,8 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 
 ## Install (Claude Code)
 
+The hooks need `sh`, `python3`, `jq`, and `git` on `PATH`. Without `jq` the language reminder stays silent; everything else still works.
+
 1. Add the marketplaces, then install agent-playbook:
 
    ```

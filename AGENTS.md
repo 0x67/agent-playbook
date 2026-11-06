@@ -26,7 +26,7 @@ Bad: `// In milestone 4 we decided this should drain at the sink's pace` · `// 
 
 # Spec-Driven Workflow
 
-Skill `spec-driven` (`agent-playbook:spec-driven` in Claude Code; protocol files ship inside it) loads on `/plan`, `/spec`, `REQ-*`, `TASK-*`, or spec paths and carries the rules, templates, artifact layout, and relay packet shape. Specs live in `specs/<task-slug>/` (legacy `plans/<task-slug>/` recognized). Small tasks without a spec folder: give subagents a lightweight inline spec with the same relay fields.
+Skill `spec-driven` (`agent-playbook:spec-driven` in Claude Code; protocol files ship inside it) loads on `/spec`, `REQ-*`, `TASK-*`, or spec paths and carries the rules, templates, artifact layout, and relay packet shape. Specs live in `specs/<task-slug>/` (legacy `plans/<task-slug>/` recognized). Small tasks without a spec folder: give subagents a lightweight inline spec with the same relay fields.
 
 # Project Terminology Guard
 
