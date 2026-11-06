@@ -7,7 +7,8 @@ Measurements behind the optional extras in the README, taken on 2026-11-05 and 2
 1. **Worth it on these numbers:** lat section injection in medium and large repos, semble on broad questions in big repos, starting one agent before a parallel group, and the built-in `/code-review`.
 2. **Neutral:** fff (same cost as Grep; it keeps agents off shell grep).
 3. **Cost more than they returned here:** forced subagents on a multi-question prompt, spec-driven on small and three-module tasks, code-review-subagent, the LSP tool (it found nothing in a fresh session and matched Grep at higher cost once indexed), and rtk on outputs just over Claude Code's 30 KB preview limit.
-4. **No measured quality gain yet:** the language skills (Sonnet 5.5 already knew every version fact tested, including Rust 1.99 and Go 1.27 APIs), the fable skills (never invoked), and the humanizer rules (no tells with or without them). The low-latency skill is the one skill that changed an answer.
+4. **Language skills help only where the model lacks the fact:** on version-compatibility facts bare Sonnet 5.5 got wrong (Lombok for JDK 26, the last Error Prone that runs on JDK 17), the jvm skill fixed every run; on facts it already knew they changed nothing. Since 1.0.0 they load on edits only.
+5. **No measured quality gain yet:** the fable skills (never invoked, removed in 1.0.0), the humanizer rules (no tells with or without them), and spec-driven even on a request with open questions.
 
 ## rtk
 
@@ -161,6 +162,17 @@ Two eval cases where the fixture holds one real bug next to a pitfall that a new
 
 The last two cases target APIs from the newest releases the skills document, picked because they are likely newer than the model's training. Sonnet 5.5 knew them too. Across all four cases the skills changed no answer, loaded in 3 of 8 runs, and added about 70% to cost.
 
+### Facts the model lacks
+
+A probe asked bare Sonnet 5.5 (no plugins, no tools, stdin closed) twelve facts the skills document. It got eight wrong, among them the oldest Lombok for JDK 26 (it said 1.18.44; the answer is 1.18.46), the oldest Kotlin that emits Java 26 bytecode (2.3.20; the answer is 2.4.0), the last Error Prone release that runs on JDK 17 (2.41.0; the answer is 2.42.0), and the Tauri 2.11 `rename` command attribute. Two edit-task cases were built on the JVM facts, two runs per arm:
+
+| Case | With agent-playbook | Without |
+|---|---|---|
+| `jvm-java26`: Gradle 9.4.0, Kotlin 2.4.0, Lombok 1.18.46 | all three right, 2 of 2 | Lombok wrong in 2 of 2 |
+| `errorprone-jdk17`: Error Prone 2.42.0 | 2 of 2 | 1 of 2 |
+
+Where the model lacks a fact, the skill supplies it; where it already knows, the skill only adds cost. A first version of the probe let `claude -p` read the probe script through stdin, so the model saw the expected answers and seemed to know eleven of twelve; see Reproducing.
+
 ## Subagents on a numbered prompt
 
 Three numbered questions about the 254k-line workspace in one prompt, scored by the answer-key anchors found (14 in total), two runs per arm:
@@ -227,6 +239,15 @@ A larger task: a key-value store in three modules (TTL, least-recently-used evic
 
 Both times, writing the spec first cost about twice as much for the same result. Work whose scope is unclear when it starts, where the workflow is meant to help, was not tested.
 
+Then a request with open questions, in two turns. Turn 1 asked to "add discount codes to invoices" with six questions left open (code format, stacking, before or after tax, a cap, rounding, unknown codes) and the user unavailable; turn 2, in the same session, answered them. Rework counts the lines of non-test code turn 2 changed; 12 hidden tests check the result:
+
+| Arm | Hidden tests passed | Rework (lines) | Cost (both turns) |
+|---|---|---|---|
+| Direct | 12, 12 | 64, 80 | $0.53, $0.45 |
+| spec-driven | 12, 12 | 78, 66 | $0.84, $0.94 |
+
+The spec recorded its assumptions but did not cut rework once the real answers came, and it cost 1.8 times as much. With the user unavailable in turn 1, neither arm could ask; a spec that stops for answers before coding was not tested.
+
 ## Code review
 
 Three commits with planted bugs, each reviewed as the staged diff, two runs per arm. A bug counts when the review names it.
@@ -243,6 +264,25 @@ Three commits with planted bugs, each reviewed as the staged diff, two runs per 
 
 The built-in review matched the best recall at about a seventh of the subagent's cost. The subagent's open-code-review step for diffs over 800 lines ran in 1 of 4 eligible runs. In one client run its `command -v ocr` check needed a permission the harness had not granted, so it reported ocr as unavailable; the other two runs skipped the step without checking. The one run that used it found no extra bug.
 
+## Security guard
+
+The `security-guard` hook (1.1.0) runs before every Bash, Edit, and Write call and asks the user when it finds a risk. Checked by hand against real advisories and scanners:
+
+| Trigger | Result |
+|---|---|
+| `npm install crossenv` (npm malware, GHSA, CWE-506) | asked |
+| `cargo add rustdecimal` (MAL-2022-1) | asked |
+| `npm i lodash@4.17.15` (pinned, known vulnerabilities) | asked, with advisory ids |
+| `npm i lodash`, `left-pad` added to `package.json` | no prompt |
+| `crossenv` 6.1.1 added to `package.json` by an edit | asked |
+| `git commit` with a GitHub token staged, and `git commit -am` with it unstaged | asked (gitleaks) |
+| A new `SKILL.md` telling the agent to post `~/.ssh/id_rsa` to a URL | asked (SkillSpector: data exfiltration, privilege escalation) |
+| `npx skills add 0x67/agent-playbook` | asked (SkillSpector rates it CAUTION, so installs of real skill repos ask too) |
+| `curl ... \| sh`, `uv tool install git+...`, `claude mcp add`, `git push`, `kubectl apply` | asked |
+| `ls`, `git status` | no prompt; 32 ms per call |
+
+AWS's documentation example keys pass gitleaks on purpose (they are allowlisted); real-format tokens are caught.
+
 ## Plugin evals
 
 `evals/run.sh` with two runs per case and a no-plugin baseline arm, Sonnet as both agent and judge:
@@ -256,6 +296,7 @@ The built-in review matched the best recall at about a seventh of the subagent's
 | PR description free of em dashes, attribution, and filler | 3 of 3 | 3 of 3 |
 | Real bug found, fixed version pitfall not reported (`go-modern`, `java-modern`) | 4 of 4 | 4 of 4 |
 | Newest std API named (`rust-newest`, `go-newest`) | 4 of 4 | 4 of 4 |
+| Version facts the model lacks (`jvm-java26`, `errorprone-jdk17`) | 4 of 4 | 1 of 4 |
 | Hot-path review flags allocation, logging, and the unbounded queue, and asks for numbers (`low-latency-review`) | 1 of 1 | 0 of 1 |
 | low-latency skill and disruptor page load from the `Cargo.toml` hook (`low-latency-hook`) | 2 of 2 | 0 of 2 |
 

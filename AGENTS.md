@@ -58,6 +58,16 @@ Hot-path code (per-message receive loops, decoders, order books, queues between 
 
 Naming, function size, module boundaries, and architecture (SOLID, layered, MVC, hexagonal, DDD, CQRS): load skill `software-design` (`agent-playbook:software-design`) alongside the language skill when designing a module or service, naming new types or APIs, splitting code, or reviewing a design.
 
+# Supply Chain and Outward Actions
+
+- Before adding a dependency, confirm the exact package name in the official registry and the project's docs; typosquats are common. Pin versions.
+- Never pipe a downloaded script into a shell or interpreter. Download it, read it, then run it.
+- Vet skills, plugins, and MCP servers before installing them: read the source, or scan it with SkillSpector.
+- Never commit secrets; keep them in environment variables or a secret store.
+- Push, publish, deploy, and apply commands need the user's go-ahead in this conversation.
+
+In Claude Code the `security-guard` hook backs these with a permission prompt: OSV advisories for new dependencies, SkillSpector for skills and plugins, gitleaks before commits, zizmor for workflow edits, and every push, publish, or deploy.
+
 # Worktree Commit Handoff
 
 Work in a git worktree or on a branch other than the user's workspace branch:

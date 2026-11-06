@@ -31,6 +31,12 @@
         "hooks": [
           { "type": "command", "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/lang-skill-reminder.sh\"", "timeout": 5, "statusMessage": "Checking for Go/Rust/C++/JVM edits..." }
         ]
+      },
+      {
+        "matcher": "Bash|Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/security-guard.py\"", "timeout": 120, "statusMessage": "Checking dependencies, installs, secrets, and deploys..." }
+        ]
       }
     ],
     "Stop": [

@@ -16,12 +16,12 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 | `skills/spec-driven` | Spec writing and implementation protocol, with templates and relay prompts | any agent |
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |
 | `agents/` | `planning-subagent`, `implement-subagent` | Claude Code |
-| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill and run its post-write gate the first time matching code is edited or built, and points at the low-latency skill and its matching pages on the first read in a Rust repo whose `Cargo.toml` depends on a latency crate; in repos with `lat.md/`, injects the sections matching each prompt and runs lat's end-of-session check only when the session changed files; memory-search reminder | Claude Code |
+| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill and run its post-write gate the first time matching code is edited or built, and points at the low-latency skill and its matching pages on the first read in a Rust repo whose `Cargo.toml` depends on a latency crate; asks you before risky moments: a new dependency with a malware or known-vulnerability advisory (OSV), a skill, plugin, or MCP install (SkillSpector), a commit that adds a secret (gitleaks), a risky workflow edit (zizmor), and any push, publish, or deploy; in repos with `lat.md/`, injects the sections matching each prompt and runs lat's end-of-session check only when the session changed files; memory-search reminder | Claude Code |
 | `plugins/session-hud` | Separate plugin in the same marketplace: a usage row under the prompt (context, rate limits, cost) and a TODO list shared by every session, see its [README](plugins/session-hud/README.md) | Claude Code |
 
 ## Install (Claude Code)
 
-The hooks need `sh`, `python3`, `jq`, and `git` on `PATH`. Without `jq` the language reminder stays silent; everything else still works.
+The hooks need `sh`, `python3`, `jq`, and `git` on `PATH`. Without `jq` the language reminder stays silent; everything else still works. The dependency check calls the public OSV API (`api.osv.dev`) and needs network access; when it is unreachable the check is skipped.
 
 1. Add the marketplaces, then install agent-playbook:
 
@@ -60,6 +60,9 @@ Each extra is used when present. Nothing breaks without it. [docs/benchmarks.md]
 | [rtk](https://www.rtk-ai.app/) | Compresses shell command output before it reaches the model. Claude Code already cuts outputs over about 30 KB to a short preview, and rtk can shrink such an output back under that limit so more of it lands in context; an A/B run in [docs/benchmarks.md](docs/benchmarks.md) cost 46% more for that reason | `brew install rtk`, then `rtk init -g --hook-only` (`--agent cursor` and others for other tools) | Full command output, more tokens |
 | [lat.md](https://www.npmjs.com/package/lat.md) | `lat` CLI for `lat.md/` architecture graphs | `npm i -g lat.md` | The lat reminder stays silent in repos without `lat.md/` |
 | [caveman](https://github.com/JuliusBrussee/caveman) | Terse chat replies. Measured: answers about 10% shorter, no cost saving, and about 5.9k extra prompt tokens per session | `/plugin marketplace add JuliusBrussee/caveman`, then `/plugin install caveman@caveman`; its `[CAVEMAN]` status line badge is optional, and the mode works without it | Normal replies; nothing in agent-playbook depends on it |
+| [gitleaks](https://github.com/gitleaks/gitleaks) | Stops a commit that adds a key or token: the `security-guard` hook asks you first | `brew install gitleaks` | Commits are not scanned for secrets |
+| [SkillSpector](https://github.com/NVIDIA/skillspector) | Scans a skill repo, plugin marketplace, or new `SKILL.md` before it is installed, and asks you when it is not rated safe | `uv tool install git+https://github.com/NVIDIA/skillspector.git` | Skill and plugin installs are not scanned; `claude mcp add`, `curl \| sh`, and git-URL installs still ask |
+| [zizmor](https://github.com/zizmorcore/zizmor) | Checks GitHub Actions workflow edits for injection and permission problems before they are written | `brew install zizmor` | Workflow edits are not checked |
 | session-hud (this repo) | Usage row under the prompt and a shared TODO pane (`/todo`) | `/plugin install session-hud@0x67` | The built-in status line and `/usage` |
 | [tech-debt-skill](https://github.com/ksimback/tech-debt-skill) | Tech debt audits | `npx skills add ksimback/tech-debt-skill` | Nothing; agent-playbook does not reference it |
 
