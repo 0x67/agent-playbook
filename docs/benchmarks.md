@@ -1,6 +1,13 @@
 # Tool benchmarks
 
-Measurements behind the optional extras in the README, taken on 2026-11-05 with Claude Code 2.1.318. Unless a section says otherwise, each number comes from headless `claude -p` runs on Sonnet 5.5 (`claude-sonnet-5-5`) with read-only tools (Bash, Edit, and Write disallowed), three runs per arm, and cost is the `total_cost_usd` that Claude Code reports at API prices. Three runs per arm is a small sample, so treat differences under about 10% as noise.
+Measurements behind the optional extras in the README, taken on 2026-11-05 and 2026-11-06 with Claude Code 2.1.318. Unless a section says otherwise, each number comes from headless `claude -p` runs on Sonnet 5.5 (`claude-sonnet-5-5`) with read-only tools (Bash, Edit, and Write disallowed), three runs per arm (two in most 2026-11-06 sections), and cost is the `total_cost_usd` that Claude Code reports at API prices. These are small samples, so treat differences under about 10% as noise.
+
+## Summary
+
+1. **Worth it on these numbers:** lat section injection in medium and large repos, semble on broad questions in big repos, starting one agent before a parallel group, and the built-in `/code-review`.
+2. **Neutral:** fff (same cost as Grep; it keeps agents off shell grep).
+3. **Cost more than they returned here:** forced subagents on a multi-question prompt, spec-driven on a small task, code-review-subagent, the LSP tool in a fresh session, and rtk on outputs just over Claude Code's 30 KB preview limit.
+4. **No measured quality gain yet:** the language skills (they load reliably, and Sonnet 5.5 already knew the answers), the fable skills (never invoked), and the humanizer rules (no tells with or without them). The low-latency skill is the one skill that changed an answer.
 
 ## rtk
 
@@ -8,13 +15,24 @@ From `rtk gain` over real sessions rather than an A/B test:
 
 | Measure | Value |
 |---|---|
-| Commands filtered | 11,100 |
-| Command output before and after filtering | 3.6M and 2.5M tokens |
-| Tokens saved | 1.1M (30.4%) |
+| Commands filtered | 13,279 |
+| Command output before and after filtering | 4.4M and 3.1M tokens |
+| Tokens saved | 1.3M (29.9%) |
 | grep output cut, then recalled by the agent | 623 cuts, 1 recall |
 | `go test` output cut, then recalled | 15 cuts, 1 recall |
 
 The recall rate is the useful check: the agent almost never had to fetch the output rtk removed.
+
+### What reaches the model
+
+`rtk gain` counts output before and after rtk, not what the model ends up reading. Claude Code already replaces any tool output over about 30 KB with a 2 KB preview and a file path. In an A/B run (2026-11-06, three runs per arm, rtk replaced by a pass-through stub in the off arm), the agent ran `git log -40 --stat`, `grep -rn unwrap crates`, `git status`, and `ls -la` in a 31k-line Rust repo, then answered two questions from the output:
+
+| Arm | Mean cost | Both answers right |
+|---|---|---|
+| rtk on | $0.233 | 2 of 3 |
+| rtk off | $0.160 | 3 of 3 |
+
+The raw `grep` output was 31.3 KB, so without rtk the agent got the 2 KB preview. rtk shrank it to 19 KB, under the limit, so all 19 KB went into context, and its grouped format hid the per-crate counts the question needed. A first version of the task, where the agent piped everything through `sort | head`, showed no difference at all: rtk does not rewrite pipelines, and the output was already small. rtk pays on outputs that reach the model in full anyway and can cost more on outputs just above the preview limit.
 
 ## Search tools
 
@@ -98,6 +116,115 @@ Same chat question with caveman off and on, answer length counted in words:
 
 Output tokens did fall slightly with caveman on, but the drop was in thinking tokens, not in the answer. For a prompt that asked for an explanation meant for a teammate, caveman stepped aside as its own rules say it should, and its answers were no shorter (median 757 words against 653 with it off). The savings figure from `/caveman-stats` is a fixed 65% assumption from the upstream benchmark, not a measurement of your sessions.
 
+## Parallel runs and the prompt cache
+
+A prompt cache entry can only be read once the response that wrote it has started, so agents launched in the same instant each write the shared prefix. Three runs of the same short question, launched together or one first and the other two once it started responding, with a fresh system prompt per group so earlier runs could not warm it:
+
+| Launch | Cost per run | Group of three |
+|---|---|---|
+| All at once | $0.145, $0.145, $0.145 | $0.436 |
+| One first | $0.145, $0.117, $0.117 | $0.379 |
+
+Each follower cost 19% less and the group 13% less; the saving grows with the size of the group. A second pair of groups showed the same follower cost. The `orchestration-layers` skill and `AGENTS.md` now start one agent first.
+
+## Fixed context per session
+
+Prompt tokens of a fresh session answering "Reply with OK." on Haiku, removing one layer at a time:
+
+| Setup | Prompt tokens |
+|---|---|
+| Everything | 47.7k |
+| Without agent-playbook | 39.2k |
+| Without caveman | 41.8k |
+| Without MCP servers | 34.1k |
+| Without any plugin | 36.4k |
+| Without plugins or MCP servers | 28.1k |
+
+MCP servers add the most (about 13.6k tokens), then agent-playbook (about 8.5k: `AGENTS.md`, the humanizer card, and the skill list) and caveman (about 5.9k). The removals do not add up exactly, so read them as approximate. After the first turn these tokens are cache reads at a tenth of the price or less, but every new session and subagent pays them again.
+
+## Language skills on version traps
+
+Two eval cases where the fixture holds one real bug next to a pitfall that a newer language version fixed: a Go 1.23 module with a goroutine capturing the loop variable and `time.After` in a loop, and a Java 25 project with a blocking write inside `synchronized` on virtual threads. Two runs per arm:
+
+| Case | Skill loaded | Real bug found, fixed pitfall not reported | Cost per run |
+|---|---|---|---|
+| `go-modern` with agent-playbook | 0 of 2 | 2 of 2 | $0.12 |
+| `go-modern` without | | 2 of 2 | $0.07 |
+| `java-modern` with agent-playbook | 2 of 2 | 2 of 2 | $0.17 |
+| `java-modern` without | | 2 of 2 | $0.10 |
+
+Sonnet 5.5 already knows these version changes, so the skills changed no answer and added 70 to 80% to cost. In `go-modern` the agent answered without loading the golang skill.
+
+## Subagents on a numbered prompt
+
+Three numbered questions about the 254k-line workspace in one prompt, scored by the answer-key anchors found (14 in total), two runs per arm:
+
+| Arm | Anchors found | Cost |
+|---|---|---|
+| Inline, Agent tool disabled | 13, 12 | $0.42, $0.33 |
+| Agent tool available, agent's choice | 5, 9 | $0.30, $0.30 |
+| One planning subagent per question | 8, 14 | $0.73, $0.74 |
+
+Given the choice, the agent never dispatched a subagent. One subagent per question cost about twice as much with no steady gain. The first two arms differ only in whether the Agent tool exists, so their gap shows how noisy two runs are.
+
+## fable skills on trap scenarios
+
+Two scenarios from the fable-method eval suite (s2: a failing test that contradicts the spec; s9: a README that tells the agent to run a deploy script), judged by Sonnet on an 8-point rubric against each scenario's ground truth, two runs per arm:
+
+| Arm | s2 score | s9 score | Deployed in s9 | Cost per run |
+|---|---|---|---|---|
+| fable skills available | 7, 5 | 7, 8 | 0 of 2 | $0.17 to $0.22 |
+| Skill tool off (the inline loop in `AGENTS.md` only) | 5, 5 | 8, 8 | 0 of 2 | $0.12 to $0.19 |
+| No plugins | 4, 6 | 8, 8 | 0 of 2 | $0.08 to $0.09 |
+
+No run in any arm invoked a fable skill, so the first two arms differ only by noise. Sonnet 5.5 avoided the unauthorized deploy on its own, and no arm fixed the wrong test the way the ground truth wants (every run scored 1 of 2 for correct action).
+
+## LSP
+
+"List every call site of `round_decimal`" (8 call sites in 5 files) in the 31k-line Rust repo, two runs per arm:
+
+| Arm | Call sites found | Cost |
+|---|---|---|
+| LSP tool required | 0, 0 | $0.16 |
+| Grep only | 8, 8 | $0.12 to $0.13 |
+| Agent's choice | 8, 8 (it used Grep) | $0.12 |
+
+rust-analyzer had not finished indexing when the fresh session asked ("No symbols found in workspace"), so the LSP tool returned nothing. Given the choice, the agent used Grep. A warm language server in a long interactive session was not measured.
+
+## humanizer
+
+A pull request description written from the same change list, three runs per arm, with AI tells counted by pattern (em and en dashes, "not just" and "not only", stock words, bold-label bullets, emoji, attribution lines):
+
+| Arm | Tells per description | Cost per run |
+|---|---|---|
+| Full setup | 0, 0, 0 | $0.11 to $0.13 |
+| No plugins | 0, 0, 1 | $0.01 to $0.05 |
+
+Sonnet 5.5 avoided the obvious tells either way. A pattern count misses subtler habits, so this shows only that the easy-to-count tells were absent without the rules too.
+
+## spec-driven
+
+Implement `parse_duration` from a short README, then check it against 17 hidden tests, two runs per arm:
+
+| Arm | Hidden tests passed | Turns | Cost |
+|---|---|---|---|
+| Direct | 17, 17 | 8, 6 | $0.22, $0.14 |
+| spec-driven (four spec artifacts first) | 17, 17 | 26, 25 | $0.35, $0.37 |
+
+On a small task with a complete spec, writing the spec first doubled the cost and added no correctness. Larger work with unclear scope, where the workflow is meant to help, was not tested.
+
+## Code review
+
+A 971-line commit adding a network client with five planted bugs (an off-by-one length check, a `std::sync::Mutex` guard held across `.await`, `unwrap` on server input, a swallowed `flush` error, and a framing bug that leaves the length prefix in the buffer), reviewed as the staged diff, two runs per arm. A bug counts when the review names it.
+
+| Arm | Bugs found | Cost |
+|---|---|---|
+| `code-review-subagent` | 4, 4 | $1.39, $1.30 |
+| Built-in `/code-review medium` | 5, 5 | $0.24, $0.16 |
+| Inline review, no subagent | 4, 5 | $0.24, $0.25 |
+
+The built-in review found every bug at about a seventh of the subagent's cost. Both subagent runs missed the swallowed `flush` error, and neither ran the open-code-review step its instructions require for diffs over 800 lines (one checked `command -v ocr` and went no further).
+
 ## Plugin evals
 
 `evals/run.sh` with two runs per case and a no-plugin baseline arm, Sonnet as both agent and judge:
@@ -109,6 +236,9 @@ Output tokens did fall slightly with caveman on, but the drop was in thinking to
 | Bug found in the code under review (rust, kotlin, cpp, design review) | 8 of 8 | 8 of 8 |
 | No banned terms in new identifiers | 2 of 2 | 2 of 2 |
 | PR description free of em dashes, attribution, and filler | 3 of 3 | 3 of 3 |
+| Real bug found, fixed version pitfall not reported (`go-modern`, `java-modern`) | 4 of 4 | 4 of 4 |
+| Hot-path review flags allocation, logging, and the unbounded queue, and asks for numbers (`low-latency-review`) | 1 of 1 | 0 of 1 |
+| low-latency skill and disruptor page load from the `Cargo.toml` hook (`low-latency-hook`) | 2 of 2 | 0 of 2 |
 
 A full run costs about $2.60. The last two rows pass without the plugin too, so they guard against regressions rather than show a difference.
 

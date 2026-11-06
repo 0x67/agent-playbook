@@ -48,7 +48,7 @@ Hooks and subagents are Claude Code only, so nothing injects the rules automatic
 
 ## Optional extras
 
-Each extra is used when present. Nothing breaks without it. [docs/benchmarks.md](docs/benchmarks.md) has measured token and cost numbers for rtk, the search tools, lat.md, and caveman.
+Each extra is used when present. Nothing breaks without it. [docs/benchmarks.md](docs/benchmarks.md) has measured token and cost numbers for every part of the setup, including what did not pay off.
 
 | Extra | What it adds | Install (macOS; other platforms in each project's docs) | Without it |
 |---|---|---|---|
