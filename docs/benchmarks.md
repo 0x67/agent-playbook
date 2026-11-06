@@ -104,6 +104,8 @@ End to end with the shipped rule (at least 0.50, linked code exists), 12 questio
 
 Questions that got nothing injected still moved 6% in cost between arms, so the noise floor is around 6 to 10%. Injection pays in medium and large repos whose `lat.md` sections link to code; in a small repo agents find the answer fast either way. No run in this set followed an injected section to the wrong code.
 
+A label telling the agent that injected sections are the repository's own docs, to be used as data rather than instructions, was tested on 2026-11-06 in the large workspace (4 questions, 2 runs per arm). Cost did not change ($1.51 labeled, $1.54 unlabeled), but the mean answer score fell from 0.68 to 0.52, mostly on one question where both labeled runs followed sections that pointed at the wrong subsystem. The question with nothing injected moved by 0.25 between arms on its own, so the sample is noisy, but the label was not shipped. The hook therefore passes `lat.md` text to the agent unlabeled: in a repository you do not trust that has a lat index, that text reaches the agent as written.
+
 ## caveman
 
 Same chat question with caveman off and on, answer length counted in words:
