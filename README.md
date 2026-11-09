@@ -12,6 +12,7 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 | `skills/golang`, `skills/rust`, `skills/tauri`, `skills/cpp`, `skills/java`, `skills/kotlin` | Language skills with a routing table into `references/` and a post-write gate | any agent |
 | `skills/jvm` | JVM platform shared by Java and Kotlin: Gradle, Maven, JUnit, Mockito, MockK, Spring, profiling, version compatibility, jdtls and kotlin-lsp navigation | any agent |
 | `skills/software-design` | Language-agnostic naming, function size, modularity, and architecture (SOLID, layered, MVC, hexagonal, DDD, CQRS, microservices) | any agent |
+| `skills/conventional-commits` | Conventional Commits headers for commits and PR titles, one-line commits with no AI attribution, and a PR body layout; the repo's commitlint config, PR template, and history take precedence | any agent |
 | `skills/low-latency` | Hot-path rules for any language (measure first, one writer, no per-message allocation, overflow policy, wait strategy, thread placement), with Rust pages for disruptor, crossbeam and rtrb, bytes and zerocopy, io-uring, measurement (criterion, hdrhistogram, loom, Miri), and CPU pinning | any agent |
 | `skills/spec-driven` | Spec writing and implementation protocol, with templates and relay prompts | any agent |
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |

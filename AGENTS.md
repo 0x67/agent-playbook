@@ -68,6 +68,10 @@ Naming, function size, module boundaries, and architecture (SOLID, layered, MVC,
 
 In Claude Code the `security-guard` hook backs these with a permission prompt: OSV advisories for new dependencies, SkillSpector for skills and plugins, gitleaks before commits, zizmor for workflow edits, and every push, publish, or deploy.
 
+# Commits and Pull Requests
+
+Before writing a commit message, a PR title, or a PR body, load skill `conventional-commits` (`agent-playbook:conventional-commits` in Claude Code): Conventional Commits headers, one-line commits with no AI attribution, and a Summary, Changes, Testing PR body. The repository's commitlint config, PR template, and commit history override it.
+
 # Worktree Commit Handoff
 
 Work in a git worktree or on a branch other than the user's workspace branch:
