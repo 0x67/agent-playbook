@@ -1,6 +1,6 @@
 # Measuring latency (Rust)
 
-Loaded via the low-latency SKILL.md routing table. Checked against criterion 0.8.2, hdrhistogram 7.6.0, loom 0.7.2 on 2026-11-06. Sources: crate source and doc comments of criterion 0.8.2, hdrhistogram 7.6.0, loom 0.7.2 and iai-callgrind 0.16.1; Miri README (rust-lang/miri master, 2026-11-06); `core::alloc::GlobalAlloc` docs.
+Loaded via the low-latency SKILL.md routing table. Checked against criterion 0.8.2, hdrhistogram 7.6.0, loom 0.7.3 on 2026-11-09. Sources: crate source and doc comments of criterion 0.8.2, hdrhistogram 7.6.0, loom 0.7.2 and iai-callgrind 0.16.1; Miri README (rust-lang/miri master, 2026-11-06); `core::alloc::GlobalAlloc` docs.
 
 ## What to measure
 
