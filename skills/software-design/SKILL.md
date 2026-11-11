@@ -63,6 +63,7 @@ Flag in a diff:
 - A new synonym for an existing concept, or an old name kept as an alias after a rename.
 - `I` prefix or `Impl` suffix; an interface, strategy, factory, or config knob with one implementation or one value (a fake that tests use counts as a second implementation).
 - A function with section comments, nesting past about 3 levels, more than about 4 parameters, or a boolean flag argument.
+- A function whose steps run together with no blank line between them, or a ternary nested in another ternary.
 - A query that writes; a side effect missing from the name or signature; I/O or clock reads inside business rules.
 - Pass-through methods or layers; mapping between identical types.
 - The domain importing HTTP, ORM, driver, or SDK types; a dependency pointing outward; a new import cycle.

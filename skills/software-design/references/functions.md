@@ -15,6 +15,11 @@ Line count alone decides nothing. A flat 60-line `match` over one enum is one co
 | the same values passed together through layers | a data clump (Fowler) | make it a type |
 | name needs `And`, or only fits `handle`, `process`, `manage` | two jobs, or no clear job | split until each part has an honest name |
 | unit test needs five fakes | I/O mixed into logic | pull the logic into a pure function |
+| a ternary inside a ternary | a branch hidden in an expression | `if`/`else`, `switch`/`match`, or a lookup table; a named function when it returns a value |
+
+## Blank lines between steps
+
+A function that coordinates reads as short paragraphs: set up, do the work, return or record the result, with one blank line between them. No blank line after every statement, and none inside a step. A step that needs a comment to say what it does is a named function waiting to be extracted (see section comments above). Formatters keep the blank lines the author writes and add none, so this is the writer's job.
 
 ## One level of abstraction
 
