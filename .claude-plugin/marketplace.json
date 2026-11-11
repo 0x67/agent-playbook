@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "agent-playbook",
-      "source": "./",
+      "source": "./plugins/agent-playbook",
       "description": "Engineering rules, Go/Rust/Tauri/C++ skills, spec-driven workflow, orchestration subagents with model tiers, and the hooks that keep them loaded."
     },
     {

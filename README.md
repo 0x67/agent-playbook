@@ -6,6 +6,8 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 
 ## Contents
 
+The agent-playbook plugin lives in `plugins/agent-playbook/`, and the paths in this table are relative to it. The repo root holds only the marketplace, so claude.ai can sync each plugin on its own.
+
 | Path | What it does | Works in |
 |---|---|---|
 | `AGENTS.md` | Engineering rules: comments, tests, code growth, simplicity, search order, terminology | any agent |
@@ -18,7 +20,7 @@ I use this setup in my own daily work, and it took shape over a long stretch of 
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |
 | `agents/` | `planning-subagent`, `implement-subagent` | Claude Code |
 | `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill and run its post-write gate the first time matching code is edited or built, and points at the low-latency skill and its matching pages on the first read in a Rust repo whose `Cargo.toml` depends on a latency crate; asks you before risky moments: a new dependency with a malware or known-vulnerability advisory (OSV), a skill, plugin, or MCP install (SkillSpector), a commit that adds a secret (gitleaks), a risky workflow edit (zizmor), and any push, publish, or deploy; in repos with `lat.md/`, injects the sections matching each prompt and runs lat's end-of-session check only when the session changed files; memory-search reminder | Claude Code |
-| `plugins/session-hud` | Separate plugin in the same marketplace: a usage row under the prompt (context, rate limits, cost) and a TODO list shared by every session, see its [README](plugins/session-hud/README.md) | Claude Code |
+| `../session-hud` | Separate plugin in the same marketplace: a usage row under the prompt (context, rate limits, cost) and a TODO list shared by every session, see its [README](plugins/session-hud/README.md) | Claude Code |
 
 ## Install (Claude Code)
 
@@ -76,8 +78,8 @@ Each subagent declares a default tier in its frontmatter: `planning-subagent` ru
 
 ## Evals
 
-`evals/` holds a `claude plugin eval` suite with one case per skill trigger and standing rule. Each case runs with and without the plugin, so the report shows what the plugin changes. Run `evals/run.sh`, adding `--case <name>`, `--runs <n>`, or `--model <alias>` as needed. Eval sandboxes load only the plugin under test, and agent-playbook will not load without its humanizer and fable dependencies, so the script evals a temporary copy with those dependencies removed. Results go to `evals/results/`, which git ignores. Cases run one at a time by default; with `--concurrency` above 1, cases that start together each pay the shared prompt prefix as a cache write instead of reading it, so the run costs more.
+`plugins/agent-playbook/evals/` holds a `claude plugin eval` suite with one case per skill trigger and standing rule. Each case runs with and without the plugin, so the report shows what the plugin changes. Run `plugins/agent-playbook/evals/run.sh`, adding `--case <name>`, `--runs <n>`, or `--model <alias>` as needed. Eval sandboxes load only the plugin under test, and agent-playbook will not load without its humanizer and fable dependencies, so the script evals a temporary copy with those dependencies removed. Results go to `plugins/agent-playbook/evals/results/`, which git ignores. Cases run one at a time by default; with `--concurrency` above 1, cases that start together each pay the shared prompt prefix as a cache write instead of reading it, so the run costs more.
 
 ## License
 
-MIT. `hooks/humanizer-card.md` condenses rules from [blader/humanizer](https://github.com/blader/humanizer) (MIT).
+MIT. `plugins/agent-playbook/hooks/humanizer-card.md` condenses rules from [blader/humanizer](https://github.com/blader/humanizer) (MIT).
