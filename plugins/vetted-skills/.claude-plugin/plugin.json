@@ -1,0 +1,12 @@
+{
+  "name": "vetted-skills",
+  "version": "1.0.0",
+  "description": "Third-party skills pinned to a reviewed commit and scanned with SkillSpector: better-writing, better-typography, Waza ui, and Kami.",
+  "author": {
+    "name": "0x67",
+    "url": "https://github.com/0x67"
+  },
+  "homepage": "https://github.com/0x67/agent-playbook",
+  "repository": "https://github.com/0x67/agent-playbook",
+  "license": "MIT"
+}

@@ -18,6 +18,11 @@
       "name": "session-hud",
       "source": "./plugins/session-hud",
       "description": "Usage row under the prompt (context, rate limits, cost), an agents pane for subagents and workflow runs with verdicts and a JSONL run log, and a TODO list shared by every session"
+    },
+    {
+      "name": "vetted-skills",
+      "source": "./plugins/vetted-skills",
+      "description": "Third-party skills pinned to a reviewed commit and scanned with SkillSpector: better-writing, better-typography, Waza ui, and Kami."
     }
   ]
 }

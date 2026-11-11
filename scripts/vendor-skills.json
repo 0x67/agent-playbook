@@ -1,0 +1,32 @@
+[
+  {
+    "name": "better-writing",
+    "repo": "jakubkrehel/skills",
+    "path": "skills/better-writing",
+    "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
+  },
+  {
+    "name": "better-typography",
+    "repo": "jakubkrehel/skills",
+    "path": "skills/better-typography",
+    "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
+  },
+  {
+    "name": "ui",
+    "repo": "tw93/Waza",
+    "path": "plugins/waza/skills/ui",
+    "sha": "58217546cd94fcf5ddcde4265c00a9377ed3192c"
+  },
+  {
+    "name": "kami",
+    "repo": "tw93/Kami",
+    "path": "plugins/kami/skills/kami",
+    "sha": "e82bb390c9d6f63d3b0a54b7deb11b85ff4979c9",
+    "accepted": {
+      "sha": "e82bb390c9d6f63d3b0a54b7deb11b85ff4979c9",
+      "severity": "CRITICAL",
+      "reviewed": "2026-11-09",
+      "note": "Findings were CJK text, HTML template comments, cleanup of its own temp files, and install hints. Network use: a daily check of the latest GitHub release, font downloads from jsDelivr and tsanger.cn in ensure-fonts.sh, and npm ci --ignore-scripts from its lockfile for the math renderer."
+    }
+  }
+]
