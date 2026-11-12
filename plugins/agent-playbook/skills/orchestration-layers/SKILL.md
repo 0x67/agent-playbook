@@ -94,21 +94,25 @@ unmatched `subagent_type` silently falls back to `general-purpose` / `claude`, w
 
 ## Model tier per handoff
 
-Pick the tier by the work, not by habit. Pass it explicitly (`model:` on the Agent tool,
-`opts.model` on Workflow `agent()`); each agent file's `model:` field is only its default.
+Pick the tier by the work, not by habit. Pass it explicitly on every spawn (`model:` on the
+Agent tool, `opts.model` on every Workflow `agent()`). A spawn without one falls back to the agent
+file's `model:`, then to `CLAUDE_CODE_SUBAGENT_MODEL`, then to the session model, which may be Opus
+or Fable. Set `CLAUDE_CODE_SUBAGENT_MODEL=sonnet` in settings so that fallback stays cheap.
 
 | Work handed off | Tier | Default agent |
 |---|---|---|
-| Locate code, list files, one-file mechanical edit | `haiku` | Explore, quick lookups |
+| Locate code, list files, one-file mechanical edit, preflight checks, a gate that runs commands and reports | `haiku` | Explore, quick lookups |
 | Read-only research with a clear question | `sonnet` | `agent-playbook:planning-subagent` |
-| Implementation from a written spec or task | `opus` | `agent-playbook:implement-subagent` |
+| Implementation from a written spec or task, fix from confirmed findings | `sonnet` | `agent-playbook:implement-subagent` |
+| Review of one slice or lens of a diff, verification of one finding | `sonnet` | `general-purpose` with an explicit brief |
 | Code review of a diff | the skill's own | built-in `code-review` skill (`/code-review <level>`) |
-| Adversarial verification, security-sensitive change | `opus` | `general-purpose` with an explicit brief |
+| Final adversarial pass over the merged diff, security-sensitive change | `opus` | `general-purpose` with an explicit brief |
 | Orchestration across work units | session model | the main thread |
 | Hardest reasoning, only when the user asks for it | `fable` | any |
 
-Move up one tier when a subagent returns FAILED twice on the same unit, or the unit changes an
-interface other units depend on. Move down when the brief is a lookup.
+Raise a unit to `opus` when it changes an interface other units depend on, touches money,
+concurrency, auth, or a data migration, or returned FAILED twice on `sonnet`. Move down when the
+brief is a lookup.
 
 ## Model disclosure
 

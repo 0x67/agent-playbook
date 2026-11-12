@@ -75,7 +75,7 @@ Each extra is used when present. Nothing breaks without it. [docs/benchmarks.md]
 
 ## Model tiers
 
-Each subagent declares a default tier in its frontmatter: `planning-subagent` runs on sonnet and `implement-subagent` on opus. Code review uses the built-in `/code-review` skill. `agent-playbook:orchestration-layers` holds the table for choosing a tier per handoff. To pin the version an alias resolves to, set `ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL`, `ANTHROPIC_DEFAULT_HAIKU_MODEL`, or `ANTHROPIC_DEFAULT_FABLE_MODEL` in the `env` block of your Claude Code settings.
+Each subagent declares a default tier in its frontmatter, and both `planning-subagent` and `implement-subagent` run on sonnet; the orchestrator raises a unit to opus by the rules in `orchestration-layers`. Set `CLAUDE_CODE_SUBAGENT_MODEL=sonnet` in the `env` block of your Claude Code settings so a spawn that names no model does not inherit the session model. Code review uses the built-in `/code-review` skill. `agent-playbook:orchestration-layers` holds the table for choosing a tier per handoff. To pin the version an alias resolves to, set `ANTHROPIC_DEFAULT_OPUS_MODEL`, `ANTHROPIC_DEFAULT_SONNET_MODEL`, `ANTHROPIC_DEFAULT_HAIKU_MODEL`, or `ANTHROPIC_DEFAULT_FABLE_MODEL` in the `env` block of your Claude Code settings.
 
 ## Vetted third-party skills
 
