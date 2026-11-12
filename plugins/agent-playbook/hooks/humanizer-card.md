@@ -1,4 +1,4 @@
-Humanizer rules for written output (condensed from skill `humanizer` v3.1.0). They apply to code comments, doc comments, docs, specs, PR bodies, commit messages, Jira comments, Slack and email drafts, and published artifacts. Chat replies to the user are out of scope.
+Humanizer rules for written output (condensed from skill `humanizer` v3.1.0). They apply to code comments, doc comments, docs, specs, UI strings (labels, buttons, errors, empty states, tooltips), PR bodies, commit messages, Jira comments, Slack and email drafts, and published artifacts. Chat replies to the user are out of scope.
 
 Load the full skill (Skill tool, `humanizer:humanizer`, embedded mode) before writing a PR body, doc, spec, Jira comment, or any prose longer than a short paragraph. Code comments and one-line commit headers can follow this card alone.
 
@@ -21,5 +21,7 @@ Fix when several show up together:
 14. Bold labels on every list item, Title Case headings, emoji or arrow decoration, curly quotes.
 15. Chatbot residue ("I hope this helps", "Let me know"), knowledge-limit disclaimers, a first sentence that repeats its heading, text about the document itself ("this function was added to replace...").
 16. In replies (PR review answers, Jira replies), lead with the decision and skip background the reader already has.
+
+Reviewing writing: when asked whether text reads as human or AI-written, check three levels in one pass and report each. Words: items 8, 9, 12, 13. Sentences: items 1, 3 to 7, 11, and colon reveals such as "Draft: ...". Paragraphs and sets of strings: items 2 and 15, one sentence template stamped across many messages, text that restates its own label or table, and one rule explained twice on the same screen. A grep for stock words and dashes covers words only. Review inline; it needs no Workflow.
 
 Keep every fact, identifier, path, number, type, and error text. Never rewrite code, commands, paths, or data. The user's formats win over these patterns: docs keep bold section headings with numbered lists, commits are one header line, and no em dashes. A writing sample from the user overrides everything here.
