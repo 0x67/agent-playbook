@@ -161,7 +161,8 @@ class Rule:
         return bool(self.patterns or self.swaps)
 
     def excepted(self, text):
-        return any(p.fullmatch(text) for p in self.exceptions)
+        # Vale drops a match when any exception pattern occurs inside it, not only when it covers it all
+        return any(p.search(text) for p in self.exceptions)
 
     def run(self, block):
         """Yield (offset, message) for one block of text."""
@@ -204,8 +205,11 @@ def blank(match):
 
 
 def prepare(text, ignores):
-    """Mask what Vale skips (code, URLs, tags, ignored tokens) while keeping every offset and line."""
+    """Mask what Vale skips (front matter, code, URLs, tags, ignored tokens) while keeping every offset and line."""
+    text = re.sub(r"\A---\n.*?\n---[ \t]*\n", blank, text, flags=re.S)
+    text = re.sub(r"(?s)<!--.*?-->", blank, text)
     text = re.sub(r"(?ms)^(```|~~~).*?^\1[^\n]*$", blank, text)
+    text = re.sub(r"(?m)(?<=\n\n)(?:(?:\t| {4})[^\n]*(?:\n|$))+", blank, text)
     text = re.sub(r"`[^`\n]+`", blank, text)
     text = re.sub(r"\]\([^)\s]+\)", blank, text)
     text = re.sub(r"https?://\S+", blank, text)

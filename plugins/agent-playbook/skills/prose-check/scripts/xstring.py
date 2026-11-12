@@ -80,20 +80,40 @@ def check_strings(lines, minimum=3):
     }
 
 
+LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+")
+POINTER = re.compile(r"^(?:see|details? (?:in|at)|more in|full (?:list|rules?) in|example in)\b", re.I)
+
+
 def paragraphs(markdown):
+    """(text, is_list) per block, with code, headings and table rows dropped."""
     text = re.sub(r"```.*?```", "", markdown, flags=re.S)
     blocks = []
     for block in re.split(r"\n\s*\n", text):
         lines = [ln for ln in block.splitlines() if ln.strip() and not ln.lstrip().startswith(("|", "#"))]
         if lines:
-            blocks.append(" ".join(re.sub(r"^\s*(?:[-*]|\d+\.)\s+", "", ln) for ln in lines))
-    return [re.sub(r"[*_`]", "", b) for b in blocks]
+            is_list = all(LIST_ITEM.match(ln) or ln.startswith((" ", "\t")) for ln in lines)
+            joined = " ".join(LIST_ITEM.sub("", ln) for ln in lines)
+            blocks.append((re.sub(r"[*_`]", "", joined), is_list))
+    return blocks
+
+
+def window_openings(sentences, size=6, need=3):
+    """Sentences whose two-word opening repeats at least `need` times within `size` consecutive sentences."""
+    keys = [" ".join(words(s)[:2]) if len(words(s)) >= 4 else "" for s in sentences]
+    hits = {}
+    for i in range(len(keys)):
+        window = keys[i:i + size]
+        for key, count in collections.Counter(k for k in window if k).items():
+            if count >= need:
+                hits.setdefault(key, [])
+                hits[key] += [s for s, k in zip(sentences[i:i + size], window) if k == key and s not in hits[key]]
+    return hits
 
 
 def check_markdown(markdown, minimum=3):
     found = collections.defaultdict(list)
     all_sents = []
-    for para in paragraphs(markdown):
+    for para, is_list in paragraphs(markdown):
         sents = sentences(para)
         all_sents += sents
         lengths = [len(words(s)) for s in sents]
@@ -109,14 +129,15 @@ def check_markdown(markdown, minimum=3):
                 found["anaphora_runs"].append(sents[i])
                 break
 
-        if len(lengths) >= 3 and lengths[-1] <= 6 and lengths[-1] < statistics.mean(lengths[:-1]) / 2:
+        short_end = len(lengths) >= 3 and lengths[-1] <= 6 and lengths[-1] < statistics.mean(lengths[:-1]) / 2
+        if short_end and not is_list and not POINTER.match(sents[-1]):
             found["short_closers"].append(sents[-1])
 
         found["contrasts"] += [s for s in sents if contrast(s)]
-        found["colon_reveals"] += [s for s in sents if colon_reveal(s)]
+        if not is_list:
+            found["colon_reveals"] += [s for s in sents if colon_reveal(s)]
 
-    openings = clusters(((" ".join(words(s)[:2]), s) for s in all_sents if len(words(s)) >= 4), minimum + 1)
-    found["repeated_openings"] = openings
+    found["repeated_openings"] = window_openings(all_sents)
     return dict(found)
 
 
