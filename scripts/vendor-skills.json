@@ -12,6 +12,36 @@
     "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
   },
   {
+    "name": "better-accessibility",
+    "repo": "jakubkrehel/skills",
+    "path": "skills/better-accessibility",
+    "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
+  },
+  {
+    "name": "better-colors",
+    "repo": "jakubkrehel/skills",
+    "path": "skills/better-colors",
+    "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
+  },
+  {
+    "name": "better-interface",
+    "repo": "jakubkrehel/skills",
+    "path": "skills/better-interface",
+    "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
+  },
+  {
+    "name": "better-layout",
+    "repo": "jakubkrehel/skills",
+    "path": "skills/better-layout",
+    "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
+  },
+  {
+    "name": "better-ui",
+    "repo": "jakubkrehel/skills",
+    "path": "skills/better-ui",
+    "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
+  },
+  {
     "name": "ui",
     "repo": "tw93/Waza",
     "path": "plugins/waza/skills/ui",
