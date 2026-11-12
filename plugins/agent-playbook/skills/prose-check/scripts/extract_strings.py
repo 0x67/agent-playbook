@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
-"""Extract user-facing strings from HTML, JSX/TSX, Vue and Svelte files.
+"""Extract user-facing strings from HTML, JSX/TSX, Vue, Svelte, PowerPoint and JSON files.
 
 usage: extract_strings.py FILE  (prints "L<line> UI| <text>" per string, the format xstring.py reads)
 
 HTML goes through html.parser: text nodes outside script and style, plus placeholder, title, aria-label
 and alt. Component files use patterns: text between tags, those same attributes, and string literals
-passed to t() or toast(). Template expressions are kept as {x} so sentence shape survives.
+passed to t() or toast(). PowerPoint gives each paragraph of slide text and speaker notes, numbered by
+slide. JSON gives every string of three or more words, which covers slide and document data files.
+Template expressions are kept as {x} so sentence shape survives.
 """
+import html
 import html.parser
+import json
 import re
 import sys
+import zipfile
 from pathlib import Path
 
 ATTRIBUTES = ("placeholder", "title", "aria-label", "alt", "label")
@@ -60,14 +65,53 @@ def from_components(text):
     return found
 
 
+def from_pptx(path):
+    """Paragraphs of slide text and speaker notes; the line number is the slide number."""
+    found = []
+    with zipfile.ZipFile(path) as deck:
+        parts = [n for n in deck.namelist() if re.fullmatch(r"ppt/(?:slides/slide|notesSlides/notesSlide)\d+\.xml", n)]
+        for name in parts:
+            number = int(re.search(r"(\d+)\.xml$", name).group(1))
+            xml = deck.read(name).decode("utf-8", "replace")
+            for paragraph in re.findall(r"<a:p\b.*?</a:p>", xml, re.S):
+                runs = re.findall(r"<a:t(?:\s[^>]*)?>([^<]*)</a:t>", paragraph)
+                value = tidy(html.unescape("".join(runs)))
+                if re.search("[A-Za-z]{2}", value):
+                    found.append((number, value))
+    return found
+
+
+def from_json(text):
+    strings = []
+
+    def walk(value):
+        if isinstance(value, dict):
+            for item in value.values():
+                walk(item)
+        elif isinstance(value, list):
+            for item in value:
+                walk(item)
+        elif isinstance(value, str) and len(value.split()) >= 3 and not re.match(r"^\s*(?:https?://|[{\[<])", value):
+            strings.append(value)
+
+    walk(json.loads(text))
+    return [(line_at(text, max(text.find(s[:30]), 0)), tidy(s)) for s in strings]
+
+
 def extract(path):
     """Return [(line, text)] in file order, without duplicates on the same line."""
     path = Path(path)
+    suffix = path.suffix.lower()
+    if suffix == ".pptx":
+        return sorted(set(from_pptx(path)))
+
     text = path.read_text(encoding="utf-8", errors="replace")
-    if path.suffix.lower() in (".html", ".htm"):
+    if suffix in (".html", ".htm"):
         parser = HtmlStrings()
         parser.feed(text)
         found = parser.found
+    elif suffix == ".json":
+        found = from_json(text)
     else:
         found = from_components(text)
     return sorted(set(found))

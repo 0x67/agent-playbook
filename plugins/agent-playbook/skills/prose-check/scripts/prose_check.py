@@ -5,8 +5,8 @@ CLI:  prose_check.py [--engine auto|vale|lite] [--json] FILE...   ("-" reads Mar
 Hook: run with no arguments; reads the Write or Edit payload on stdin and returns the findings inside
       the written or edited lines as additionalContext.
 
-Markdown and text files are checked as prose. HTML, JSX/TSX, Vue and Svelte files have their UI strings
-extracted (extract_strings.py) and checked one by one and as a set (xstring.py). The vale-ai-tells rules
+Markdown and text files are checked as prose. HTML, JSX/TSX, Vue, Svelte, PowerPoint and JSON files have
+their strings extracted (extract_strings.py) and checked one by one and as a set (xstring.py). The vale-ai-tells rules
 run through Vale when it is on PATH, with ../vale.ini, and through vale_lite.py otherwise. Nothing leaves
 the machine.
 """
@@ -26,7 +26,9 @@ import xstring
 HERE = Path(__file__).resolve().parent
 CONFIG = HERE.parent / "vale.ini"
 PROSE = {".md", ".mdx", ".txt"}
-UI = {".html", ".htm", ".tsx", ".jsx", ".vue", ".svelte"}
+UI = {".html", ".htm", ".tsx", ".jsx", ".vue", ".svelte", ".pptx", ".json"}
+# config and data JSON is written constantly while coding, so the Write/Edit hook leaves it to the CLI
+NOT_HOOKED = {".json", ".pptx"}
 SKIP_DIRS = {".git", "node_modules", "vendor", "dist", "build", "vetted-skills"}
 MAX_REPORTED = 12
 
@@ -107,7 +109,8 @@ def check_path(path, engine):
 
 
 def skipped(path):
-    return path.suffix.lower() not in PROSE | UI or bool(set(path.parts) & SKIP_DIRS)
+    suffix = path.suffix.lower()
+    return suffix not in PROSE | UI or suffix in NOT_HOOKED or bool(set(path.parts) & SKIP_DIRS)
 
 
 def edited_lines(path, tool_input):

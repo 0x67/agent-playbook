@@ -9,16 +9,17 @@ The checker only flags. Fixing is a rewrite under the humanizer rules: keep ever
 
 ## Run it
 
-1. Files: `python3 "${CLAUDE_SKILL_DIR}/scripts/prose_check.py" FILE...`
+1. Files: `sh "${CLAUDE_SKILL_DIR}/scripts/run.sh" prose_check.py FILE...`
    - `.md`, `.mdx` and `.txt` are checked as prose.
    - `.html`, `.htm`, `.tsx`, `.jsx`, `.vue` and `.svelte` have their UI strings extracted first, then each string and the whole set are checked.
+   - `.pptx` decks give their slide text and speaker notes, numbered by slide, and `.json` files give every string of three or more words, which covers slide and document data.
 2. A draft that is not in a file, such as a Jira comment, a Slack message or text the user pasted: write it to a scratch `.md` file and pass that path, or pipe it in with `-` as the path.
-3. In claude.ai, `${CLAUDE_SKILL_DIR}` is not filled in. Run `scripts/prose_check.py` from this skill's folder with code execution; it uses the Python port there.
+3. In claude.ai, `${CLAUDE_SKILL_DIR}` is not filled in. Run `python3 scripts/prose_check.py` from this skill's folder with code execution; it uses the Python port there, with the `regex` module if the sandbox has it.
 4. `--engine lite` forces the Python port and `--engine vale` requires Vale. `--json` prints machine-readable output, and the exit code is 1 when anything is flagged.
 
-The Python port runs the 132 existence, substitution and occurrence rules and skips the 5 sequence rules, which need Vale's part-of-speech tagger. On the files it was compared on, it reports 97% of Vale's findings.
+`run.sh` uses `python3` when it already has the `regex` module, then `uv` with the pinned `regex`, then plain `python3`. The Python port runs the 132 existence, substitution and occurrence rules and skips the 5 sequence rules, which need Vale's part-of-speech tagger. Without `regex`, 14 lookbehind patterns are skipped as well. On the files it was compared on, it reports 97% of Vale's findings.
 
-The plugin's hooks also run this check without being asked. After a Write or Edit to a prose or UI file, the findings in the written lines come back for revision. Before a Slack, Jira, Confluence, Gmail or Notion send or create, a flagged message is stopped once with its findings; sending the identical text again goes through, which is the way to send text the user wrote.
+The plugin's hooks also run this check without being asked. After a Write or Edit to a prose or UI file, the findings in the written lines come back for revision. Before a Slack, Jira, Confluence, Gmail, Notion, Claude Docs, Google Docs or Google Slides send or write, a flagged message is stopped once with its findings; sending the identical text again goes through, which is the way to send text the user wrote. Before an Artifact publish, the local files are checked, and the publish stops only for findings that file has not shown before.
 
 ## Read the findings
 
