@@ -35,6 +35,12 @@
     ],
     "PreToolUse": [
       {
+        "matcher": "mcp__.*__(slack_send_message|slack_send_message_draft|slack_schedule_message|slack_create_canvas|slack_update_canvas|addOrEditJiraIssueComment|createJiraIssue|editJiraIssue|createConfluenceContent|updateConfluenceContent|send_message|create_draft|update_draft|reply|forward|notion-create-pages|notion-update-page|notion-create-comment|notion-update-comment)",
+        "hooks": [
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/skills/prose-check/scripts/send_guard.py\"", "timeout": 30, "statusMessage": "Checking message prose..." }
+        ]
+      },
+      {
         "matcher": "Read|Edit|Write|Bash",
         "hooks": [
           { "type": "command", "command": "sh \"${CLAUDE_PLUGIN_ROOT}/hooks/lang-skill-reminder.sh\"", "timeout": 5, "statusMessage": "Checking for Go/Rust/C++/JVM edits..." }

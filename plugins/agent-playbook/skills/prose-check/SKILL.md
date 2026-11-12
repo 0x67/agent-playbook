@@ -18,6 +18,8 @@ The checker only flags. Fixing is a rewrite under the humanizer rules: keep ever
 
 The Python port runs the 132 existence, substitution and occurrence rules and skips the 5 sequence rules, which need Vale's part-of-speech tagger. On the files it was compared on, it reports 97% of Vale's findings.
 
+The plugin's hooks also run this check without being asked. After a Write or Edit to a prose or UI file, the findings in the written lines come back for revision. Before a Slack, Jira, Confluence, Gmail or Notion send or create, a flagged message is stopped once with its findings; sending the identical text again goes through, which is the way to send text the user wrote.
+
 ## Read the findings
 
 Each line is `L<line> <rule>: <message>`.
