@@ -17,10 +17,10 @@ The agent-playbook plugin lives in `plugins/agent-playbook/`, and the paths in t
 | `skills/conventional-commits` | Conventional Commits headers for commits and PR titles, one-line commits with no AI attribution, and a PR body layout; the repo's commitlint config, PR template, and history take precedence | any agent |
 | `skills/low-latency` | Hot-path rules for any language (measure first, one writer, no per-message allocation, overflow policy, wait strategy, thread placement), with Rust pages for disruptor, crossbeam and rtrb, bytes and zerocopy, io-uring, measurement (criterion, hdrhistogram, loom, Miri), and CPU pinning | any agent |
 | `skills/spec-driven` | Spec writing and implementation protocol, with templates and relay prompts | any agent |
-| `skills/prose-check` | Local scan for AI-like writing: the vale-ai-tells rules (v1.37.0, MIT, vendored) through Vale or a built-in Python port, plus cross-sentence checks for repeated openings, colon reveals, closers, and templates across UI strings; `/prose-check FILE` or by request, and the Write/Edit hook | Claude Code, claude.ai |
+| `skills/prose-check` | Local scan for AI-like writing: the vale-ai-tells rules (v1.37.0, MIT, vendored) through Vale or a built-in Python port, plus cross-sentence checks for repeated openings, colon reveals, closers, and templates across UI strings; see [Prose check](#prose-check) | Claude Code, claude.ai |
 | `skills/orchestration-layers` | Dispatch ladder, model tier per handoff, model disclosure, parallel scheduling | Claude Code |
 | `agents/` | `planning-subagent`, `implement-subagent` | Claude Code |
-| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill and run its post-write gate the first time matching code is edited or built, and points at the low-latency skill and its matching pages on the first read in a Rust repo whose `Cargo.toml` depends on a latency crate; asks you before risky moments: a new dependency with a malware or known-vulnerability advisory (OSV), a skill, plugin, or MCP install (SkillSpector), a commit that adds a secret (gitleaks), a risky workflow edit (zizmor), and any push, publish, or deploy; in repos with `lat.md/`, injects the sections matching each prompt and runs lat's end-of-session check only when the session changed files; memory-search reminder; after a Markdown, text, HTML, JSX/TSX, Vue, or Svelte write, runs the `prose-check` scan on the written lines and hands the flagged ones back for revision; before a Slack, Jira, Confluence, Gmail, or Notion send or create, stops a flagged message once with its findings (an identical resend goes through) | Claude Code |
+| `hooks/` | Injects `AGENTS.md` and a humanizer rule card at session and subagent start; reminds to load the Go, Rust, C/C++, Java, Kotlin, or JVM skill and run its post-write gate the first time matching code is edited or built, and points at the low-latency skill and its matching pages on the first read in a Rust repo whose `Cargo.toml` depends on a latency crate; asks you before risky moments: a new dependency with a malware or known-vulnerability advisory (OSV), a skill, plugin, or MCP install (SkillSpector), a commit that adds a secret (gitleaks), a risky workflow edit (zizmor), and any push, publish, or deploy; in repos with `lat.md/`, injects the sections matching each prompt and runs lat's end-of-session check only when the session changed files; memory-search reminder; after a Markdown, text, HTML, JSX/TSX, Vue, or Svelte write, runs the `prose-check` scan on the written lines and hands the flagged ones back for revision; before a message or document leaves through Slack, Jira, Confluence, Gmail, Notion, Claude Docs, Google Docs, or Google Slides, stops a flagged one once with its findings (an identical resend goes through); before an Artifact publish, checks the local files and stops only for findings new to that file | Claude Code |
 | `../session-hud` | Separate plugin in the same marketplace: a usage row under the prompt (context, rate limits, cost) and a TODO list shared by every session, see its [README](plugins/session-hud/README.md) | Claude Code |
 | `../vetted-skills` | Separate plugin in the same marketplace: the seven `better-*` interface skills, `interface-review`, Waza `ui`, and Kami, each copied from a pinned commit after a SkillSpector scan, see [Vetted third-party skills](#vetted-third-party-skills) | Claude Code, claude.ai |
 
@@ -88,9 +88,33 @@ Each subagent declares a default tier in its frontmatter, and both `planning-sub
 3. `--bump` moves every pin to the head of the upstream default branch first, so Kami fails after a bump until someone reviews the new commit. `--only <name>` limits the run to one skill.
 4. The script also lists frontmatter that claude.ai ignores or strips, such as extra keys or angle brackets in a description.
 
-The vale-ai-tells rules inside `skills/prose-check` follow the same idea. `scripts/vendor-vale-style.py` downloads the pinned release and regenerates the rule JSON the Python port reads (it needs PyYAML), and `scripts/prose-parity.py FILE...` then compares the port with Vale on sample files.
 
 In claude.ai, add this repo under Customize, Add marketplace, Add from a repository, then install `agent-playbook` and `vetted-skills`. claude.ai syncs on each push to `main`. Only the skills work in chat; hooks and subagents do not run there.
+
+## Prose check
+
+`skills/prose-check` flags AI-like patterns in writing at the word, sentence and paragraph level, and across sets of UI strings. Text stays on the machine, or in claude.ai's sandbox when the skill runs there.
+
+**Setup**
+
+1. Nothing beyond `python3` is required: the skill's Python port runs the vale-ai-tells rules without Vale.
+2. `brew install vale` lets the skill and hooks run Vale itself, which adds the five `sequence` rules the port skips.
+3. With `uv` on `PATH`, `scripts/run.sh` loads the `regex` module (pinned to 2026.11.9 and downloaded once into uv's cache). The port then compiles the 14 lookbehind patterns that Python's `re` rejects. Without uv, `python3 -m pip install --user regex==2026.11.9` does the same.
+
+**When it runs**
+
+1. `/prose-check FILE...`, or a request to check some writing, runs it on demand. Markdown and text files are read as prose. HTML, JSX/TSX, Vue, Svelte, PowerPoint and JSON files have their strings extracted first, then each string and the whole set are checked.
+2. After a Write or Edit to a prose or UI file, the flagged lines in that edit go back to the agent. JSON and PowerPoint files are left out of this hook.
+3. Before a Slack, Jira, Confluence, Gmail, Notion, Claude Docs, Google Docs or Google Slides send or write, a flagged message is stopped once with its findings. Sending the identical text again goes through, which is how text the user wrote gets sent unchanged.
+4. Before an Artifact publish, the local files go through the same check. A publish is stopped only for findings that file has not shown before, so a finding kept on purpose does not block every later publish.
+5. In claude.ai the skill arrives through the marketplace sync and runs the port in code execution when asked, without the hooks.
+
+**Maintenance**
+
+1. `scripts/vendor-vale-style.py` downloads the pinned vale-ai-tells release and regenerates the rule JSON that the port reads. It needs PyYAML.
+2. `scripts/prose-parity.py FILE...` then compares the port with Vale and exits 1 when the port reports fewer than 90% of Vale's findings.
+
+Speed, agreement with Vale, and side-by-side samples are in [docs/benchmarks.md](docs/benchmarks.md#prose-check). The samples live in `docs/samples/prose-check/`.
 
 ## Evals
 

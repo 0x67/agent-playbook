@@ -9,6 +9,7 @@ Measurements behind the optional extras in the README, taken on 2026-11-05 and 2
 3. **Cost more than they returned here:** forced subagents on a multi-question prompt, spec-driven on small and three-module tasks, code-review-subagent, the LSP tool (it found nothing in a fresh session and matched Grep at higher cost once indexed), and rtk on outputs just over Claude Code's 30 KB preview limit.
 4. **Language skills help only where the model lacks the fact:** on version-compatibility facts bare Sonnet 5.5 got wrong (Lombok for JDK 26, the last Error Prone that runs on JDK 17), the jvm skill fixed every run; on facts it already knew they changed nothing. Since 1.0.0 they load on edits only.
 5. **No measured quality gain yet:** the fable skills (never invoked, removed in 1.0.0), the humanizer rules (no tells with or without them), and spec-driven even on a request with open questions.
+6. **A local prose scan finds AI-like structure that a model review missed:** on an internal spec and its UI copy, `prose-check` reported 48 findings where a multi-agent review workflow reported one, and its Python port matched Vale on 97% of rule findings ([prose-check](#prose-check)).
 
 ## rtk
 
@@ -293,6 +294,65 @@ AWS's documentation example keys pass gitleaks on purpose (they are allowlisted)
 | Without | 11, 11 | $0.15, $0.15 |
 
 The skills loaded in every run and found nothing the model missed without them. Subtler, project-wide checks, such as one term used across all locale files or a team's own type scale, were not tested.
+
+## prose-check
+
+`prose-check` scans text with the [vale-ai-tells](https://github.com/tbhb/vale-ai-tells) rules (v1.37.0) and the cross-sentence checks in `xstring.py`. It runs Vale when Vale is on `PATH` and the skill's Python port otherwise. Measured on 2026-11-13 on an Apple Silicon Mac with Vale 3.26.0 and Python 3.13.
+
+### Engines
+
+| Engine | How it runs | Patterns compiled | Time on a 3,361-word spec |
+|---|---|---|---|
+| Vale | `vale` with the skill's `vale.ini` | all | 0.25 s |
+| Python port, standard `re` | `python3` | 2,902 of 2,916 | 0.37 s |
+| Python port with `regex` 2026.11.9 | `run.sh` through `uv` | 2,916 of 2,916 | 0.43 s |
+
+The 14 patterns that standard `re` rejects use lookbehinds of variable width. Each time is the mean of three runs.
+
+### Agreement with Vale
+
+Rule findings only, from `scripts/prose-parity.py`. The five `sequence` rules need Vale's part-of-speech tagger, so both sides leave them out.
+
+| Text | Vale | Port | Both |
+|---|---|---|---|
+| Internal spec, 3,361 words | 23 | 23 | 22 |
+| Internal UI copy, 164 strings | 11 | 11 | 11 |
+| `docs/samples/prose-check/sample-doc.md` | 11 | 11 | 11 |
+| `docs/samples/prose-check/sample-ui.html` | 5 | 5 | 5 |
+
+On the spec the port missed one `FigurativeCarries` match next to inline code and added one `VerbTricolonDensity` match, a paragraph-level rule where the port splits paragraphs a little differently.
+
+### Against a model review
+
+Before the scan existed, a review workflow with four reviewer agents, a challenger and an editor checked the internal spec and its UI copy in 3 minutes 17 seconds. It rated both texts low on AI-like structure and asked for one fix. On the same text, the scan reported 35 findings in the spec and 13 in the UI strings, among them the "Draft: ..." colon reveals and the repeated "Nothing was ..." errors that the author had flagged by eye.
+
+### Side by side
+
+Each row pairs lines from `sample-doc.md` and `sample-ui.html` with what each engine flagged and the rewrite in `revised-doc.md` and `revised-ui.html`. Lowercase names come from the cross-sentence checks.
+
+| Raw text | Vale | Python port | Revised text |
+|---|---|---|---|
+| Nothing is uploaded until the batch closes. | NegatedSubject | same | The upload waits until the batch closes. |
+| It is not a cron job, but a queue consumer: each message carries one account and its cut-off time. | FigurativeCarries, contrasts | same | A queue consumer runs the export, and each message is for one account and includes its cut-off time. |
+| Three things change in this release: | CataphoricForecasting | same | Changes in this release: |
+| The file now lives in the archive bucket. | FigurativeLives, repeated_openings | same | Export files go to the archive bucket. |
+| The retry window lands in the config file. | FigurativeLands | same | The retry window is set in the config file. |
+| Draft: the export holds the file in staging until finance signs off. The file stays visible to ops during that time. | BareHolds, FigurativeStays, colon_reveals, anaphora_runs, flat_rhythm | same | Each file waits in staging until finance signs off, and ops can see it there. |
+| It works. And it scales. | MicDrop (2) | same | Cut. |
+| Why this matters: a missing export used to surface only at month end. Now the alert fires the next morning, not after the close. | ExplainerLeads, FigurativeSurfaces, FigurativeFires, colon_reveals, contrasts | same | A missing export used to show up only at month end. The alert now fires the next morning. |
+| Nothing was saved. Check the file and try again. Two more errors open with "Nothing was saved." | NegatedSubject (3), repeated_sentences | same | Couldn't save. Check the file and try again. Couldn't save because the server didn't respond. Your session expired before the save finished. |
+| Draft: this order is set aside and has not shipped. | colon_reveals, ShipOveruse | same | Draft orders are set aside and haven't shipped. |
+| Reorder check: an item is flagged when stock falls below its point. | colon_reveals | same | An item is flagged when its stock falls below the reorder point. |
+| Every order below is synced. | UniversalSubject | same | These orders are synced. |
+| Check it against the packing list. Two more strings open with "Check it against". | repeated_openings | same | Check it against the packing list, the invoice, or the delivery note. |
+
+The scan finds 20 issues in the raw doc and 9 in the raw page. After the rewrite, the doc has none and the page keeps one: `ShipOveruse` on "haven't shipped", which is the literal word for orders.
+
+### Limits
+
+1. A finding needs judgment. The rules match patterns, so quoted examples trip them too, including the ones in the skill's own `SKILL.md`.
+2. `vale.ini` puts `VerbTricolon`, `FormalTransitions`, `SemicolonUsage`, `ColonUsage`, `AnthropomorphicCognition` and `NounString` at suggestion level, which the hooks skip. On the internal spec and UI copy those rules matched mostly legitimate text, such as real three-step procedures.
+3. Whether agents write better first drafts with the hooks on would take paired model runs, and AI-text detectors that score a whole document were not tried.
 
 ## Plugin evals
 
