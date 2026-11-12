@@ -29,7 +29,7 @@
       {
         "matcher": "Write|Edit",
         "hooks": [
-          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/prose/prose_check.py\"", "timeout": 30, "statusMessage": "Checking prose for AI patterns..." }
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/skills/prose-check/scripts/prose_check.py\"", "timeout": 30, "statusMessage": "Checking prose for AI patterns..." }
         ]
       }
     ],

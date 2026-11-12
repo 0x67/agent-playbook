@@ -116,7 +116,7 @@ def check_markdown(markdown, minimum=3):
         found["colon_reveals"] += [s for s in sents if colon_reveal(s)]
 
     openings = clusters(((" ".join(words(s)[:2]), s) for s in all_sents if len(words(s)) >= 4), minimum + 1)
-    found["repeated_openings"] = [s for group in openings.values() for s in group]
+    found["repeated_openings"] = openings
     return dict(found)
 
 
