@@ -41,7 +41,7 @@ Multiple matches: read all matched. Unsure: read `style.md` and `errors.md`.
 ## Non-negotiables
 
 - Zero warnings: rustc, clippy, rustdoc. Fix, never `#[allow]`. `#[expect(lint, reason = "...")]` when suppression is deliberate.
-- Ownership: one owner, borrow by default, `&str`/`&[T]`/`&Path` params, clone only with a reason. No `.clone()` to dodge the borrow checker.
+- Ownership: one owner, borrow by default, `&str`/`&[T]`/`&Path` params, clone only with a reason. No `.clone()` to get around the borrow checker.
 - Strong types: newtypes for ids and units, enums for state, `NonZero*`, `Duration`, `PathBuf`. No `bool` params, no stringly-typed state.
 - `Result<T, E>` for recoverable failures. No `unwrap()`/`expect()` on library paths. `expect` message states the invariant.
 - Errors typed (`thiserror`) at public and domain boundaries; `anyhow` only in binaries and internal glue. Context added at I/O, network, DB, parse, config boundaries. Source chain preserved.
@@ -65,7 +65,7 @@ cargo test --doc --workspace                     # nextest skips doctests
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps --workspace   # library crates
 ```
 
-Feature-gated code: every command carries the `--features` it validates. Not done until gate green. Report failures verbatim. `references/tooling.md` covers deny, audit, semver-checks, coverage, mutants.
+Feature-gated code: every command passes the `--features` it validates. Not done until gate green. Report failures verbatim. `references/tooling.md` covers deny, audit, semver-checks, coverage, mutants.
 
 ## Tool preference
 

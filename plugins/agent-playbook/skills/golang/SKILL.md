@@ -14,7 +14,7 @@ description: >
 
 # Go engineering skill
 
-Write Go a seasoned Gopher would merge without comment: small interfaces, explicit errors, no clever abstractions, concurrency only where it pays for itself. Go rewards boring code. Goal: code that reads top-to-bottom and fails loudly.
+Write Go a seasoned Gopher would merge without comment: small interfaces, explicit errors, no clever abstractions, concurrency only where the gain justifies it. Go rewards boring code. Goal: code that reads top-to-bottom and fails with explicit errors.
 
 ## Routing table (mandatory)
 

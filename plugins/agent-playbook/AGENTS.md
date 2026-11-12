@@ -7,7 +7,7 @@ Standing rules for coding agents. Claude Code gets this file at every session an
 Text that ends up in an artifact or in front of other people is plain human prose: code comments, doc comments, docs and markdown, specs, UI strings, PR descriptions, commit messages, Jira comments, Slack and email drafts, published artifacts. Drafts shown in chat for the user to paste elsewhere count too. In Claude Code a condensed rule card arrives at every session and subagent start. Load the full `humanizer` skill (`humanizer:humanizer` as a Claude Code plugin) in embedded mode (final text only) before writing PR bodies, docs, specs, Jira comments, or other prose longer than a short paragraph. Where the skill is not installed, the card and the bullets below are the whole rule set; write without it.
 
 - Keep all technical substance: identifiers, paths, numbers, types, error text.
-- Add no fact, detail, or example the source does not state, even when a rewrite would read better with one.
+- Do not add a fact, detail, or example the source lacks, even when a rewrite would read better with one.
 - The user's own formats and writing samples override humanizer patterns.
 - Never rewrite code, commands, paths, or data.
 
@@ -15,7 +15,7 @@ Text that ends up in an artifact or in front of other people is plain human pros
 
 Plain clauses a person would write, following the humanizer rules above. Keep all technical substance (identifiers, paths, numbers, types).
 
-- No phase/plan refs: no "milestone 3", "TODO from plan X", "as decided in step 2", or `REQ-*` / `TASK-*` / `AC-*` ids. Comments stand alone post-merge; git log/PR holds process.
+- No phase/plan refs: no "milestone 3", "TODO from plan X", "as decided in step 2", or `REQ-*` / `TASK-*` / `AC-*` ids. Comments must read alone post-merge; git log/PR holds process.
 - No restating code. Skip comment if code self-explanatory.
 - Cross-crate/module links encouraged when behavior depends elsewhere: `// see pipeline-sinks::pg::raw`, `// mirrors soupbintcp_replay::Reader`.
 - Short > long. One line preferred. Multi-line only when truly needed.
@@ -27,7 +27,7 @@ Bad: `// In milestone 4 we decided this should drain at the sink's pace` · `// 
 
 # Spec-Driven Workflow
 
-Skill `spec-driven` (`agent-playbook:spec-driven` in Claude Code; protocol files ship inside it) loads on `/spec`, `REQ-*`, `TASK-*`, or spec paths and carries the rules, templates, artifact layout, and relay packet shape. Specs live in `specs/<task-slug>/` (legacy `plans/<task-slug>/` recognized). Small tasks without a spec folder: give subagents a lightweight inline spec with the same relay fields.
+Skill `spec-driven` (`agent-playbook:spec-driven` in Claude Code; protocol files are bundled in it) loads on `/spec`, `REQ-*`, `TASK-*`, or spec paths and holds the rules, templates, artifact layout, and relay packet shape. Specs live in `specs/<task-slug>/` (legacy `plans/<task-slug>/` recognized). Small tasks without a spec folder: give subagents a lightweight inline spec with the same relay fields.
 
 # Project Terminology Guard
 
@@ -53,7 +53,7 @@ Subagent prompts repeat this block: memory recall, search order, fff MCP tool na
 
 # Language Rules
 
-Before editing Go, Rust, C/C++, Java, or Kotlin, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` / `java` / `kotlin` (`agent-playbook:<name>` in Claude Code) and follow its routing table into `references/`. Java and Kotlin also load skill `jvm` for builds, tests, frameworks, and navigation; JVM build files and any `gradle`/`mvn` command (wrappers `./gradlew` and `./mvnw` included) load `jvm`. Run the post-write gate before reporting done. Reading and reviewing do not need these skills: in benchmarks they changed no review answer and added about 70% to cost (`docs/benchmarks.md`).
+Before editing Go, Rust, C/C++, Java, or Kotlin, and before any `go`, `cargo`, or `cmake` command, load skill `golang` / `rust` / `cpp` / `java` / `kotlin` (`agent-playbook:<name>` in Claude Code) and follow its routing table into `references/`. Java and Kotlin also load skill `jvm` for builds, tests, frameworks, and navigation; JVM build files and any `gradle`/`mvn` command (wrappers `./gradlew` and `./mvnw` included) load `jvm`. Run the post-write gate before reporting done; reading and reviewing do not need them (`docs/benchmarks.md`), as they left review answers unchanged and added about 70% to cost.
 
 Hot-path code (per-message receive loops, decoders, order books, queues between threads, latency benchmarks): load skill `low-latency` (`agent-playbook:low-latency`) alongside the language skill. In Claude Code the language hook names it when a Rust repo's `Cargo.toml` depends on a latency crate.
 
@@ -88,12 +88,12 @@ Full ladder, composition, parallel fan-out rules, and tier table: skill `agent-p
 
 - Non-trivial multi-step task: classify the ask, define done and how to check it, read the evidence, make the smallest change, verify by running it, then check every claim against the diff and the output before reporting.
 - Cheapest mechanism that fits: inline, then subagents dispatched from the main thread (shape found while working), then Workflow (shape known, user opted in).
-- Parallel fan-out (Agent calls, Workflow `parallel()` or `pipeline()`, headless or eval batches): start one agent first and the rest after it responds (in Workflow, `await` one `agent()` before the fan-out stage), so the group reads the shared prompt cache instead of each agent writing it.
+- Parallel fan-out (Agent calls, Workflow `parallel()` or `pipeline()`, headless or eval batches): start one agent first and the rest after it responds (in Workflow, `await` one `agent()` before the fan-out stage). The rest then read the shared prompt cache instead of each writing it.
 - Workflow() only on explicit opt-in: `ultracode`, "use a workflow", "orchestrate this with subagents", or a skill calls it. Otherwise offer.
-- Subagent types carry the plugin prefix: `agent-playbook:planning-subagent`, `agent-playbook:implement-subagent`. Never a guessed name.
-- Code review: the built-in `code-review` skill (`/code-review <level>`, low for a single task, medium for a feature, high before a release). It found every planted bug at a fraction of a review subagent's cost (`docs/benchmarks.md`).
+- Subagent types use the plugin prefix: `agent-playbook:planning-subagent`, `agent-playbook:implement-subagent`. Never a guessed name.
+- Code review: the built-in `code-review` skill (`/code-review <level>`, low for one task, medium for a feature, high before a release). It found every planted bug at a fraction of a review subagent's cost (`docs/benchmarks.md`).
 - Hand off at the tier the work needs (table in `agent-playbook:orchestration-layers`). Disclose every spawn at dispatch as `<label> -> <alias> <version>`, with the version taken from an env pin or the session's model list, never from memory. No silent spawns.
-- Relay packets carry the standing protocols: memory recall, comment rules, Code Simplicity Discipline, search order.
+- Relay packets include the standing protocols: memory recall, comment rules, Code Simplicity Discipline, search order.
 
 ---
 
@@ -115,7 +115,7 @@ A test must be able to fail from a project bug. Never write:
 
 - Derive/stdlib restatement: thiserror `#[error]` string equality, `#[derive(Default)]` variant choice, `#[from]` conversion, derived Clone/Debug/Eq works, plain serde roundtrip with no custom impl.
 - Field echo: constructor-stores-argument, struct-literal readback, constant restated.
-- Duplicate coverage: branch already covered; name the covering test and skip.
+- Duplicate coverage: branch already covered; cite the covering test and skip.
 - Mock-call-count-only asserts with no observable output checked.
 - False confidence: assertion weaker than the test name claims. Verify the actual contract or delete the test.
 - Copy-pasted test doubles/encoders: one shared `tests/support` module per crate.
@@ -128,8 +128,8 @@ Exception: wire/on-disk layout pins (size, alignment, discriminant, padding, for
 Pre-write gates, same standing as Code Growth Discipline. Apply before writing, not during review.
 
 - No overcomplicated or overlong code. Smallest change that meets the ask. No speculative abstraction: no trait for one impl, generic for one type, builder for two fields, config knob for one value, indirection layer "for later". One concern per fn; if it needs section comments, split it. Plain `match`/`if`/iterator chain beats layered helpers.
-- No backwards compatibility unless user asks. Rename or change signature and fix every call site. No `#[deprecated]` shims, `_v2` twins, old-name re-exports, dual code paths, "legacy" flags, or migration adapters. Breaking inside workspace is fine; git history holds old shape.
+- No backwards compatibility unless user asks. Rename or change signature and fix every call site. No `#[deprecated]` shims, `_v2` twins, old-name re-exports, dual code paths, "legacy" flags, or migration adapters. Breaking inside workspace is fine; git history holds old versions.
 - Readable layout. Put one blank line between the steps of a function (setup, the work, the result), as paragraph breaks, not after every statement. No nested ternaries: use `if`/`else`, a `switch`/`match`, or a small named function. A formatter keeps the blank lines you write and adds none, and leaves a ternary chain on one line when it fits the width.
-- No slop, no anti-patterns. Slop: dead code, unused params/imports, `#[allow]` to silence instead of fix, `.clone()` to dodge borrow, `unwrap()`/`expect()` on lib path, stringly-typed state, bool-param flags, `Box<dyn>` where generic fits, newtype with no invariant, re-validating already-typed input, comment narrating code, TODO placeholder instead of finishing, catch-all error swallow. Delete on sight in touched code.
+- Avoid slop and anti-patterns. Slop: dead code, unused params/imports, `#[allow]` to silence instead of fix, `.clone()` to dodge borrow, `unwrap()`/`expect()` on lib path, stringly-typed state, bool-param flags, `Box<dyn>` where generic fits, newtype with no invariant, re-validating already-typed input, comment narrating code, TODO placeholder instead of finishing, catch-all error swallow. Delete on sight in touched code.
 
-Review rule: any of above in diff = NEEDS_REVISION. Relay packets carry this section.
+In review, any of above in diff = NEEDS_REVISION. Relay packets include this section.

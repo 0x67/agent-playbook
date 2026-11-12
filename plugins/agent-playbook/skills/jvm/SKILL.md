@@ -17,7 +17,7 @@ description: >
 
 # JVM platform skill
 
-Java and Kotlin are different languages on one platform. This skill owns what they share: how the code is built, tested, wired into a service, run, and navigated. Language idioms live in skill `java` and skill `kotlin`; load the one for the files you touch (both in a mixed module).
+Java and Kotlin are different languages on one platform. This skill covers what they share: building, testing, wiring into a service, running, and finding things in the code. Language idioms are in skill `java` and skill `kotlin`; load the one for the files you touch (both in a mixed module).
 
 ## Routing table (mandatory)
 

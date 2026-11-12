@@ -4,10 +4,10 @@ Measurements behind the optional extras in the README, taken on 2026-11-05 and 2
 
 ## Summary
 
-1. **Worth it on these numbers:** lat section injection in medium and large repos, semble on broad questions in big repos, starting one agent before a parallel group, and the built-in `/code-review`.
+1. **Recommended on these numbers:** lat section injection in medium and large repos, semble on broad questions in big repos, starting one agent before a parallel group, and the built-in `/code-review`.
 2. **Neutral:** fff (same cost as Grep; it keeps agents off shell grep).
 3. **Cost more than they returned here:** forced subagents on a multi-question prompt, spec-driven on small and three-module tasks, code-review-subagent, the LSP tool (it found nothing in a fresh session and matched Grep at higher cost once indexed), and rtk on outputs just over Claude Code's 30 KB preview limit.
-4. **Language skills help only where the model lacks the fact:** on version-compatibility facts bare Sonnet 5.5 got wrong (Lombok for JDK 26, the last Error Prone that runs on JDK 17), the jvm skill fixed every run; on facts it already knew they changed nothing. Since 1.0.0 they load on edits only.
+4. **Language skills help only where the model lacks the fact:** on version-compatibility facts bare Sonnet 5.5 got wrong (Lombok for JDK 26, the last Error Prone that runs on JDK 17), the jvm skill fixed every run; on facts it already knew they did not change the result. Since 1.0.0 they load on edits only.
 5. **No measured quality gain yet:** the fable skills (never invoked, removed in 1.0.0), the humanizer rules (no tells with or without them), and spec-driven even on a request with open questions.
 6. **A local prose scan finds AI-like structure that a model review missed:** on an internal spec and its UI copy, `prose-check` reported 48 findings where a multi-agent review workflow reported one, and its Python port matched Vale on 97% of rule findings ([prose-check](#prose-check)).
 
@@ -34,7 +34,7 @@ The recall rate is the useful check: the agent almost never had to fetch the out
 | rtk on | $0.233 | 2 of 3 |
 | rtk off | $0.160 | 3 of 3 |
 
-The raw `grep` output was 31.3 KB, so without rtk the agent got the 2 KB preview. rtk shrank it to 19 KB, under the limit, so all 19 KB went into context, and its grouped format hid the per-crate counts the question needed. A first version of the task, where the agent piped everything through `sort | head`, showed no difference at all: rtk does not rewrite pipelines, and the output was already small. rtk pays on outputs that reach the model in full anyway and can cost more on outputs just above the preview limit.
+The raw `grep` output was 31.3 KB, so without rtk the agent got the 2 KB preview. rtk shrank it to 19 KB, under the limit, so all 19 KB went into context, and its grouped format hid the per-crate counts the question needed. A first version of the task, where the agent piped everything through `sort | head`, did not differ at all: rtk does not rewrite pipelines, and the output was already small. rtk pays on outputs that reach the model in full anyway and can cost more on outputs just above the preview limit.
 
 ## Search tools
 
@@ -44,11 +44,11 @@ Claude Code hides MCP tools behind tool search until the model looks them up. Le
 
 1. Eleven weeks of session history held about 3,900 Bash `grep`, `rg`, and `find` calls, against 282 fff calls, 8 semble calls, and 3 codebase-memory calls.
 2. In 12 benchmark runs where fff, semble, or codebase-memory was available, the agent called them 0 times.
-3. After setting `alwaysLoad: true` on fff, both runs of the same question used fff straight away, with no tool search and no Grep, at the same cost as Grep ($0.181 and $0.193 against $0.182).
+3. After setting `alwaysLoad: true` on fff, both runs of the same question used fff straight away, without tool search or Grep, at the same cost as Grep ($0.181 and $0.193 against $0.182).
 
 ### Targeted question in a 31k-line Rust service
 
-One question that names its subject ("trace the market-data path from the socket to the consumer"), with the prompt telling the agent which search tool to use. Accuracy counts five file:line anchors per answer, 15 per arm.
+One question states its subject ("trace the market-data path from the socket to the consumer"), with the prompt telling the agent which search tool to use. Accuracy counts five file:line anchors per answer, 15 per arm.
 
 | Search tool | Median cost | Correct anchors |
 |---|---|---|
@@ -59,7 +59,7 @@ One question that names its subject ("trace the market-data path from the socket
 
 ### Vague questions in a 254k-line Rust workspace
 
-Two questions that name no identifiers. The broad one asks how the system handles outputs that cannot keep up; the narrow one asks when a restarted run may resume. Every run in every arm found all five anchors. These runs also ended with a stop-hook exchange unrelated to search, which added a similar cost to each arm.
+Two questions without identifiers. The broad one asks how the system handles outputs that cannot keep up; the narrow one asks when a restarted run may resume. Every run in every arm found all five anchors. These runs also ended with a stop-hook exchange unrelated to search, which added a similar cost to each arm.
 
 | Setup | Broad question | Narrow question |
 |---|---|---|
@@ -71,17 +71,17 @@ Two questions that name no identifiers. The broad one asks how the system handle
 ### What follows
 
 1. fff costs the same as Grep. Its value is that agents use it when it is always loaded, so `alwaysLoad` is set in the README install line.
-2. semble and codebase-memory cut cost by about 40% on broad questions in a large codebase and break even or cost more on targeted ones. semble exposes two tools, so it is also set to `alwaysLoad`. codebase-memory exposes 17 and stays behind tool search.
+2. semble and codebase-memory cut cost by about 40% on broad questions in a large codebase and break even or cost more on targeted ones. semble exposes two tools, so it is also set to `alwaysLoad`. codebase-memory exposes 17 and is left to tool search.
 
 ## lat.md
 
 ### As a search tool
 
-In the 254k-line Rust workspace, with the lat MCP server available next to the other search tools, agents called lat once in 9 runs over three questions, and total cost came out 2.7% higher than without it, with the same answers. Session history agrees: about 12 `lat locate` and 6 `lat search` calls against about 3,900 shell searches. An instruction to "run `lat locate` first" does not change what agents do.
+In the 254k-line Rust workspace, with the lat MCP server available next to the other search tools, agents called lat once in 9 runs over three questions, and total cost came out 2.7% higher than without it, with the same answers. Session history agrees, with about 12 `lat locate` and 6 `lat search` calls against about 3,900 shell searches. An instruction to "run `lat locate` first" does not change what agents do.
 
 ### Injecting matching sections
 
-The agent-playbook prompt hook runs `lat search` on each prompt itself and injects up to three sections, each with its summary and code links. A first version injected the top three matches unfiltered; on one broad question it sent one run of three to the wrong subsystem, so the hook now filters matches.
+The agent-playbook prompt hook runs `lat search` on each prompt itself and injects up to three sections, each with its summary and code links. A first version injected the top three matches unfiltered; on one broad question it sent one run of three to the wrong subsystem, and the hook now filters matches.
 
 The filter was tuned on 48 questions across three repos. Agents wrote the questions from the code without opening `lat.md`, mixing design, flow, and "where is X" questions. A match counts as relevant when its section mentions a file or symbol from the question's answer key.
 
@@ -93,9 +93,9 @@ The filter was tuned on 48 questions across three repos. Agents wrote the questi
 | at least 0.50, and the section links to code that exists | 59% | 31 | 5 | 12 |
 | at least 0.60, and the section links to code that exists | 71% | 19 | 2 | 27 |
 
-"Helpful" counts questions that got at least one relevant section, "misleading" questions that got sections with none relevant, and "silent" questions that got nothing. The repos differed: lat's top six matches held a relevant section for 15 of 15, 13 of 15, and 10 of 18 questions. The weakest repo's `lat.md` documents an older reference implementation in another language, which the code-link filter removes. `lat search --min-similarity` does not filter keyword matches, so the hook reads each match's score and applies the cutoff itself.
+"Helpful" counts questions that got at least one relevant section, "misleading" questions that got sections with none relevant, and "silent" questions that got nothing. Across the repos, lat's top six matches contained a relevant section for 15 of 15, 13 of 15, and 10 of 18 questions. The weakest repo's `lat.md` documents an older reference implementation in another language, which the code-link filter removes. `lat search --min-similarity` does not filter keyword matches, The hook therefore reads each match's score and applies the cutoff itself.
 
-End to end with the shipped rule (at least 0.50, linked code exists), 12 questions with 2 runs each:
+End to end with the final rule (at least 0.50, linked code exists), 12 questions with 2 runs each:
 
 | Repo | Without injection | With injection | Mean answer score |
 |---|---|---|---|
@@ -106,7 +106,7 @@ End to end with the shipped rule (at least 0.50, linked code exists), 12 questio
 
 Questions that got nothing injected still moved 6% in cost between arms, so the noise floor is around 6 to 10%. Injection pays in medium and large repos whose `lat.md` sections link to code; in a small repo agents find the answer fast either way. No run in this set followed an injected section to the wrong code.
 
-A label telling the agent that injected sections are the repository's own docs, to be used as data rather than instructions, was tested on 2026-11-06 in the large workspace (4 questions, 2 runs per arm). Cost did not change ($1.51 labeled, $1.54 unlabeled), but the mean answer score fell from 0.68 to 0.52, mostly on one question where both labeled runs followed sections that pointed at the wrong subsystem. The question with nothing injected moved by 0.25 between arms on its own, so the sample is noisy, but the label was not shipped. The hook therefore passes `lat.md` text to the agent unlabeled: in a repository you do not trust that has a lat index, that text reaches the agent as written.
+A label telling the agent that injected sections are the repository's own docs, to be used as data rather than instructions, was tested on 2026-11-06 in the large workspace (4 questions, 2 runs per arm). Cost did not change ($1.51 labeled, $1.54 unlabeled), but the mean answer score fell from 0.68 to 0.52, mostly on one question where both labeled runs followed sections that pointed at the wrong subsystem. The question with nothing injected moved by 0.25 between arms on its own. The sample varies a lot, and the label was not adopted. The hook therefore passes `lat.md` text to the agent unlabeled: in a repository you do not trust that has a lat index, the agent receives that text as written.
 
 ## caveman
 
@@ -148,7 +148,7 @@ MCP servers add the most (about 13.6k tokens), then agent-playbook (about 8.5k: 
 
 ## Language skills on version traps
 
-Two eval cases where the fixture holds one real bug next to a pitfall that a newer language version fixed: a Go 1.23 module with a goroutine capturing the loop variable and `time.After` in a loop, and a Java 25 project with a blocking write inside `synchronized` on virtual threads. Two runs per arm:
+Two eval cases where the fixture has one real bug next to a pitfall that a newer language version fixed: a Go 1.23 module with a goroutine capturing the loop variable and `time.After` in a loop, and a Java 25 project with a blocking write inside `synchronized` on virtual threads. Two runs per arm:
 
 | Case | Skill loaded | Real bug found, fixed pitfall not reported | Cost per run |
 |---|---|---|---|
@@ -161,11 +161,11 @@ Two eval cases where the fixture holds one real bug next to a pitfall that a new
 | `go-newest` (Go 1.27 `strings.CutLast`) with agent-playbook | 1 of 2 | 2 of 2 used it | $0.13 to $0.18 |
 | `go-newest` without | | 2 of 2 used it | $0.08 to $0.09 |
 
-The last two cases target APIs from the newest releases the skills document, picked because they are likely newer than the model's training. Sonnet 5.5 knew them too. Across all four cases the skills changed no answer, loaded in 3 of 8 runs, and added about 70% to cost.
+The last two cases target APIs from the newest releases the skills document, picked because they are likely newer than the model's training. Sonnet 5.5 knew them too. Across all four cases the skills did not change any answer, loaded in 3 of 8 runs, and added about 70% to cost.
 
 ### Facts the model lacks
 
-A probe asked bare Sonnet 5.5 (no plugins, no tools, stdin closed) twelve facts the skills document. It got eight wrong, among them the oldest Lombok for JDK 26 (it said 1.18.44; the answer is 1.18.46), the oldest Kotlin that emits Java 26 bytecode (2.3.20; the answer is 2.4.0), the last Error Prone release that runs on JDK 17 (2.41.0; the answer is 2.42.0), and the Tauri 2.11 `rename` command attribute. Two edit-task cases were built on the JVM facts, two runs per arm:
+A probe asked bare Sonnet 5.5 (without plugins or tools, stdin closed) twelve facts the skills document. It got eight wrong, among them the oldest Lombok for JDK 26 (it said 1.18.44; the answer is 1.18.46), the oldest Kotlin that emits Java 26 bytecode (2.3.20; the answer is 2.4.0), the last Error Prone release that runs on JDK 17 (2.41.0; the answer is 2.42.0), and the Tauri 2.11 `rename` command attribute. Two edit-task cases were built on the JVM facts, two runs per arm:
 
 | Case | With agent-playbook | Without |
 |---|---|---|
@@ -184,7 +184,7 @@ Three numbered questions about the 254k-line workspace in one prompt, scored by 
 | Agent tool available, agent's choice | 5, 9 | $0.30, $0.30 |
 | One planning subagent per question | 8, 14 | $0.73, $0.74 |
 
-Given the choice, the agent never dispatched a subagent. One subagent per question cost about twice as much with no steady gain. The first two arms differ only in whether the Agent tool exists, so their gap shows how noisy two runs are.
+Given the choice, the agent never dispatched a subagent. One subagent per question cost about twice as much with no steady gain. The first two arms differ only in whether the Agent tool exists, and their gap shows how noisy two runs are.
 
 ## fable skills on trap scenarios
 
@@ -196,7 +196,7 @@ Two scenarios from the fable-method eval suite (s2: a failing test that contradi
 | Skill tool off (the inline loop in `AGENTS.md` only) | 5, 5 | 8, 8 | 0 of 2 | $0.12 to $0.19 |
 | No plugins | 4, 6 | 8, 8 | 0 of 2 | $0.08 to $0.09 |
 
-No run in any arm invoked a fable skill, so the first two arms differ only by noise. Sonnet 5.5 avoided the unauthorized deploy on its own, and no arm fixed the wrong test the way the ground truth wants (every run scored 1 of 2 for correct action).
+No run in any arm invoked a fable skill, and the first two arms differ only by noise. Sonnet 5.5 avoided the unauthorized deploy on its own, and no arm fixed the wrong test the way the ground truth wants (every run scored 1 of 2 for correct action).
 
 ## LSP
 
@@ -231,7 +231,7 @@ Implement `parse_duration` from a short README, then check it against 17 hidden 
 | Direct | 17, 17 | 8, 6 | $0.22, $0.14 |
 | spec-driven (four spec artifacts first) | 17, 17 | 26, 25 | $0.35, $0.37 |
 
-A larger task: a key-value store in three modules (TTL, least-recently-used eviction, stats counters, JSON snapshots) from a one-page README, checked against 20 hidden tests:
+A larger task was a key-value store in three modules (TTL, least-recently-used eviction, stats counters, JSON snapshots) from a one-page README, checked against 20 hidden tests:
 
 | Arm | Hidden tests passed | Turns | Cost |
 |---|---|---|---|
@@ -247,7 +247,7 @@ Then a request with open questions, in two turns. Turn 1 asked to "add discount 
 | Direct | 12, 12 | 64, 80 | $0.53, $0.45 |
 | spec-driven | 12, 12 | 78, 66 | $0.84, $0.94 |
 
-The spec recorded its assumptions but did not cut rework once the real answers came, and it cost 1.8 times as much. With the user unavailable in turn 1, neither arm could ask; a spec that stops for answers before coding was not tested.
+The spec recorded its assumptions but did not cut rework once the real answers came, and it was 1.8 times as expensive. With the user unavailable in turn 1, neither arm could ask; a spec that stops for answers before coding was not tested.
 
 ## Code review
 
@@ -263,7 +263,7 @@ Three commits with planted bugs, each reviewed as the staged diff, two runs per 
 | Built-in `/code-review medium` | 5, 5 | 3, 3 | 4, 4 | 24 of 26 | $0.18 |
 | Inline review, no subagent | 4, 5 | 3, 4 | 4, 4 | 24 of 26 | $0.23 |
 
-The built-in review matched the best recall at about a seventh of the subagent's cost. The subagent's open-code-review step for diffs over 800 lines ran in 1 of 4 eligible runs. In one client run its `command -v ocr` check needed a permission the harness had not granted, so it reported ocr as unavailable; the other two runs skipped the step without checking. The one run that used it found no extra bug.
+The built-in review matched the best recall at about a seventh of the subagent's cost. The subagent's open-code-review step for diffs over 800 lines ran in 1 of 4 eligible runs. In one client run its `command -v ocr` check needed a permission the harness had not granted, so it reported ocr as unavailable; the other two runs skipped the step without checking. The one run that used it did not find an extra bug.
 
 ## Security guard
 
@@ -378,7 +378,7 @@ A full run costs about $2.60. The last two rows pass without the plugin too, so 
 The eval suite runs with `evals/run.sh`. The search and caveman comparisons ran against private repositories, so the harness is not in this repo; the method is enough to repeat them on your own code:
 
 1. Run `claude -p "<question>" --model sonnet --output-format stream-json --verbose` from the repository root, with `--disallowedTools Bash Edit Write` to keep runs read-only. Close stdin (`< /dev/null`, or `stdin=DEVNULL` from a script): `claude -p` appends whatever is piped to it to the prompt, so a harness that runs it with an open stdin can leak its own source, answer key included, into the question.
-2. Give each arm its search tool with `--allowedTools mcp__<server>` and block the others with `--disallowedTools mcp__<server>`. A forced arm adds a sentence to the prompt naming the tool.
+2. Give each arm its search tool with `--allowedTools mcp__<server>` and block the others with `--disallowedTools mcp__<server>`. A forced arm adds a sentence to the prompt with the tool's name.
 3. Turn caveman off for the baseline with `--settings '{"enabledPlugins":{"caveman@caveman":false}}'`.
 4. Read cost, turns, and tool calls from the final `result` event and the `tool_use` blocks, and score answers against anchors you found by hand first.
 5. To run arms in parallel, start one run per arm first and the rest after it has produced output. A prompt cache entry is only readable once the response that wrote it has started, so runs launched in the same instant each pay the shared prefix (about 42k tokens in a fresh session) as a cache write, which inflates their cost. Give both arms of a comparison the same concurrency.

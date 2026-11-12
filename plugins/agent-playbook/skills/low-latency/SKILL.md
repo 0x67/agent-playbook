@@ -35,7 +35,7 @@ Multiple matches: read all matched. Every change to a hot path also reads `measu
 
 1. No hot-path change without numbers: the same benchmark before and after, on the same machine, build profile, and input (`references/rust/measure.md`).
 2. Report percentiles (p50, p99, p99.9, max) and throughput at a fixed rate, never a mean alone.
-3. A new project-wide performance rule needs a measured cost delta and an anchor in code. A rule without a measurement is folklore; do not add it.
+3. A new project-wide performance rule needs a cost delta from measurement and an anchor in code. A rule without a measurement is folklore; do not add it.
 4. Equal medians with overlapping spread mean no measurable difference. Prefer the simpler code.
 
 ## Principles
@@ -46,7 +46,7 @@ Multiple matches: read all matched. Every change to a hot path also reads `measu
 4. **Choose the wait strategy per thread.** Busy-spin gives the lowest wake-up latency and burns a full core, so use it only on an isolated core. Yield or back off spends less CPU and adds jitter. Park or block costs the least CPU and adds wake-up latency. Never busy-spin on a core shared with other work.
 5. **Every queue has a declared overflow policy.** Block the producer, drop (oldest or newest), or fail fast. Pick it per consumer, count what gets dropped, and never put an unbounded queue on a hot path. A blocking call inside async code stalls every task on that executor thread.
 6. **Place threads deliberately.** Pin hot threads to isolated cores, keep interrupts and housekeeping elsewhere, and keep a pipeline's threads on one NUMA node (`references/rust/pinning.md`).
-7. **Batch syscalls and I/O.** No syscall per message. Read and submit in batches; reach for io_uring or kernel busy-polling only when a measurement says the syscall path is the cost (`references/rust/io-uring.md`).
+7. **Batch syscalls and I/O.** No syscall per message. Read and submit in batches; use io_uring or kernel busy-polling only when a measurement says the syscall path is the cost (`references/rust/io-uring.md`).
 8. **Keep logging and metrics off the per-message path.** Log state transitions (gap detected, reconnect, session end), never each message. Count in per-thread or padded atomics with `Relaxed` ordering and aggregate off the hot path.
 9. **Async on a receive loop is a measurement question.** Do not refactor `.await` away, or add it, without a per-message latency comparison.
 10. **Prove lock-free code.** Model-check custom atomics with `loom`, run unsafe views under Miri where it can run, and fuzz decoders (`references/rust/measure.md`).

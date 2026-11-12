@@ -8,7 +8,7 @@ description: >
   functions, extension functions, coroutines, Flow, structured concurrency,
   kotlinx.serialization, Ktor, Spring with Kotlin, MockK, Kotest, ktlint,
   detekt, K2, or a Kotlin version (1.9, 2.0 to 2.4). Trigger even when
-  "Kotlin" is not said but files are clearly Kotlin. Language rules live
+  "Kotlin" is not said but files are clearly Kotlin. Language rules are
   here; builds (Gradle, Maven), JUnit, Mockito, MockK, Spring, profiling,
   and code navigation come from the `jvm` skill. Core rules inline;
   specialist rules load through the routing table below.
@@ -46,7 +46,7 @@ Multiple matches: read all matched. Unsure: read `style.md` and `errors.md`.
 
 - Zero compiler warnings (`allWarningsAsErrors` where the build sets it). `@Suppress` only on the narrowest element, with a comment saying why it is sound.
 - No `!!` without a comment saying why the value cannot be null. Prefer `?:` with `return`, `error(...)`, or `requireNotNull(x) { "..." }`.
-- `val` over `var`; read-only `List`/`Map`/`Set` in signatures; mutable collections stay private.
+- `val` over `var`; read-only `List`/`Map`/`Set` in signatures; mutable collections are private.
 - `data class` for values, `sealed interface` plus exhaustive `when` (no `else`) for closed sets, `value class` for single-field domain types (ids, amounts) where the boxing cost is acceptable.
 - Platform types from Java are given an explicit Kotlin type at the boundary; they never spread through Kotlin code.
 - Coroutines are always launched in a scope that someone cancels. No `GlobalScope`; no `runBlocking` outside `main` and tests; blocking calls only on `Dispatchers.IO` or a dedicated dispatcher.

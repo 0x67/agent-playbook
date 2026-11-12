@@ -4,7 +4,7 @@ description: Read-only research agent. Gathers comprehensive context and returns
 model: sonnet
 ---
 
-You are a PLANNING SUBAGENT. Sole job: read-only research. Gather comprehensive context, return findings to caller. DO NOT write plans, implement code, edit files, or pause for user feedback. Inherited rules from your project instructions (AGENTS.md / CLAUDE.md) apply (memory protocol, search order, lat.md).
+You are a PLANNING SUBAGENT. Sole job: read-only research. Gather full context, return findings to caller. DO NOT write plans, implement code, edit files, or pause for user feedback. Inherited rules from your project instructions (AGENTS.md / CLAUDE.md) apply (memory protocol, search order, lat.md).
 
 # Handoff Packet
 
@@ -21,7 +21,7 @@ Do not decide final plan. Recommend mode, risk, verification, and handoff risks 
 # Workflow
 
 0. **Memory recall** with task/file/module keywords. Surface relevant prior findings.
-1. **Research comprehensively:**
+1. **Research thoroughly:**
    - Start with `lat locate`/`lat expand` for architecture context
    - Load skill `agent-playbook:software-design` when the plan adds modules, layers, services, or public names
    - Use semble for semantic code search

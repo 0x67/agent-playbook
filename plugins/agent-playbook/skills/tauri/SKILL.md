@@ -7,8 +7,8 @@ description: >
   anything involving src-tauri/, tauri.conf.json, capabilities/*.json, gen/schemas/,
   #[tauri::command], invoke(), @tauri-apps/api, tauri-plugin-*, tauri dev, tauri
   build, or Tauri Android/iOS. Trigger even when the user does not say "Tauri" but
-  files or commands are clearly Tauri. This skill owns the boundary and the
-  Tauri-specific surface only: Rust idioms defer to the rust skill, TypeScript
+  files or commands are clearly Tauri. This skill covers the boundary and the
+  Tauri-specific parts only: Rust idioms defer to the rust skill, TypeScript
   idioms to the typescript skill. Specialist rules live in references/ and load
   through the routing table below.
 ---
@@ -40,7 +40,7 @@ Multiple matches: read all matched. Unsure: read `ipc.md` and `permissions.md`.
 2. Read `package.json`. `@tauri-apps/api` versions independently of the `tauri` crate. Note the package manager and the frontend framework.
 3. Read `tauri.conf.json`. Note `app.security.capabilities`: if non-empty, capability files not listed there are ignored entirely.
 4. List `src-tauri/capabilities/`. Note window labels in use. Labels, not titles, are the security boundary.
-5. Check whether `src-tauri/build.rs` declares `AppManifest::commands`. That single call flips your own commands from unrestricted to ACL gated.
+5. Check whether `src-tauri/build.rs` declares `AppManifest::commands`. That call flips your own commands from unrestricted to ACL gated.
 6. Never guess an API signature. `cargo doc --open`, `cargo tree -p tauri`, or read `node_modules/@tauri-apps/api`. Tauri's own published docs contain snippets that do not compile.
 
 ## Non-negotiables
@@ -55,14 +55,14 @@ Multiple matches: read all matched. Unsure: read `ipc.md` and `permissions.md`.
 - Bytes go over `tauri::ipc::Response::new(Vec<u8>)` and arrive as `ArrayBuffer`. Never JSON encode a `Vec<u8>`. Raw request bodies must be the top level `invoke` arg, and do not work on Android.
 - `Channel<T>` for ordered streaming from one invoke. Events for fan out. Commands for request/response. Events have no ACL: never route privileged data over them.
 - `emit` is global even when called on a `Window`. Scope with `emit_to` or `emit_filter`.
-- State is keyed by type. `Builder::manage` panics on a duplicate type; `Manager::manage` silently keeps the first value and returns `false`. Newtype wrap to hold two of a type. No `Arc`: Tauri wraps for you.
+- State is keyed by type. `Builder::manage` panics on a duplicate type; `Manager::manage` silently keeps the first value and returns `false`. Newtype wrap to store two values of one type. No `Arc`: Tauri wraps for you.
 - `std::sync::Mutex` in state by default. `tokio::sync::Mutex` only when the guard is held across `.await`. Never hold a std guard across `.await`.
 - Permission identifiers: plugin is two segment (`fs:allow-read-file`), core is three segment (`core:window:allow-set-title`), your own commands are bare. `plugin:` never appears in a capability.
-- A permission is not a scope. `fs:default` grants no paths. Scoped commands need the object form with `allow`.
+- A permission is not a scope. `fs:default` does not grant paths. Scoped commands need the object form with `allow`.
 - `deny` always beats `allow`, across permissions and across capabilities.
 - Every window label matches a capability or that window has zero IPC.
 - `platforms` values are case sensitive and irregular: `"linux"`, `"windows"`, `"android"` lowercase, `"macOS"` and `"iOS"` not. A misspelling fails the build; a valid value that excludes the current target is silently inert by design.
-- Debug ACL errors name the fix. Release ACL errors do not. Never diagnose a permission problem in a release build.
+- Only debug ACL errors name the fix, so never diagnose a permission problem in a release build.
 - Type the boundary once. Generate TS from Rust, or centralize every command name and arg name in one façade module. Never scatter hand written `invoke('name', {...})` string literals across components.
 - No secrets in the frontend bundle. It ships as readable assets.
 - Comments: full sentences. Delete comments that restate code. No em dash characters.

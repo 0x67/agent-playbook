@@ -36,20 +36,20 @@ The repository's own rules come first. Before writing, check:
 
 When a change spans types, pick the one that matters to someone reading the changelog. A fix that needed a refactor is `fix`.
 
-- **Scope** is the module, package, crate, or app the change lives in, lowercase and spelled as the repo spells it (`session`, `core`, `driver-web`). Leave it out when the change has no single home.
+- **Scope** is the module, package, crate, or app the change belongs to, lowercase and spelled as the repo spells it (`session`, `core`, `driver-web`). Leave it out when the change has no one home.
 - **`!`** after the scope marks a breaking change: a public API, CLI flag, config key, wire format, or schema that existing callers must change for. The PR body says what breaks and how to migrate.
-- **Subject** is imperative, starts lowercase unless the first word is a name or identifier, has no trailing period, and names the effect: `keep mdf trades out of bars and vwap`, not `fix bug`. Keep the whole header under about 72 characters and never wrap it.
+- **Subject** is imperative, starts lowercase unless the first word is a name or identifier, has no trailing period, and names the effect: `keep mdf trades out of bars and vwap`, not `fix bug`. The whole header stays under about 72 characters and is never wrapped.
 
 ## Commit message
 
-1. One header line. No body, no footers, no trailers; detail goes in the PR body.
+1. One header line, with no body, footers, or trailers. Detail goes in the PR body.
 2. No AI attribution: no `Co-Authored-By`, `Claude-Session`, or "Generated with" lines, whatever the tool's default.
 3. One logical change per commit. If the subject needs "and" to join two unrelated changes, split the commit.
 4. Release commits copy the repo's pattern, such as `chore(release): <package> <version>` or `chore: release <version>`.
 
 ## PR title
 
-Same header format. A squash merge turns the title into the commit on the main branch, so it names the whole change, not the last commit. A draft that collects a phase of commits takes the type of its main change, as in `feat: interop phase`.
+Same header format. A squash merge turns the title into the commit on the main branch, so it describes the whole change, not the last commit. A draft that collects a phase of commits takes the type of its main change, as in `feat: interop phase`.
 
 ## PR body
 
@@ -99,7 +99,7 @@ A PR that changes what a screen looks like or how it behaves carries the Screens
 | --- | --- |
 | Header longer than about 72 characters | Cut the subject down to the effect |
 | Subject ends with a period, or starts with a capitalized common word | Drop the period, lowercase the word |
-| Subject is only `update`, `changes`, `misc`, or `fix bug` | Name what changed |
+| Subject is only `update`, `changes`, `misc`, or `fix bug` | State what changed |
 | Commit message with a body or trailers | Move the detail into the PR body |
 | `!` with no breaking-change note in the PR body | Add the note, or drop the `!` |
 | PR title that only describes the last commit | Retitle for the whole change |

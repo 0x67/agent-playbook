@@ -14,7 +14,7 @@ Accept and obey these fields when present from the orchestrator:
 - **Acceptance criteria**, **Verification ladder**
 - **Parallel shard boundaries**, **Prior context**, **Stop conditions**
 
-Do not proceed beyond assigned shard/unit. Do not start next unit. Do not write completion files or commit messages (the orchestrator handles those).
+Stay within the assigned shard/unit and do not start the next one. Do not write completion files or commit messages (the orchestrator handles those).
 
 # Core Workflow
 
@@ -28,7 +28,7 @@ Do not proceed beyond assigned shard/unit. Do not start next unit. Do not write 
 # Test Quality Gate
 
 - Tests must prove project behavior, regression, invariant, edge case, error path, or persistence contract.
-- Every new test needs clear project failure mode. No test if no meaningful failure mode.
+- Every new test needs clear project failure mode. No test if no failure mode.
 - Do not test language/std/dependency behavior: `Option::is_some()`, casts, derived traits, trivial getters, hardcoded defaults, basic serde mechanics.
 - Serde/config tests allowed only when protecting consumer-visible behavior, cross-version compat, config migration, or known regression.
 - No external connections in unit tests regardless of `#[ignore]`. External-service tests belong in dedicated integration test binaries.
@@ -40,7 +40,7 @@ Do not proceed beyond assigned shard/unit. Do not start next unit. Do not write 
 - `anyhow::Result` only when handoff explicitly states internal-glue rationale.
 - `.context()` at IO/config/network/SQL/parse/external-service boundaries.
 - Preserve source chains. Never stringify and discard source errors.
-- Error messages: state what failed + stable identifiers. Lowercase, no trailing period, no secrets.
+- Error messages: state what failed + stable identifiers. Lowercase, without a trailing period or secrets.
 - `#[non_exhaustive]` on public error enums that may grow.
 - No `unwrap()`/`expect()` in production paths without invariant comment.
 
@@ -76,4 +76,4 @@ All must return zero hits.
 3. List files created/changed
 4. Report back to the orchestrator (do not start next unit)
 
-**When uncertain:** STOP, present 2-3 options with pros/cons, wait for selection.
+**When uncertain:** STOP. Present 2-3 options with pros/cons, wait for selection.

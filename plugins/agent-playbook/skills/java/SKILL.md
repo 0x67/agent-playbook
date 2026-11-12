@@ -8,7 +8,7 @@ description: >
   virtual threads, executors, streams, Optional, nullness, JSpecify,
   exceptions, try-with-resources, generics, Lombok, or a Java release (17,
   21, 25, 26, 27). Trigger even when "Java" is not said but files are
-  clearly Java. Language rules live here; builds (Gradle, Maven), JUnit,
+  clearly Java. Language rules are here; builds (Gradle, Maven), JUnit,
   Mockito, Spring, profiling, and code navigation come from the `jvm`
   skill. Core rules inline; specialist rules load through the routing
   table below.
@@ -50,7 +50,7 @@ Multiple matches: read all matched. Unsure: read `style.md` and `errors.md`.
 - Classes `final` unless designed for extension; `sealed` for closed hierarchies; composition over inheritance.
 - Every `AutoCloseable` in try-with-resources: `Files.lines`/`Files.list` streams, JDBC objects, `ExecutorService` (19+), `HttpClient` (21+). Locks released in `finally`.
 - Exceptions never swallowed. Catch `Exception` or `Throwable` only at a top-level boundary that logs and maps. Chain the cause. Restore the interrupt flag on `InterruptedException`. No exceptions for control flow.
-- `switch` over enums and sealed types exhaustive without `default` (21+ patterns), so a new case breaks compilation instead of falling through.
+- `switch` over enums and sealed types exhaustive without `default` (21+ patterns), which makes a new case a compile error.
 - `java.time` only, never `Date`, `Calendar`, or `SimpleDateFormat`; inject a `Clock` where time drives logic. Money and exact decimals in `BigDecimal` built from a `String` or `BigDecimal.valueOf`, never `new BigDecimal(double)` or `double`; compare with `compareTo`.
 - No raw types. No unchecked cast without a comment saying why it is sound. Public APIs take interfaces (`List`, `Map`) and the widest wildcard that works (`? extends` for inputs, `? super` for sinks).
 - Logging through the repo's facade (SLF4J usually), parameterized (`log.info("loaded {}", id)`). No `System.out` or `printStackTrace` in production code. Never log secrets or personal data.

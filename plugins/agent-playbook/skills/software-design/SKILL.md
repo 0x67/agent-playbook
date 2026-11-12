@@ -19,7 +19,7 @@ description: >
 
 # Software design skill
 
-Design code a new teammate can change safely in their first week: names in the domain's words, functions that do one thing at one level, modules that hide decisions behind small interfaces, dependencies that point toward the domain, and no more architecture than current pressure demands. This skill holds the cross-language rules; the language skill holds casing, idioms, and the post-write gate.
+Design code a new teammate can change safely in their first week: names in the domain's words, functions that do one thing at one level, modules that hide decisions behind small interfaces, dependencies that point toward the domain, and no more architecture than current pressure demands. This skill contains the cross-language rules; the language skill contains casing, idioms, and the post-write gate.
 
 ## Routing table (mandatory)
 
@@ -31,7 +31,7 @@ Read matching reference BEFORE designing or writing code. Paths are relative to 
 | function size, parameters, flag arguments, nesting, extraction, side effects, pure core, module depth, cohesion, coupling, dependency direction, import cycles, public surface, file size, duplication | `references/functions.md` |
 | SOLID, layers, MVC/MVP/MVVM, hexagonal, ports and adapters, clean/onion, vertical slices, DDD, aggregates, CQRS, event sourcing, messaging, modular monolith, microservices, choosing or reviewing an architecture | `references/architecture.md` |
 
-Multiple matches: read all matched. Unsure: read `naming.md` and `functions.md`.
+Multiple matches: read all matched. If unsure, read `naming.md` and `functions.md`.
 
 ## Before designing
 
@@ -46,14 +46,14 @@ Multiple matches: read all matched. Unsure: read `naming.md` and `functions.md`.
 - One concern per function and per file. Section comments, a name with `And`, or nesting past about 3 levels mean split.
 - More than about 3 or 4 parameters means a missing type. Boolean flag parameters are banned.
 - Business rules are pure functions over values. I/O, time, and randomness stay at the edges and come in as arguments.
-- Queries change nothing; commands say in their name what they change.
+- Queries do not change anything; commands say in their name what they change.
 - Modules are deep: small public surface, decisions hidden inside, narrowest visibility by default.
 - Dependencies point toward the domain. No import cycles.
 - Package by feature. No `utils`, `common`, `helpers`, or `models` dumping grounds.
 - An interface (port) exists only when a second implementation exists now; a fake that tests use counts. Otherwise depend on the concrete type and extract the interface when the second one arrives. Open/closed extension points and dependency inversion follow the same rule (`references/architecture.md`).
-- Duplication beats the wrong abstraction. Extract on the third copy.
-- The simplest architecture that carries today's team, domain, and load; the repo's existing one first.
-- Several approaches (2 to 5) still viable and the choice worth measuring: run the spec-driven approach trial (`spec-driven` skill, `trial.md`) instead of arguing from taste.
+- Prefer duplication to the wrong abstraction. Extract on the third copy.
+- The simplest architecture that supports today's team, domain, and load; the repo's existing one first.
+- Several approaches (2 to 5) still viable and the choice needing measurement: run the spec-driven approach trial (`spec-driven` skill, `trial.md`) instead of arguing from taste.
 
 ## Review checklist
 
@@ -63,12 +63,12 @@ Flag in a diff:
 - A new synonym for an existing concept, or an old name kept as an alias after a rename.
 - `I` prefix or `Impl` suffix; an interface, strategy, factory, or config knob with one implementation or one value (a fake that tests use counts as a second implementation).
 - A function with section comments, nesting past about 3 levels, more than about 4 parameters, or a boolean flag argument.
-- A function whose steps run together with no blank line between them, or a ternary nested in another ternary.
+- Steps run together with no blank line between them inside a function, or a ternary nested in another ternary.
 - A query that writes; a side effect missing from the name or signature; I/O or clock reads inside business rules.
 - Pass-through methods or layers; mapping between identical types.
 - The domain importing HTTP, ORM, driver, or SDK types; a dependency pointing outward; a new import cycle.
 - Business rules in controllers, views, templates, or ORM entities (outside an active record repo).
-- A persistence entity used as a public request or response payload.
+- Persistence entities used as public request or response payloads.
 - A file pushed past the Code Growth Discipline thresholds, or a second concern added to a file.
 - A new layer, style, service, or message queue the user did not agree to.
 - One transaction changing several aggregates; a service writing another service's tables.
