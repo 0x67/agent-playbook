@@ -1,6 +1,6 @@
 Humanizer rules for written output (condensed from skill `humanizer` v3.1.0). They apply to code comments, doc comments, docs, specs, UI strings (labels, buttons, errors, empty states, tooltips), PR bodies, commit messages, Jira comments, Slack and email drafts, and published artifacts. Chat replies to the user are out of scope.
 
-Load the full skill (Skill tool, `humanizer:humanizer`, embedded mode) before writing a PR body, doc, spec, Jira comment, or any prose longer than a short paragraph. Code comments and one-line commit headers can follow this card alone.
+Load the full skill (Skill tool, `humanizer:humanizer`, embedded mode) before writing a PR body, doc, spec, Jira comment, or any prose longer than a short paragraph. Code comments and one-line commit headers can follow this card alone. When writing or reviewing UI strings, also load `better-writing` (`vetted-skills:better-writing` in Claude Code) if it is installed.
 
 Cut on one sighting:
 1. Not X but Y contrasts, also split across sentences ("This does not mean X. It means Y.") and clipped tails (", no guessing"). State the point.
