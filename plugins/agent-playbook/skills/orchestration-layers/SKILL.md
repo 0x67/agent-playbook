@@ -111,8 +111,9 @@ or Fable. Set `CLAUDE_CODE_SUBAGENT_MODEL=sonnet` in settings so that fallback s
 | Hardest reasoning, only when the user asks for it | `fable` | any |
 
 Raise a unit to `opus` when it changes an interface other units depend on, touches money,
-concurrency, auth, or a data migration, or returned FAILED twice on `sonnet`. Move down when the
-brief is a lookup.
+concurrency, auth, or a data migration, or returned FAILED twice on `sonnet`. Reviewers of a diff
+that touches money, auth, or security also run on `opus`; their verifiers stay on `sonnet`. Move
+down when the brief is a lookup.
 
 ## Model disclosure
 
