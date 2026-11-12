@@ -1,6 +1,6 @@
 {
   "name": "agent-playbook",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Engineering rules, Go/Rust/Tauri/C++ skills, spec-driven workflow, orchestration subagents with model tiers, and the hooks that keep them loaded.",
   "author": {
     "name": "0x67",
