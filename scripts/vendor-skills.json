@@ -42,6 +42,12 @@
     "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
   },
   {
+    "name": "interface-review",
+    "repo": "jakubkrehel/skills",
+    "path": "skills/interface-review",
+    "sha": "1eb03d2b145df1c6cd84ab54a337600a2a379017"
+  },
+  {
     "name": "ui",
     "repo": "tw93/Waza",
     "path": "plugins/waza/skills/ui",

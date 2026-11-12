@@ -22,7 +22,7 @@
     {
       "name": "vetted-skills",
       "source": "./plugins/vetted-skills",
-      "description": "Third-party skills pinned to a reviewed commit and scanned with SkillSpector: the seven better-* interface skills (accessibility, colors, interface, layout, typography, ui, writing), Waza ui, and Kami."
+      "description": "Third-party skills pinned to a reviewed commit and scanned with SkillSpector: the seven better-* interface skills (accessibility, colors, interface, layout, typography, ui, writing), interface-review, Waza ui, and Kami."
     }
   ]
 }
