@@ -7,6 +7,7 @@ Standing rules for coding agents. Claude Code gets this file at every session an
 Text that ends up in an artifact or in front of other people is plain human prose: code comments, doc comments, docs and markdown, specs, UI strings, PR descriptions, commit messages, Jira comments, Slack and email drafts, published artifacts. Drafts shown in chat for the user to paste elsewhere count too. In Claude Code a condensed rule card arrives at every session and subagent start. Load the full `humanizer` skill (`humanizer:humanizer` as a Claude Code plugin) in embedded mode (final text only) before writing PR bodies, docs, specs, Jira comments, or other prose longer than a short paragraph. Where the skill is not installed, the card and the bullets below are the whole rule set; write without it.
 
 - Keep all technical substance: identifiers, paths, numbers, types, error text.
+- Add no fact, detail, or example the source does not state, even when a rewrite would read better with one.
 - The user's own formats and writing samples override humanizer patterns.
 - Never rewrite code, commands, paths, or data.
 
