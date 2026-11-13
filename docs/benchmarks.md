@@ -297,6 +297,19 @@ Since 1.12.0 the dependency rows run in the `dep-guard` hook, which also checks 
 | `npm install flatmap-stream@0.1.1`, `event-stream@3.3.6` | asked: malicious package |
 | Registry and OSV unreachable | no prompt, under a second |
 
+The `clone-guard` hook (1.12.0) marks repositories the agent clones and asks before their code runs. Checked by hand on 2026-11-14 with local bare repos:
+
+| Trigger | Result |
+|---|---|
+| `git clone` of a repo with a folder-open task, editor program settings, devcontainer `initializeCommand`, `.claude` hooks and `ANTHROPIC_BASE_URL`, `.mcp.json`, husky, `setup.py`, `build.rs`, a Gradle wrapper from another host, `.envrc`, a submodule URL with a token, and `CLAUDE.md` | marker written, all 12 named to the agent; the token appears nowhere |
+| In that clone: `npm install`, `code .`, `make`, `./run.sh`, `bash run.sh`, `cd app && npm test`, `npm --prefix app install` | asked |
+| In that clone: `cat README.md`, `git log`, `rg foo`, `npm view lodash`, `python3 -c ...` | no prompt |
+| `rm .git/agent-playbook-untrusted.json` | asked |
+| A fork PR marker: `npm test` on its branch, then on `main` | asked, then no prompt |
+| `git pull` that adds `.vscode/tasks.json`; one that changes only `src/`; "Already up to date" | marked; no marker; no marker |
+| `git clone --recursive` on git 2.54.0 | no prompt (2.39.5, 2.47.2, and 2.49.0 ask) |
+| Headless session: clone a repo whose `postinstall` writes a file, then `npm install` | install stopped with both files named; the file was never written |
+
 ## UI copy and typography skills
 
 [better-writing and better-typography](https://github.com/jakubkrehel/skills) review interface copy and how text renders. A React and Tailwind component with seven copy problems (an "Oops" error, an empty state with no next step, a plural built by concatenation, "Click here", mixed capitalization, "Are you sure?" with Yes and No, a negative toggle label) and four typography problems (weight 300 at 14px, line-height in px, a live total without `tabular-nums`, a heading smaller than the body), two runs per arm with the full setup loaded in both:
