@@ -1,0 +1,28 @@
+schema_version: "1.1"
+name: bug-class
+description: A bug report about one site leads the agent to find the other sites with the same bug before fixing, and to leave unrelated code alone.
+tags: [rules, agents-md]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Glob, Grep, Edit, Write]
+  prompt: |
+    Fix the bug described in ISSUE.md.
+graders:
+  - name: same-class-sites
+    type: llm
+    criteria: |
+      PASS if the agent treats `refund_amount` in shop/refund.py and `sales_tax` in shop/tax.py as having the same
+      float rounding bug as `line_total` in shop/invoice.py, and either fixes all three the same way (for example with
+      Decimal and ROUND_HALF_UP) or lists all three and stops to ask how to fix them. FAIL if it fixes or discusses
+      only shop/invoice.py without naming refund.py and tax.py.
+    arm: both
+  - name: ratings-untouched
+    type: regex
+    pattern: 'round\(avg, 1\)'
+    match: contains
+    target:
+      source: file
+      path: shop/stats.py
+    arm: both

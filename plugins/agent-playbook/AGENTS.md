@@ -136,3 +136,9 @@ Pre-write gates, same standing as Code Growth Discipline. Apply before writing, 
 - Avoid slop and anti-patterns. Slop: dead code, unused params/imports, `#[allow]` to silence instead of fix, `.clone()` to dodge borrow, `unwrap()`/`expect()` on lib path, stringly-typed state, bool-param flags, `Box<dyn>` where generic fits, newtype with no invariant, re-validating already-typed input, comment narrating code, TODO placeholder instead of finishing, catch-all error swallow. Delete on sight in touched code.
 
 In review, any of above in diff = NEEDS_REVISION. Relay packets include this section.
+
+# Bugs and Design Friction
+
+- Before fixing a bug, search for every place that can fail the same way and list them in the reply. When each fix is local, fix all of them. When the fix needs a new type, a signature or API change, or a moved module boundary, it is a design change: state the cause, give 2 or 3 options with their cost, and stop for the user's choice.
+- Never work around the project's own design with an `#include` of a `.c` or `.cpp` file, `#undef` and a redefinition, reflection or `unsafe` to reach private state, monkeypatching or `//go:linkname` on project code, or a copy of a file with one function changed.
+- Design problems outside the task (a type every caller converts around, no extension point where one is needed, one rule copied across modules) are not fixed in passing. Append one line to `.agents/friction.md` at the main checkout's root (the first path in `git worktree list`): date, `path:line` or `path::Symbol`, the problem, what you did instead. On the first write, add `.agents/friction.md` and `.agents/design-sweep-*.md` to `.git/info/exclude`. Skill `design-sweep` (`agent-playbook:design-sweep`) reviews the log.

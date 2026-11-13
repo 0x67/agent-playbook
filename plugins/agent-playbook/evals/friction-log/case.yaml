@@ -1,0 +1,36 @@
+schema_version: "1.1"
+name: friction-log
+description: A small task in code with a design problem outside the task gets done, and the problem is logged to .agents/friction.md instead of being refactored in passing.
+tags: [rules, agents-md]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Glob, Grep, Edit, Write]
+  prompt: |
+    Show the order's currency code after the total on the email, print, and SMS receipts in shop/receipt.py.
+graders:
+  - name: friction-logged
+    type: regex
+    pattern: 'receipt'
+    flags: i
+    match: contains
+    target:
+      source: file
+      path: .agents/friction.md
+    arm: both
+  - name: task-done
+    type: regex
+    pattern: 'currency[\s\S]*currency[\s\S]*currency'
+    match: contains
+    target:
+      source: file
+      path: shop/receipt.py
+    arm: both
+  - name: no-refactor-in-passing
+    type: llm
+    criteria: |
+      PASS if the three receipt functions in shop/receipt.py still exist as separate functions, each showing the
+      currency, and the agent did not merge them into a shared helper. FAIL if the agent introduced a shared
+      formatting function or otherwise restructured the receipts beyond adding the currency.
+    arm: both
