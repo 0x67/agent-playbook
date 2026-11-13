@@ -66,8 +66,9 @@ Naming, function size, module boundaries, and architecture (SOLID, layered, MVC,
 - Vet skills, plugins, and MCP servers before installing them: read the source, or scan it with SkillSpector.
 - Never commit secrets; keep them in environment variables or a secret store.
 - Push, publish, deploy, and apply commands need the user's go-ahead in this conversation.
+- Destructive database commands (`DROP`, `TRUNCATE`, `DELETE` or `UPDATE` without `WHERE`, a migration reset or rollback) and writes to a database that is not local need the same go-ahead. Reach production through a read-only role.
 
-In Claude Code the `security-guard` hook backs these with a permission prompt: OSV advisories for new dependencies, SkillSpector for skills and plugins, gitleaks before commits, zizmor for workflow edits, and every push, publish, or deploy.
+In Claude Code the `security-guard` hook backs these with a permission prompt: OSV advisories for new dependencies, SkillSpector for skills and plugins, gitleaks before commits, zizmor for workflow edits, and every push, publish, or deploy. The `db-guard` hook asks before the database commands above, in shell commands and in database MCP tools.
 
 # Commits and Pull Requests
 

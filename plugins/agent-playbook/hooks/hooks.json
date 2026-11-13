@@ -67,6 +67,12 @@
         "hooks": [
           { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/security-guard.py\"", "timeout": 120, "statusMessage": "Checking dependencies, installs, secrets, and deploys..." }
         ]
+      },
+      {
+        "matcher": "Bash|mcp__.*([Ss]upabase|[Nn]eon|[Pp]ostgres|[Mm]y[Ss][Qq][Ll]|[Mm]aria[Dd][Bb]|[Ss][Qq][Ll]ite|[Bb]ig[Qq]uery|[Ss]nowflake|[Pp]lanet[Ss]cale|[Pp]risma|[Mm]ongo|[Rr]edis|[Cc]lick[Hh]ouse|[Tt]urso|[Cc]ockroach|[Dd]uck[Dd][Bb]|[Dd]atabase|sql|SQL).*",
+        "hooks": [
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/db-guard.py\"", "timeout": 10 }
+        ]
       }
     ],
     "Stop": [
