@@ -1,0 +1,614 @@
+{
+ "platform": "slack",
+ "source": "URL list from https://slack.engineering/wp-json/wp/v2/posts (public WP REST API, fields link only). Date read from each page's first div.ts-meta-date (the page has no article:published_time or JSON-LD). Body from div.ts-entry__content-wrap.",
+ "filter": "No filter applied: the blog has a single WP category (Uncategorized) and every post is engineering content; no marketing/press/hiring/event labels exist. Date filter: page date < 2022-11-30.",
+ "cutoff": "2022-11-30",
+ "containers": [
+  [
+   "div",
+   "ts-entry__content-wrap"
+  ]
+ ],
+ "posts": [
+  {
+   "url": "https://slack.engineering/%ef%b8%8f-surfs-up-preparing-for-huge-waves-of-traffic-via-load-testing/",
+   "date": "2019-06-20",
+   "title": "🏄‍♀️ Surf’s Up! Preparing for Huge Waves of Traffic via Load Testing",
+   "file": "%ef%b8%8f-surfs-up-preparing-for-huge-waves-of-traffic-via-load-testing.md"
+  },
+  {
+   "url": "https://slack.engineering/a-day-in-the-life-of-a-backend-platform-engineer-at-slack-pune/",
+   "date": "2021-01-13",
+   "title": "A Day in the Life of a Backend Platform Engineer at Slack Pune",
+   "file": "a-day-in-the-life-of-a-backend-platform-engineer-at-slack-pune.md"
+  },
+  {
+   "url": "https://slack.engineering/a-day-in-the-life-of-a-backend-product-engineer-at-slack/",
+   "date": "2020-04-06",
+   "title": "A Day in the Life of a Backend Product Engineer at Slack",
+   "file": "a-day-in-the-life-of-a-backend-product-engineer-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/a-day-in-the-life-of-a-mobile-product-engineer-at-slack/",
+   "date": "2020-04-21",
+   "title": "A Day in the Life of a Mobile Product Engineer at Slack",
+   "file": "a-day-in-the-life-of-a-mobile-product-engineer-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/a-terrible-horrible-no-good-very-bad-day-at-slack/",
+   "date": "2020-06-29",
+   "title": "A Terrible, Horrible, No-Good, Very Bad Day at Slack",
+   "file": "a-terrible-horrible-no-good-very-bad-day-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/a-walkthrough-guide-to-finding-an-engineering-job-at-slack/",
+   "date": "2016-05-04",
+   "title": "A Walkthrough Guide to Finding an Engineering Job at Slack",
+   "file": "a-walkthrough-guide-to-finding-an-engineering-job-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/applying-product-thinking-to-slacks-internal-compute-platform/",
+   "date": "2022-03-09",
+   "title": "Applying Product Thinking to Slack’s Internal Compute Platform",
+   "file": "applying-product-thinking-to-slacks-internal-compute-platform.md"
+  },
+  {
+   "url": "https://slack.engineering/autotransform-efficient-codebase-modification/",
+   "date": "2022-07-21",
+   "title": "AutoTransform: Efficient Codebase Modification",
+   "file": "autotransform-efficient-codebase-modification.md"
+  },
+  {
+   "url": "https://slack.engineering/balancing-safety-and-velocity-in-ci-cd-at-slack/",
+   "date": "2022-02-18",
+   "title": "Balancing Safety and Velocity in CI/CD at Slack",
+   "file": "balancing-safety-and-velocity-in-ci-cd-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/blocked-how-to-ask-for-help-as-an-intern/",
+   "date": "2022-09-20",
+   "title": "Blocked: How to Ask For Help as an Intern",
+   "file": "blocked-how-to-ask-for-help-as-an-intern.md"
+  },
+  {
+   "url": "https://slack.engineering/blocking-slack-invite-spam-with-machine-learning/",
+   "date": "2020-08-10",
+   "title": "Blocking Slack Invite Spam With Machine Learning",
+   "file": "blocking-slack-invite-spam-with-machine-learning.md"
+  },
+  {
+   "url": "https://slack.engineering/building-dark-mode-on-desktop/",
+   "date": "2019-09-24",
+   "title": "Building Dark Mode on Desktop",
+   "file": "building-dark-mode-on-desktop.md"
+  },
+  {
+   "url": "https://slack.engineering/building-self-driving-kafka-clusters-using-open-source-components/",
+   "date": "2022-02-11",
+   "title": "Building Self-driving Kafka clusters using open source components",
+   "file": "building-self-driving-kafka-clusters-using-open-source-components.md"
+  },
+  {
+   "url": "https://slack.engineering/building-the-next-evolution-of-cloud-networks-at-slack-a-retrospective/",
+   "date": "2021-10-20",
+   "title": "Building the Next Evolution of Cloud Networks at Slack – A Retrospective",
+   "file": "building-the-next-evolution-of-cloud-networks-at-slack-a-retrospective.md"
+  },
+  {
+   "url": "https://slack.engineering/building-the-next-evolution-of-cloud-networks-at-slack/",
+   "date": "2020-09-21",
+   "title": "Building the Next Evolution of Cloud Networks at Slack",
+   "file": "building-the-next-evolution-of-cloud-networks-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/buildrock-a-build-platform-at-slack/",
+   "date": "2022-08-31",
+   "title": "BuildRock: A Build Platform at Slack",
+   "file": "buildrock-a-build-platform-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/calls-is-it-you-or-is-it-me/",
+   "date": "2016-05-11",
+   "title": "Calls: Is it you or is it me?",
+   "file": "calls-is-it-you-or-is-it-me.md"
+  },
+  {
+   "url": "https://slack.engineering/chrome-tracing-for-fun-and-profit/",
+   "date": "2019-06-12",
+   "title": "Chrome Tracing for Fun and Profit",
+   "file": "chrome-tracing-for-fun-and-profit.md"
+  },
+  {
+   "url": "https://slack.engineering/circuit-breakers/",
+   "date": "2022-08-19",
+   "title": "Slowing Down to Speed Up – Circuit Breakers for Slack’s CI/CD",
+   "file": "circuit-breakers.md"
+  },
+  {
+   "url": "https://slack.engineering/client-consistency-at-slack-beyond-libslack/",
+   "date": "2019-10-18",
+   "title": "Client Consistency at Slack: Beyond Libslack",
+   "file": "client-consistency-at-slack-beyond-libslack.md"
+  },
+  {
+   "url": "https://slack.engineering/client-tracing-understanding-mobile-and-desktop-application-performance-at-scale/",
+   "date": "2021-03-24",
+   "title": "Client Tracing: Understanding Mobile and Desktop Application Performance at Scale",
+   "file": "client-tracing-understanding-mobile-and-desktop-application-performance-at-scale.md"
+  },
+  {
+   "url": "https://slack.engineering/continuous-load-testing/",
+   "date": "2022-04-29",
+   "title": "Continuous Load Testing",
+   "file": "continuous-load-testing.md"
+  },
+  {
+   "url": "https://slack.engineering/creating-a-react-analytics-logging-library/",
+   "date": "2020-11-06",
+   "title": "Creating a React Analytics Logging Library",
+   "file": "creating-a-react-analytics-logging-library.md"
+  },
+  {
+   "url": "https://slack.engineering/data-lineage-at-slack/",
+   "date": "2021-08-17",
+   "title": "Data Lineage at Slack",
+   "file": "data-lineage-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/deploys-at-slack/",
+   "date": "2020-03-29",
+   "title": "Deploys at Slack",
+   "file": "deploys-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/developing-in-the-open/",
+   "date": "2021-11-10",
+   "title": "Developing in the Open",
+   "file": "developing-in-the-open.md"
+  },
+  {
+   "url": "https://slack.engineering/distributed-security-alerting/",
+   "date": "2016-02-29",
+   "title": "Distributed Security Alerting",
+   "file": "distributed-security-alerting.md"
+  },
+  {
+   "url": "https://slack.engineering/email-classification/",
+   "date": "2021-07-28",
+   "title": "Email Classification",
+   "file": "email-classification.md"
+  },
+  {
+   "url": "https://slack.engineering/engineering-dive-into-slack-enterprise-key-management/",
+   "date": "2019-03-18",
+   "title": "Engineering dive into Slack Enterprise Key Management",
+   "file": "engineering-dive-into-slack-enterprise-key-management.md"
+  },
+  {
+   "url": "https://slack.engineering/evolving-api-pagination-at-slack/",
+   "date": "2017-08-15",
+   "title": "Evolving API Pagination at Slack",
+   "file": "evolving-api-pagination-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/flannel-an-application-level-edge-cache-to-make-slack-scale/",
+   "date": "2017-05-31",
+   "title": "Flannel: An Application-Level Edge Cache to Make Slack Scale",
+   "file": "flannel-an-application-level-edge-cache-to-make-slack-scale.md"
+  },
+  {
+   "url": "https://slack.engineering/growing-pains-migrating-slacks-desktop-app-to-browserview/",
+   "date": "2017-10-30",
+   "title": "Growing Pains: Migrating Slack’s Desktop App to BrowserView",
+   "file": "growing-pains-migrating-slacks-desktop-app-to-browserview.md"
+  },
+  {
+   "url": "https://slack.engineering/hacklang-at-slack-a-better-php/",
+   "date": "2020-04-14",
+   "title": "Hacklang at Slack: A Better PHP",
+   "file": "hacklang-at-slack-a-better-php.md"
+  },
+  {
+   "url": "https://slack.engineering/handling-flaky-tests-at-scale-auto-detection-suppression/",
+   "date": "2022-04-05",
+   "title": "Handling Flaky Tests at Scale: Auto Detection & Suppression",
+   "file": "handling-flaky-tests-at-scale-auto-detection-suppression.md"
+  },
+  {
+   "url": "https://slack.engineering/happiness-is-a-freshly-organized-codebase/",
+   "date": "2020-05-07",
+   "title": "Happiness is… a freshly organized codebase",
+   "file": "happiness-is-a-freshly-organized-codebase.md"
+  },
+  {
+   "url": "https://slack.engineering/highlights-from-slacks-august-mobile-meetup/",
+   "date": "2018-09-11",
+   "title": "Highlights from Slack’s August Mobile Meetup",
+   "file": "highlights-from-slacks-august-mobile-meetup.md"
+  },
+  {
+   "url": "https://slack.engineering/highlights-from-slacks-march-growth-meetup/",
+   "date": "2019-03-26",
+   "title": "Highlights from Slack’s March Growth Meetup",
+   "file": "highlights-from-slacks-march-growth-meetup.md"
+  },
+  {
+   "url": "https://slack.engineering/how-about-code-reviews/",
+   "date": "2016-02-22",
+   "title": "How About Code Reviews?",
+   "file": "how-about-code-reviews.md"
+  },
+  {
+   "url": "https://slack.engineering/how-big-technical-changes-happen-at-slack/",
+   "date": "2020-02-13",
+   "title": "How Big Technical Changes Happen at Slack",
+   "file": "how-big-technical-changes-happen-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/how-slack-built-shared-channels/",
+   "date": "2019-09-16",
+   "title": "How Slack Built Shared Channels",
+   "file": "how-slack-built-shared-channels.md"
+  },
+  {
+   "url": "https://slack.engineering/how-slack-hires-a-red-team-and-you-can-too/",
+   "date": "2019-05-07",
+   "title": "How Slack Hires a Red Team (and you can too!)",
+   "file": "how-slack-hires-a-red-team-and-you-can-too.md"
+  },
+  {
+   "url": "https://slack.engineering/how-slack-supports-junior-engineers/",
+   "date": "2017-03-09",
+   "title": "How Slack Supports Junior Engineers",
+   "file": "how-slack-supports-junior-engineers.md"
+  },
+  {
+   "url": "https://slack.engineering/how-to-fail-at-accessibility/",
+   "date": "2019-02-22",
+   "title": "How to Fail at Accessibility",
+   "file": "how-to-fail-at-accessibility.md"
+  },
+  {
+   "url": "https://slack.engineering/how-to-have-an-impactful-internship-virtually/",
+   "date": "2020-08-18",
+   "title": "How to Have an Impactful Internship… Virtually",
+   "file": "how-to-have-an-impactful-internship-virtually.md"
+  },
+  {
+   "url": "https://slack.engineering/how-to-mentor-interns-to-become-skillful-engineers/",
+   "date": "2022-10-03",
+   "title": "How to Mentor Interns to Become Skillful Engineers",
+   "file": "how-to-mentor-interns-to-become-skillful-engineers.md"
+  },
+  {
+   "url": "https://slack.engineering/how-two-interns-are-helping-secure-millions-of-lines-of-code/",
+   "date": "2021-11-04",
+   "title": "How Two Interns Are Helping Secure Millions of Lines of Code",
+   "file": "how-two-interns-are-helping-secure-millions-of-lines-of-code.md"
+  },
+  {
+   "url": "https://slack.engineering/how-we-design-our-apis-at-slack/",
+   "date": "2021-08-11",
+   "title": "How We Design Our APIs at Slack",
+   "file": "how-we-design-our-apis-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/how-we-use-terraform-at-slack/",
+   "date": "2022-10-25",
+   "title": "How We Use Terraform At Slack",
+   "file": "how-we-use-terraform-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/infrastructure-observability-for-changing-the-spend-curve/",
+   "date": "2021-10-07",
+   "title": "Infrastructure Observability for Changing the Spend Curve",
+   "file": "infrastructure-observability-for-changing-the-spend-curve.md"
+  },
+  {
+   "url": "https://slack.engineering/interops-labyrinth-sharing-code-between-web-electron-apps/",
+   "date": "2018-01-31",
+   "title": "Interop’s Labyrinth: Sharing Code Between Web & Electron Apps",
+   "file": "interops-labyrinth-sharing-code-between-web-electron-apps.md"
+  },
+  {
+   "url": "https://slack.engineering/into-the-clouds/",
+   "date": "2017-06-06",
+   "title": "Into the Clouds",
+   "file": "into-the-clouds.md"
+  },
+  {
+   "url": "https://slack.engineering/introducing-electron-to-the-windows-runtime/",
+   "date": "2017-01-17",
+   "title": "Introducing Electron to the Windows Runtime",
+   "file": "introducing-electron-to-the-windows-runtime.md"
+  },
+  {
+   "url": "https://slack.engineering/introducing-nebula-the-open-source-global-overlay-network-from-slack/",
+   "date": "2019-11-19",
+   "title": "Introducing Nebula, the open source global overlay network from Slack",
+   "file": "introducing-nebula-the-open-source-global-overlay-network-from-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/keep-webpack-fast-a-field-guide-for-better-build-performance/",
+   "date": "2018-01-17",
+   "title": "Keep webpack Fast: A Field Guide for Better Build Performance",
+   "file": "keep-webpack-fast-a-field-guide-for-better-build-performance.md"
+  },
+  {
+   "url": "https://slack.engineering/libslack-the-c-library-at-the-foundation-of-our-client-application-architecture/",
+   "date": "2017-09-27",
+   "title": "LibSlack: The C++ Library at the Foundation of Our Client Application Architecture",
+   "file": "libslack-the-c-library-at-the-foundation-of-our-client-application-architecture.md"
+  },
+  {
+   "url": "https://slack.engineering/load-testing-with-koi-pond/",
+   "date": "2021-04-23",
+   "title": "Load Testing with Koi Pond",
+   "file": "load-testing-with-koi-pond.md"
+  },
+  {
+   "url": "https://slack.engineering/making-slack-faster-by-being-lazy-part-2/",
+   "date": "2017-02-02",
+   "title": "Making Slack Faster By Being Lazy: Part 2",
+   "file": "making-slack-faster-by-being-lazy-part-2.md"
+  },
+  {
+   "url": "https://slack.engineering/making-slack-feel-like-slack/",
+   "date": "2016-06-02",
+   "title": "Making Slack Feel Like Slack",
+   "file": "making-slack-feel-like-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/managing-focus-transitions-in-slack/",
+   "date": "2021-07-13",
+   "title": "Managing Focus Transitions in Slack",
+   "file": "managing-focus-transitions-in-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/mentorship-at-slack/",
+   "date": "2016-10-19",
+   "title": "Mentorship at Slack",
+   "file": "mentorship-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/mobile-developer-experience-at-slack/",
+   "date": "2022-10-12",
+   "title": "Mobile Developer Experience at Slack",
+   "file": "mobile-developer-experience-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/on-empathy-pull-requests/",
+   "date": "2016-02-16",
+   "title": "On Empathy & Pull Requests",
+   "file": "on-empathy-pull-requests.md"
+  },
+  {
+   "url": "https://slack.engineering/our-hybrid-and-collaborative-summer-slacks-data-eng/",
+   "date": "2022-09-13",
+   "title": "Our Hybrid and Collaborative Summer @ Slack’s Data Eng",
+   "file": "our-hybrid-and-collaborative-summer-slacks-data-eng.md"
+  },
+  {
+   "url": "https://slack.engineering/panmodal-better-support-for-thumb-accessibility-on-slack-mobile/",
+   "date": "2019-08-22",
+   "title": "PanModal: Better support for thumb accessibility on Slack mobile",
+   "file": "panmodal-better-support-for-thumb-accessibility-on-slack-mobile.md"
+  },
+  {
+   "url": "https://slack.engineering/personalized-channel-recommendations-in-slack/",
+   "date": "2016-09-06",
+   "title": "Personalized channel recommendations in Slack",
+   "file": "personalized-channel-recommendations-in-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/prototyping-at-slack/",
+   "date": "2020-05-19",
+   "title": "Prototyping at Slack",
+   "file": "prototyping-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/re-architecting-slacks-workspace-preferences-how-to-move-to-an-eav-model-to-support-scalability/",
+   "date": "2018-08-09",
+   "title": "Re-architecting Slack’s Workspace Preferences: How to Move to an EAV Model to Support Scalability",
+   "file": "re-architecting-slacks-workspace-preferences-how-to-move-to-an-eav-model-to-support-scalability.md"
+  },
+  {
+   "url": "https://slack.engineering/rebuilding-slack-com/",
+   "date": "2017-10-11",
+   "title": "Rebuilding slack.com",
+   "file": "rebuilding-slack-com.md"
+  },
+  {
+   "url": "https://slack.engineering/rebuilding-slack-on-the-desktop/",
+   "date": "2019-07-22",
+   "title": "When a rewrite isn’t: rebuilding Slack on the desktop",
+   "file": "rebuilding-slack-on-the-desktop.md"
+  },
+  {
+   "url": "https://slack.engineering/recommend-api/",
+   "date": "2022-09-06",
+   "title": "Recommend API",
+   "file": "recommend-api.md"
+  },
+  {
+   "url": "https://slack.engineering/refactoring-backend-engineering-hiring-at-slack/",
+   "date": "2019-04-03",
+   "title": "Refactoring Backend Engineering Hiring at Slack",
+   "file": "refactoring-backend-engineering-hiring-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/reliably-upgrading-apache-airflow-at-slacks-scale/",
+   "date": "2020-01-15",
+   "title": "Reliably Upgrading Apache Airflow at Slack’s Scale",
+   "file": "reliably-upgrading-apache-airflow-at-slacks-scale.md"
+  },
+  {
+   "url": "https://slack.engineering/remote-development-at-slack/",
+   "date": "2022-06-28",
+   "title": "Remote Development at Slack",
+   "file": "remote-development-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/rewriting-the-slack-python-sdk/",
+   "date": "2019-05-23",
+   "title": "Rewriting the Slack Python SDK",
+   "file": "rewriting-the-slack-python-sdk.md"
+  },
+  {
+   "url": "https://slack.engineering/role-management-at-slack/",
+   "date": "2021-05-24",
+   "title": "Role Management at Slack",
+   "file": "role-management-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/scaling-datastores-at-slack-with-vitess/",
+   "date": "2020-12-01",
+   "title": "Scaling Datastores at Slack with Vitess",
+   "file": "scaling-datastores-at-slack-with-vitess.md"
+  },
+  {
+   "url": "https://slack.engineering/scaling-end-to-end-user-interface-tests/",
+   "date": "2020-06-11",
+   "title": "Scaling End-to-End User Interface Tests",
+   "file": "scaling-end-to-end-user-interface-tests.md"
+  },
+  {
+   "url": "https://slack.engineering/scaling-slacks-job-queue/",
+   "date": "2017-12-06",
+   "title": "Scaling Slack’s Job Queue",
+   "file": "scaling-slacks-job-queue.md"
+  },
+  {
+   "url": "https://slack.engineering/scaling-slacks-mobile-codebases-modernization/",
+   "date": "2022-05-04",
+   "title": "Scaling Slack’s Mobile Codebases: Modernization",
+   "file": "scaling-slacks-mobile-codebases-modernization.md"
+  },
+  {
+   "url": "https://slack.engineering/search-at-slack/",
+   "date": "2017-02-07",
+   "title": "Search at Slack",
+   "file": "search-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/service-workers-at-slack-our-quest-for-faster-boot-times-and-offline-support/",
+   "date": "2019-08-29",
+   "title": "Service Workers at Slack: Our Quest for Faster Boot Times and Offline Support",
+   "file": "service-workers-at-slack-our-quest-for-faster-boot-times-and-offline-support.md"
+  },
+  {
+   "url": "https://slack.engineering/shadow-jobs/",
+   "date": "2021-02-18",
+   "title": "Shadow Jobs",
+   "file": "shadow-jobs.md"
+  },
+  {
+   "url": "https://slack.engineering/simple-kubernetes-webhook/",
+   "date": "2021-12-14",
+   "title": "A Simple Kubernetes Admission Webhook",
+   "file": "simple-kubernetes-webhook.md"
+  },
+  {
+   "url": "https://slack.engineering/slack-bug-bounty-three-years-later/",
+   "date": "2017-03-15",
+   "title": "Slack Bug Bounty: Three Years Later",
+   "file": "slack-bug-bounty-three-years-later.md"
+  },
+  {
+   "url": "https://slack.engineering/slacks-outage-on-january-4th-2021/",
+   "date": "2021-02-01",
+   "title": "Slack’s Outage on January 4th 2021",
+   "file": "slacks-outage-on-january-4th-2021.md"
+  },
+  {
+   "url": "https://slack.engineering/stabilize-modularize-modernize-scaling-slacks-mobile-codebases-2/",
+   "date": "2022-03-28",
+   "title": "Scaling Slack’s Mobile Codebases: Modularization",
+   "file": "stabilize-modularize-modernize-scaling-slacks-mobile-codebases-2.md"
+  },
+  {
+   "url": "https://slack.engineering/stabilize-modularize-modernize-scaling-slacks-mobile-codebases/",
+   "date": "2022-01-12",
+   "title": "Stabilize, Modularize, Modernize: Scaling Slack’s Mobile Codebases",
+   "file": "stabilize-modularize-modernize-scaling-slacks-mobile-codebases.md"
+  },
+  {
+   "url": "https://slack.engineering/starting-an-initiative/",
+   "date": "2020-09-03",
+   "title": "Starting an Initiative",
+   "file": "starting-an-initiative.md"
+  },
+  {
+   "url": "https://slack.engineering/streamlining-your-workflow-debugging-for-hhvm/",
+   "date": "2018-07-25",
+   "title": "Streamlining Your Workflow: Debugging for HHVM",
+   "file": "streamlining-your-workflow-debugging-for-hhvm.md"
+  },
+  {
+   "url": "https://slack.engineering/technical-leadership-getting-started/",
+   "date": "2017-07-20",
+   "title": "Technical Leadership: Getting Started",
+   "file": "technical-leadership-getting-started.md"
+  },
+  {
+   "url": "https://slack.engineering/the-four-agile-values-and-slack/",
+   "date": "2021-09-01",
+   "title": "The Four Agile Values and Slack",
+   "file": "the-four-agile-values-and-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/the-gradual-design-system-how-we-built-slack-kit/",
+   "date": "2019-09-12",
+   "title": "The Gradual Design System: How We Built Slack Kit",
+   "file": "the-gradual-design-system-how-we-built-slack-kit.md"
+  },
+  {
+   "url": "https://slack.engineering/the-unsuspecting-beauty-complexity-of-web-forms/",
+   "date": "2020-09-15",
+   "title": "The Unsuspecting Beauty & Complexity of Web Forms",
+   "file": "the-unsuspecting-beauty-complexity-of-web-forms.md"
+  },
+  {
+   "url": "https://slack.engineering/tracing-at-slack-thinking-in-causal-graphs/",
+   "date": "2020-08-28",
+   "title": "Tracing at Slack: Thinking in Causal Graphs",
+   "file": "tracing-at-slack-thinking-in-causal-graphs.md"
+  },
+  {
+   "url": "https://slack.engineering/typescript-at-slack/",
+   "date": "2017-04-11",
+   "title": "TypeScript at Slack",
+   "file": "typescript-at-slack.md"
+  },
+  {
+   "url": "https://slack.engineering/unified-cross-platform-performance-metrics/",
+   "date": "2018-07-31",
+   "title": "Unified Cross-Platform Performance Metrics",
+   "file": "unified-cross-platform-performance-metrics.md"
+  },
+  {
+   "url": "https://slack.engineering/using-es2015-with-electron-introducing-electron-compile/",
+   "date": "2016-04-25",
+   "title": "Using ES2015 with Electron — introducing electron-compile",
+   "file": "using-es2015-with-electron-introducing-electron-compile.md"
+  },
+  {
+   "url": "https://slack.engineering/ways-we-make-the-slack-ios-app-accessible/",
+   "date": "2018-06-19",
+   "title": "Ways we make the Slack iOS app accessible",
+   "file": "ways-we-make-the-slack-ios-app-accessible.md"
+  },
+  {
+   "url": "https://slack.engineering/what-happened-during-slacks-dnssec-rollout/",
+   "date": "2021-11-29",
+   "title": "The Case of the Recursive Resolvers",
+   "file": "what-happened-during-slacks-dnssec-rollout.md"
+  },
+  {
+   "url": "https://slack.engineering/women-in-security-at-slack/",
+   "date": "2021-01-20",
+   "title": "Women in Security at Slack",
+   "file": "women-in-security-at-slack.md"
+  }
+ ]
+}

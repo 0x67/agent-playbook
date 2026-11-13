@@ -1,0 +1,614 @@
+{
+ "platform": "spotify",
+ "source": "Year archive pages https://engineering.atspotify.com/<year> (2013-2022; no sitemap, /feed only holds latest 5). Date from each post page's div.date in the sidebar; categories from the sidebar tag links.",
+ "filter": "dated before 2022-11-30; dropped posts tagged my-beat (profiles) and posts whose category labels are all in careers,company-culture,culture,diversity-inclusion,event,events,hiring,jobs,my-beat,news,people,press",
+ "cutoff": "2022-11-30",
+ "containers": [
+  [
+   "div",
+   "html-content"
+  ]
+ ],
+ "posts": [
+  {
+   "url": "https://engineering.atspotify.com/2013/1/finding-the-right-needle-in-the-kernel-haystack",
+   "date": "2013-01-28",
+   "title": "Finding the right needle in the kernel haystack",
+   "file": "finding-the-right-needle-in-the-kernel-haystack.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2013/11/shaving-off-time-from-the-ios-edit-build-test-cycle",
+   "date": "2013-11-04",
+   "title": "Shaving off 50% waiting time from the iOS Edit-Build-Test cycle",
+   "file": "shaving-off-time-from-the-ios-edit-build-test-cycle.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2013/2/in-praise-of-boring-technology",
+   "date": "2013-02-25",
+   "title": "In praise of “boring” technology",
+   "file": "in-praise-of-boring-technology.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2013/3/achieving-fault-tolerance-with-intelligent-daemons",
+   "date": "2013-03-06",
+   "title": "Achieving fault-tolerance with intelligent daemons",
+   "file": "achieving-fault-tolerance-with-intelligent-daemons.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2013/3/how-we-use-python-at-spotify",
+   "date": "2013-03-20",
+   "title": "How we use Python at Spotify",
+   "file": "how-we-use-python-at-spotify.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2013/5/analytics-at-spotify",
+   "date": "2013-05-13",
+   "title": "Analytics at Spotify",
+   "file": "analytics-at-spotify.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2014/12/date-tiered-compaction",
+   "date": "2014-12-18",
+   "title": "Date-Tiered Compaction in Apache Cassandra",
+   "file": "date-tiered-compaction.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2014/12/torching-our-reducers-taught-us-this-essential-lesson",
+   "date": "2014-12-19",
+   "title": "Solving MapReduce Performance Problems With Sharded Joins",
+   "file": "torching-our-reducers-taught-us-this-essential-lesson.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/1/how-spotify-scales-apache-storm",
+   "date": "2015-01-05",
+   "title": "How Spotify Scales Apache Storm",
+   "file": "how-spotify-scales-apache-storm.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/10/designing-the-spotify-perimeter",
+   "date": "2015-10-09",
+   "title": "Designing the Spotify perimeter",
+   "file": "designing-the-spotify-perimeter.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/11/improving-the-accessibility-on-our-ios-client",
+   "date": "2015-11-11",
+   "title": "Improving the accessibility on our iOS client",
+   "file": "improving-the-accessibility-on-our-ios-client.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/11/monitoring-at-spotify-introducing-heroic",
+   "date": "2015-11-17",
+   "title": "Monitoring at Spotify: Introducing Heroic",
+   "file": "monitoring-at-spotify-introducing-heroic.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/11/monitoring-at-spotify-the-story-so-far",
+   "date": "2015-11-16",
+   "title": "Monitoring at Spotify: The Story So Far",
+   "file": "monitoring-at-spotify-the-story-so-far.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/11/oh-ipv6-where-art-thou",
+   "date": "2015-11-05",
+   "title": "Oh IPv6, Where Art Thou",
+   "file": "oh-ipv6-where-art-thou.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/11/what-made-discover-weekly-one-of-our-most-successful-feature-launches-to-date",
+   "date": "2015-11-18",
+   "title": "What made Discover Weekly one of our most successful feature launches to date?",
+   "file": "what-made-discover-weekly-one-of-our-most-successful-feature-launches-to-date.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/12/els-part-2",
+   "date": "2015-12-09",
+   "title": "ELS: a latency-based load balancer, part 2",
+   "file": "els-part-2.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/3/git-test",
+   "date": "2015-03-19",
+   "title": "Introducing git-test",
+   "file": "git-test.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/4/ramlfications",
+   "date": "2015-04-21",
+   "title": "RAMLfications – Python package to parse RAML",
+   "file": "ramlfications.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/6/user-database-switch",
+   "date": "2015-06-23",
+   "title": "Switching user database on a running system",
+   "file": "user-database-switch.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/8/underflow-bug",
+   "date": "2015-08-27",
+   "title": "Underflow bug",
+   "file": "underflow-bug.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/9/cassandra-data-driven-configuration",
+   "date": "2015-09-21",
+   "title": "Cassandra: Data-Driven Configuration",
+   "file": "cassandra-data-driven-configuration.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2015/9/java-linking",
+   "date": "2015-09-01",
+   "title": "Dealing with Java linking problems",
+   "file": "java-linking.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2016/1/sdn-internet-router-part-2",
+   "date": "2016-01-27",
+   "title": "SDN Internet Router – Part 2",
+   "file": "sdn-internet-router-part-2.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/10/big-data-processing-at-spotify-the-road-to-scio-part-1",
+   "date": "2017-10-16",
+   "title": "Big Data Processing at Spotify: The Road to Scio (Part 1)",
+   "file": "big-data-processing-at-spotify-the-road-to-scio-part-1.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/10/big-data-processing-at-spotify-the-road-to-scio-part-2",
+   "date": "2017-10-23",
+   "title": "Big Data Processing at Spotify: The Road to Scio (Part 2)",
+   "file": "big-data-processing-at-spotify-the-road-to-scio-part-2.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/10/tc4d-data-quality-by-engineers-for-engineers-2",
+   "date": "2017-10-17",
+   "title": "TC4D: Data Quality By Engineers, For Engineers",
+   "file": "tc4d-data-quality-by-engineers-for-engineers-2.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/11/autoscaling-pub-sub-consumers",
+   "date": "2017-11-20",
+   "title": "Autoscaling Pub/Sub Consumers",
+   "file": "autoscaling-pub-sub-consumers.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/11/spotify-spotlight-interview-with-data-engineer-dara-elass",
+   "date": "2017-11-29",
+   "title": "Spotify Spotlight: Interview with Data Engineer Dara Elass",
+   "file": "spotify-spotlight-interview-with-data-engineer-dara-elass.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/2/google-cloud-security-toolbox",
+   "date": "2017-02-22",
+   "title": "Google Cloud Security Toolbox",
+   "file": "google-cloud-security-toolbox.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/3/spotifys-love-hate-relationship-with-dns",
+   "date": "2017-03-31",
+   "title": "Spotify’s Love/Hate Relationship with DNS",
+   "file": "spotifys-love-hate-relationship-with-dns.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/4/reliable-export-of-cloud-pubsub-streams-to-cloud-storage",
+   "date": "2017-04-26",
+   "title": "Reliable export of Cloud Pub/Sub streams to Cloud Storage",
+   "file": "reliable-export-of-cloud-pubsub-streams-to-cloud-storage.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/4/spydra-ephemeral-hadoop-clusters-using-google-compute-platform",
+   "date": "2017-04-28",
+   "title": "Spydra – Ephemeral Hadoop Clusters Using Google Compute Platform",
+   "file": "spydra-ephemeral-hadoop-clusters-using-google-compute-platform.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/6/improving-critical-infrastructure-rollouts",
+   "date": "2017-06-22",
+   "title": "Improving Critical Infrastructure Rollouts",
+   "file": "improving-critical-infrastructure-rollouts.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/6/meet-our-engineers-charlie-pastuszenski",
+   "date": "2017-06-07",
+   "title": "Meet our engineers – Charlie Pastuszenski",
+   "file": "meet-our-engineers-charlie-pastuszenski.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/8/thinking-of-state-in-a-world-of-urls",
+   "date": "2017-08-10",
+   "title": "Thinking of State in a World of URLs",
+   "file": "thinking-of-state-in-a-world-of-urls.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2017/9/stepping-up-the-cloud-security-game",
+   "date": "2017-09-15",
+   "title": "Stepping Up the Cloud Security Game",
+   "file": "stepping-up-the-cloud-security-game.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2018/1/spotify-spotlight-interview-with-data-engineer-ankita-pawar",
+   "date": "2018-01-22",
+   "title": "Spotify Spotlight: Interview with Data Engineer Ankita Pawar",
+   "file": "spotify-spotlight-interview-with-data-engineer-ankita-pawar.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2018/1/testing-of-microservices",
+   "date": "2018-01-11",
+   "title": "Testing of Microservices",
+   "file": "testing-of-microservices.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2018/2/spotify-spotlight-interview-with-continuous-delivery-engineer-donnie-thompson",
+   "date": "2018-02-05",
+   "title": "Spotify Spotlight: Interview with Continuous Delivery Engineer Donnie Thompson",
+   "file": "spotify-spotlight-interview-with-continuous-delivery-engineer-donnie-thompson.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2018/3/introducing-coordinator-a-new-open-source-project-made-at-spotify-to-inject-some-whimsy-into-data-visualizations",
+   "date": "2018-03-02",
+   "title": "Introducing Coördinator: A new open source project made at Spotify to inject some whimsy into data visualizations",
+   "file": "introducing-coordinator-a-new-open-source-project-made-at-spotify-to-inject-some-whimsy-into-data-visualizations.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2018/6/spotify-ml-day-july-9th-2018-stockholm",
+   "date": "2018-06-29",
+   "title": "Spotify ML Day – July 9th 2018 – Stockholm",
+   "file": "spotify-ml-day-july-9th-2018-stockholm.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2018/7/releasing-gimme-managing-time-bound-iam-conditions-in-google-cloud-platform",
+   "date": "2018-07-26",
+   "title": "Releasing Gimme: Managing time bound IAM conditions in Google Cloud Platform",
+   "file": "releasing-gimme-managing-time-bound-iam-conditions-in-google-cloud-platform.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2018/8/smoother-streaming-with-bbr",
+   "date": "2018-08-31",
+   "title": "Smoother Streaming with BBR",
+   "file": "smoother-streaming-with-bbr.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2018/9/scalable-user-privacy",
+   "date": "2018-09-18",
+   "title": "Scalable User Privacy",
+   "file": "scalable-user-privacy.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/10/techbytes-data-processing-with-scio",
+   "date": "2019-10-16",
+   "title": "Techbytes: Data Processing with Scio",
+   "file": "techbytes-data-processing-with-scio.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/10/techbytes-handling-big-data-at-spotify",
+   "date": "2019-10-16",
+   "title": "Techbytes: Handling Big Data at Spotify",
+   "file": "techbytes-handling-big-data-at-spotify.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/10/when-in-rome-how-spotify-halved-build-times-with-just-one-script",
+   "date": "2019-10-23",
+   "title": "When in Rome: How Spotify halved build times with just one script",
+   "file": "when-in-rome-how-spotify-halved-build-times-with-just-one-script.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/11/spotifys-event-delivery-life-in-the-cloud",
+   "date": "2019-11-12",
+   "title": "Spotify’s Event Delivery – Life in the Cloud",
+   "file": "spotifys-event-delivery-life-in-the-cloud.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/11/test-flakiness-methods-for-identifying-and-dealing-with-flaky-tests",
+   "date": "2019-11-18",
+   "title": "Test Flakiness – Methods for identifying and dealing with flaky tests",
+   "file": "test-flakiness-methods-for-identifying-and-dealing-with-flaky-tests.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/12/views-from-the-cloud-a-history-of-spotifys-journey-to-the-cloud-part-1-2",
+   "date": "2019-12-09",
+   "title": "Views From The Cloud: A History of Spotify’s Journey to the Cloud, Part 1",
+   "file": "views-from-the-cloud-a-history-of-spotifys-journey-to-the-cloud-part-1-2.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/3/building-spotifys-new-web-player",
+   "date": "2019-03-25",
+   "title": "Building Spotify’s New Web Player",
+   "file": "building-spotifys-new-web-player.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/4/right-to-left-the-mirror-world",
+   "date": "2019-04-15",
+   "title": "(Right to Left (The Mirror World",
+   "file": "right-to-left-the-mirror-world.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/9/reflections-on-the-last-two-years-of-spotifys-bug-bounty-program",
+   "date": "2019-09-12",
+   "title": "Reflections on the Last Two Years of Spotify’s Bug Bounty Program",
+   "file": "reflections-on-the-last-two-years-of-spotifys-bug-bounty-program.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2019/9/techbytes-scalable-user-privacy-crypto-shredding-at-spotify",
+   "date": "2019-09-04",
+   "title": "Techbytes: Scalable User Privacy – Crypto Shredding at Spotify",
+   "file": "techbytes-scalable-user-privacy-crypto-shredding-at-spotify.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/1/for-your-ears-only-personalizing-spotify-home-with-machine-learning",
+   "date": "2020-01-16",
+   "title": "For Your Ears Only: Personalizing Spotify Home with Machine Learning",
+   "file": "for-your-ears-only-personalizing-spotify-home-with-machine-learning.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/10/spotifys-new-experimentation-platform-part-1",
+   "date": "2020-10-29",
+   "title": "Spotify’s New Experimentation Platform (Part 1)",
+   "file": "spotifys-new-experimentation-platform-part-1.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/11/its-all-just-wiggly-air-building-infrastructure-to-support-audio-research",
+   "date": "2020-11-04",
+   "title": "It’s All Just Wiggly Air: Building Infrastructure to Support Audio Research",
+   "file": "its-all-just-wiggly-air-building-infrastructure-to-support-audio-research.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/12/how-we-built-it-spotify-lite-one-year-later",
+   "date": "2020-12-03",
+   "title": "How We Built It: Spotify Lite, One Year Later",
+   "file": "how-we-built-it-spotify-lite-one-year-later.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/2/how-we-improved-data-discovery-for-data-scientists-at-spotify",
+   "date": "2020-02-27",
+   "title": "How We Improved Data Discovery for Data Scientists at Spotify",
+   "file": "how-we-improved-data-discovery-for-data-scientists-at-spotify.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/3/spotifys-new-podcast-api-from-design-to-launch",
+   "date": "2020-03-25",
+   "title": "Spotify’s New Podcast API: From Design to Launch",
+   "file": "spotifys-new-podcast-api-from-design-to-launch.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/5/how-we-gave-superpowers-to-our-macos-ci",
+   "date": "2020-05-01",
+   "title": "How We Gave Superpowers to Our macOS CI",
+   "file": "how-we-gave-superpowers-to-our-macos-ci.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/6/tech-migrations-the-spotify-way",
+   "date": "2020-06-25",
+   "title": "Tech Migrations, the Spotify Way",
+   "file": "tech-migrations-the-spotify-way.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/7/leveraging-mobile-infrastructure-with-data-driven-decisions",
+   "date": "2020-07-22",
+   "title": "Leveraging Mobile Infrastructure with Data-Driven Decisions",
+   "file": "leveraging-mobile-infrastructure-with-data-driven-decisions.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/8/how-we-improved-developer-productivity-for-our-devops-teams",
+   "date": "2020-08-27",
+   "title": "How We Improved Developer Productivity for Our DevOps Teams",
+   "file": "how-we-improved-developer-productivity-for-our-devops-teams.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/8/how-we-use-golden-paths-to-solve-fragmentation-in-our-software-ecosystem",
+   "date": "2020-08-17",
+   "title": "How We Use Golden Paths to Solve Fragmentation in Our Software Ecosystem",
+   "file": "how-we-use-golden-paths-to-solve-fragmentation-in-our-software-ecosystem.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/9/cloud-native-computing-foundation-accepts-backstage-as-a-sandbox-project",
+   "date": "2020-09-24",
+   "title": "Cloud Native Computing Foundation Accepts Backstage as a Sandbox Project",
+   "file": "cloud-native-computing-foundation-accepts-backstage-as-a-sandbox-project.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/9/lemonade-from-lemons-tiny-desk-conference",
+   "date": "2020-09-15",
+   "title": "Lemonade from Lemons: Tiny Desk Conference",
+   "file": "lemonade-from-lemons-tiny-desk-conference.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2020/9/listening-together-miles-apart",
+   "date": "2020-09-03",
+   "title": "Listening Together, Miles Apart",
+   "file": "listening-together-miles-apart.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/10/a-product-story-three-lessons-we-learned-from-developing-the-mobile-app",
+   "date": "2021-10-05",
+   "title": "A Product Story: Three Lessons We Learned from Developing the Mobile App",
+   "file": "a-product-story-three-lessons-we-learned-from-developing-the-mobile-app.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/11/the-rise-and-lessons-learned-of-ml-models-to-personalize-content-on-home-part-i",
+   "date": "2021-11-15",
+   "title": "The Rise (and Lessons Learned) of ML Models to Personalize Content on Home (Part I)",
+   "file": "the-rise-and-lessons-learned-of-ml-models-to-personalize-content-on-home-part-i.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/11/the-rise-and-lessons-learned-of-ml-models-to-personalize-content-on-home-part-ii",
+   "date": "2021-11-18",
+   "title": "The Rise (and Lessons Learned) of ML Models to Personalize Content on Home (Part II)",
+   "file": "the-rise-and-lessons-learned-of-ml-models-to-personalize-content-on-home-part-ii.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/12/a-look-behind-blend-the-personalized-playlist-for-youand-you",
+   "date": "2021-12-07",
+   "title": "A Look Behind Blend: The Personalized Playlist for You…and You",
+   "file": "a-look-behind-blend-the-personalized-playlist-for-youand-you.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/12/how-spotify-uses-ml-to-create-the-future-of-personalization",
+   "date": "2021-12-02",
+   "title": "How Spotify Uses ML to Create the Future of Personalization",
+   "file": "how-spotify-uses-ml-to-create-the-future-of-personalization.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/3/designing-a-better-kubernetes-experience-for-developers",
+   "date": "2021-03-01",
+   "title": "Designing a Better Kubernetes Experience for Developers",
+   "file": "designing-a-better-kubernetes-experience-for-developers.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/3/happy-birthday-backstage-spotifys-biggest-open-source-project-grows-up-fast",
+   "date": "2021-03-16",
+   "title": "Happy Birthday, Backstage: Spotify’s Biggest Open Source Project Grows Up Fast",
+   "file": "happy-birthday-backstage-spotifys-biggest-open-source-project-grows-up-fast.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/5/a-product-story-the-lessons-of-backstage-and-spotifys-autonomous-culture",
+   "date": "2021-05-18",
+   "title": "A Product Story: The Lessons of Backstage and Spotify’s Autonomous Culture",
+   "file": "a-product-story-the-lessons-of-backstage-and-spotifys-autonomous-culture.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/5/achieving-team-purpose-and-pride-with-scrum",
+   "date": "2021-05-27",
+   "title": "Achieving Team Purpose and Pride with Scrum",
+   "file": "achieving-team-purpose-and-pride-with-scrum.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/5/spotify-wins-cncfs-top-end-user-award-and-toots-own-horn-about-it",
+   "date": "2021-05-11",
+   "title": "Spotify Wins CNCF’s Top End User Award and Toots Own Horn About It",
+   "file": "spotify-wins-cncfs-top-end-user-award-and-toots-own-horn-about-it.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2021/9/introducing-pedalboard-spotifys-audio-effects-library-for-python",
+   "date": "2021-09-07",
+   "title": "Introducing Pedalboard: Spotify’s Audio Effects Library for Python",
+   "file": "introducing-pedalboard-spotifys-audio-effects-library-for-python.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/1/product-lessons-from-ml-home-spotifys-one-stop-shop-for-machine-learning",
+   "date": "2022-01-19",
+   "title": "Product Lessons from ML Home: Spotify’s One-Stop Shop for Machine Learning",
+   "file": "product-lessons-from-ml-home-spotifys-one-stop-shop-for-machine-learning.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/10/bringing-the-climate-fight-to-your-ide",
+   "date": "2022-10-25",
+   "title": "Bringing the Climate Fight to Your IDE",
+   "file": "bringing-the-climate-fight-to-your-ide.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/10/how-we-improved-the-development-experience-for-our-client-developers",
+   "date": "2022-10-27",
+   "title": "How We Improved the Development Experience for our Client Developers",
+   "file": "how-we-improved-the-development-experience-for-our-client-developers.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/11/strategies-and-tools-for-performing-migrations-on-platform",
+   "date": "2022-11-15",
+   "title": "Strategies and Tools for Performing Migrations on Platform",
+   "file": "strategies-and-tools-for-performing-migrations-on-platform.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/2/introducing-ruler-our-tool-for-measuring-android-app-size",
+   "date": "2022-02-14",
+   "title": "Introducing Ruler: Our Tool for Measuring Android App Size",
+   "file": "introducing-ruler-our-tool-for-measuring-android-app-size.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/2/search-journey-towards-better-experimentation-practices",
+   "date": "2022-02-28",
+   "title": "Search Journey Towards Better Experimentation Practices",
+   "file": "search-journey-towards-better-experimentation-practices.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/3/comparing-quantiles-at-scale-in-online-a-b-testing",
+   "date": "2022-03-23",
+   "title": "Comparing Quantiles at Scale in Online A/B Testing",
+   "file": "comparing-quantiles-at-scale-in-online-a-b-testing.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/3/introducing-natural-language-search-for-podcast-episodes",
+   "date": "2022-03-17",
+   "title": "Introducing Natural Language Search for Podcast Episodes",
+   "file": "introducing-natural-language-search-for-podcast-episodes.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/3/introducing-nerdout-at-spotify-tech-podcast",
+   "date": "2022-03-01",
+   "title": "Introducing NerdOut@Spotify: A New Podcast for Developers",
+   "file": "introducing-nerdout-at-spotify-tech-podcast.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/4/announcing-the-spotify-foss-fund",
+   "date": "2022-04-22",
+   "title": "Announcing the Spotify FOSS Fund",
+   "file": "announcing-the-spotify-foss-fund.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/4/spotify-live-from-live-to-recording",
+   "date": "2022-04-28",
+   "title": "Spotify Live: From Live to Recording",
+   "file": "spotify-live-from-live-to-recording.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/5/failing-forward-how-we-grow-from-incidents",
+   "date": "2022-05-12",
+   "title": "Failing Forward — How We Grow from Incidents",
+   "file": "failing-forward-how-we-grow-from-incidents.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/5/the-open-future",
+   "date": "2022-05-31",
+   "title": "The Open Future",
+   "file": "the-open-future.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/6/how-we-built-infrastructure-to-run-user-forecasts-at-spotify",
+   "date": "2022-06-16",
+   "title": "How We Built Infrastructure to Run User Forecasts at Spotify",
+   "file": "how-we-built-infrastructure-to-run-user-forecasts-at-spotify.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/6/meet-basic-pitch",
+   "date": "2022-06-01",
+   "title": "Meet Basic Pitch: Spotify’s Open Source Audio-to-MIDI Converter",
+   "file": "meet-basic-pitch.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/6/q-and-a-with-the-maintainers-of-the-spotify-foss-fund",
+   "date": "2022-06-23",
+   "title": "Q&A with the Maintainers of the Spotify FOSS Fund",
+   "file": "q-and-a-with-the-maintainers-of-the-spotify-foss-fund.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/6/say-hello-to-the-recipients-of-the-2022-spotify-foss-fund",
+   "date": "2022-06-02",
+   "title": "Say Hello to the Recipients of the 2022 Spotify FOSS Fund",
+   "file": "say-hello-to-the-recipients-of-the-2022-spotify-foss-fund.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/7/what-it-took-to-scale-spotifys-marketing-efforts",
+   "date": "2022-07-05",
+   "title": "What it Took to Scale Spotify’s Marketing Efforts",
+   "file": "what-it-took-to-scale-spotifys-marketing-efforts.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/8/how-we-maintain-security-testing-within-the-software-development-life-cycle",
+   "date": "2022-08-23",
+   "title": "How We Maintain Security Testing within the Software Development Life Cycle",
+   "file": "how-we-maintain-security-testing-within-the-software-development-life-cycle.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/9/from-development-to-real-users-how-to-create-a-web-performance-story",
+   "date": "2022-09-29",
+   "title": "From Development to Real Users: How to Create a Web Performance Story",
+   "file": "from-development-to-real-users-how-to-create-a-web-performance-story.md"
+  },
+  {
+   "url": "https://engineering.atspotify.com/2022/9/scaling-translations-at-spotify",
+   "date": "2022-09-15",
+   "title": "Scaling Translations at Spotify",
+   "file": "scaling-translations-at-spotify.md"
+  }
+ ]
+}

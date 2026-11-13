@@ -1,0 +1,188 @@
+{
+ "platform": "discord",
+ "source": "https://discord.com/category/engineering (all cards labelled 'Engineering & Developers'); fetched live, 1 req/s. Date = on-page byline; JSON-LD datePublished is re-stamped on republish.",
+ "filter": "category label 'Engineering & Developers'; byline date < 2022-11-30; all qualifying kept if <=100 else random.seed(13) sample of 100 over URL-sorted list",
+ "cutoff": "2022-11-30",
+ "containers": [
+  [
+   "article",
+   "article_rich-text"
+  ]
+ ],
+ "posts": [
+  {
+   "url": "https://discord.com/blog/app-directory-is-here-developers",
+   "date": "2022-10-28",
+   "title": "Attention Discord Developers: The App Directory is Here!",
+   "file": "app-directory-is-here-developers.md"
+  },
+  {
+   "url": "https://discord.com/blog/building-delightful-notifications-using-ml",
+   "date": "2022-08-12",
+   "title": "Using Machine Learning to Build a Delightful Notification Experience",
+   "file": "building-delightful-notifications-using-ml.md"
+  },
+  {
+   "url": "https://discord.com/blog/building-open-source-design-tools-to-improve-discords-design-workflow",
+   "date": "2020-12-21",
+   "title": "Building open-source design tools to improve Discord’s design workflow",
+   "file": "building-open-source-design-tools-to-improve-discords-design-workflow.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-data-science-informs-strategy-innovation-at-discord",
+   "date": "2022-02-04",
+   "title": "How Data Science Informs Strategy & Innovation at Discord",
+   "file": "how-data-science-informs-strategy-innovation-at-discord.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-achieves-native-ios-performance-with-react-native",
+   "date": "2019-11-07",
+   "title": "How Discord achieves native iOS performance with React Native",
+   "file": "how-discord-achieves-native-ios-performance-with-react-native.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-creates-insights-from-trillions-of-data-points",
+   "date": "2021-11-18",
+   "title": "How Discord Creates Insights from Trillions of Data Points",
+   "file": "how-discord-creates-insights-from-trillions-of-data-points.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-handles-push-request-bursts-of-over-a-million-per-minute-with-elixirs-genstage",
+   "date": "2016-12-12",
+   "title": "How Discord handles push request bursts of over a million per minute with Elixir’s GenStage",
+   "file": "how-discord-handles-push-request-bursts-of-over-a-million-per-minute-with-elixirs-genstage.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-handles-two-and-half-million-concurrent-voice-users-using-webrtc",
+   "date": "2018-09-10",
+   "title": "How Discord Handles Two and Half Million Concurrent Voice Users using WebRTC",
+   "file": "how-discord-handles-two-and-half-million-concurrent-voice-users-using-webrtc.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-implemented-app-wide-keyboard-navigation",
+   "date": "2020-12-16",
+   "title": "How Discord Implemented App-Wide Keyboard Navigation",
+   "file": "how-discord-implemented-app-wide-keyboard-navigation.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-indexes-billions-of-messages",
+   "date": "2017-03-16",
+   "title": "How Discord Indexes Billions of Messages",
+   "file": "how-discord-indexes-billions-of-messages.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-made-android-in-app-navigation-easier",
+   "date": "2020-07-16",
+   "title": "How Discord Made Android In-App Navigation Easier",
+   "file": "how-discord-made-android-in-app-navigation-easier.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-maintains-performance-while-adding-features",
+   "date": "2018-08-01",
+   "title": "How Discord Maintains Performance While Adding Features",
+   "file": "how-discord-maintains-performance-while-adding-features.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-renders-rich-messages-on-the-android-app",
+   "date": "2018-03-27",
+   "title": "How Discord Renders Rich Messages on the Android App",
+   "file": "how-discord-renders-rich-messages-on-the-android-app.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-resizes-150-million-images-every-day-with-go-and-c",
+   "date": "2017-11-14",
+   "title": "How Discord Resizes 150 Million Images Every Day with Go and C++",
+   "file": "how-discord-resizes-150-million-images-every-day-with-go-and-c.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-scaled-elixir-to-5-000-000-concurrent-users",
+   "date": "2017-07-06",
+   "title": "How Discord Scaled Elixir to 5,000,000 Concurrent Users",
+   "file": "how-discord-scaled-elixir-to-5-000-000-concurrent-users.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-stores-billions-of-messages",
+   "date": "2017-01-13",
+   "title": "How Discord Stores Billions of Messages",
+   "file": "how-discord-stores-billions-of-messages.md"
+  },
+  {
+   "url": "https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency",
+   "date": "2022-08-15",
+   "title": "How Discord Supercharges Network Disks for Extreme Low Latency",
+   "file": "how-discord-supercharges-network-disks-for-extreme-low-latency.md"
+  },
+  {
+   "url": "https://discord.com/blog/investigating-discords-react-memory-leak",
+   "date": "2019-08-08",
+   "title": "Investigating Discord’s React Memory Leak",
+   "file": "investigating-discords-react-memory-leak.md"
+  },
+  {
+   "url": "https://discord.com/blog/lessons-from-migrating-a-large-codebase-to-react-16",
+   "date": "2017-10-04",
+   "title": "Lessons from migrating a large codebase to React 16",
+   "file": "lessons-from-migrating-a-large-codebase-to-react-16.md"
+  },
+  {
+   "url": "https://discord.com/blog/light-theme-redeemed",
+   "date": "2019-09-09",
+   "title": "Light Theme, Redeemed",
+   "file": "light-theme-redeemed.md"
+  },
+  {
+   "url": "https://discord.com/blog/parents-guide-to-discord",
+   "date": "2017-09-18",
+   "title": "Parent’s Guide to Discord",
+   "file": "parents-guide-to-discord.md"
+  },
+  {
+   "url": "https://discord.com/blog/redesigning-the-discord-overlay",
+   "date": "2019-02-26",
+   "title": "Redesigning the Discord Overlay",
+   "file": "redesigning-the-discord-overlay.md"
+  },
+  {
+   "url": "https://discord.com/blog/using-react-native-one-year-later",
+   "date": "2016-06-07",
+   "title": "Using React Native: One Year Later",
+   "file": "using-react-native-one-year-later.md"
+  },
+  {
+   "url": "https://discord.com/blog/using-rust-to-scale-elixir-for-11-million-concurrent-users",
+   "date": "2019-05-17",
+   "title": "Using Rust to Scale Elixir for 11 Million Concurrent Users",
+   "file": "using-rust-to-scale-elixir-for-11-million-concurrent-users.md"
+  },
+  {
+   "url": "https://discord.com/blog/we-care-about-your-voice-engineering-special",
+   "date": "2016-11-22",
+   "title": "We Care About Your Voice (Engineering Special)",
+   "file": "we-care-about-your-voice-engineering-special.md"
+  },
+  {
+   "url": "https://discord.com/blog/why-and-how-discord-uses-patch-to-test-elixir",
+   "date": "2021-12-03",
+   "title": "Why and How Discord Uses Patch to Test Elixir",
+   "file": "why-and-how-discord-uses-patch-to-test-elixir.md"
+  },
+  {
+   "url": "https://discord.com/blog/why-discord-is-sticking-with-react-native",
+   "date": "2018-07-26",
+   "title": "Why Discord is Sticking with React Native",
+   "file": "why-discord-is-sticking-with-react-native.md"
+  },
+  {
+   "url": "https://discord.com/blog/why-discord-is-switching-from-go-to-rust",
+   "date": "2020-02-04",
+   "title": "Why Discord is switching from Go to Rust",
+   "file": "why-discord-is-switching-from-go-to-rust.md"
+  },
+  {
+   "url": "https://discord.com/blog/why-reactiflux-vue-land-yarn-and-other-open-source-communities-use-discord",
+   "date": "2018-03-13",
+   "title": "Why Reactiflux, Vue Land, Yarn, and other open source communities use Discord",
+   "file": "why-reactiflux-vue-land-yarn-and-other-open-source-communities-use-discord.md"
+  }
+ ]
+}

@@ -1,0 +1,240 @@
+{
+ "platform": "stripe",
+ "source": "https://stripe.com/blog (live site, User-Agent prose-bench/0.1 (local text statistics; no redistribution)); qualifying=37, sampled=37, sample = random.seed(13); random.sample over alphabetically sorted qualifying URLs (indices sorted), all if <=100",
+ "filter": "Posts whose own page shows the 'Blog category' breadcrumb 'Engineering' (stripe.com/blog/engineering itself redirects to stripe.dev), JSON-LD datePublished < 2022-11-30. Candidates: stripe.com/blog/<slug> URLs from sitemap partitions plus /blog/page/N archive pages.",
+ "cutoff": "2022-11-30",
+ "containers": [
+  [
+   "section",
+   "BlogPost__body"
+  ],
+  [
+   "div",
+   "_articleBody"
+  ]
+ ],
+ "posts": [
+  {
+   "url": "https://stripe.com/blog/a-primer-on-machine-learning-for-fraud-detection",
+   "date": "2016-10-27",
+   "title": "A primer on machine learning for fraud detection",
+   "file": "a-primer-on-machine-learning-for-fraud-detection.md"
+  },
+  {
+   "url": "https://stripe.com/blog/accessible-color-systems",
+   "date": "2019-10-15",
+   "title": "Designing accessible color systems",
+   "file": "accessible-color-systems.md"
+  },
+  {
+   "url": "https://stripe.com/blog/android-sdk-updates",
+   "date": "2016-12-05",
+   "title": "Android SDK updates",
+   "file": "android-sdk-updates.md"
+  },
+  {
+   "url": "https://stripe.com/blog/api-versioning",
+   "date": "2017-08-05",
+   "title": "APIs as infrastructure: future-proofing Stripe with versioning",
+   "file": "api-versioning.md"
+  },
+  {
+   "url": "https://stripe.com/blog/aws-reserved-instances",
+   "date": "2018-06-26",
+   "title": "Effectively using AWS Reserved Instances",
+   "file": "aws-reserved-instances.md"
+  },
+  {
+   "url": "https://stripe.com/blog/canonical-log-lines",
+   "date": "2019-07-30",
+   "title": "Fast and flexible observability with canonical log lines",
+   "file": "canonical-log-lines.md"
+  },
+  {
+   "url": "https://stripe.com/blog/connect-front-end-experience",
+   "date": "2017-06-19",
+   "title": "Connect: behind the front-end experience",
+   "file": "connect-front-end-experience.md"
+  },
+  {
+   "url": "https://stripe.com/blog/dublin-eng-office",
+   "date": "2019-03-21",
+   "title": "On building a new engineering hub in Dublin",
+   "file": "dublin-eng-office.md"
+  },
+  {
+   "url": "https://stripe.com/blog/exploring-python-using-gdb",
+   "date": "2012-06-13",
+   "title": "Exploring Python Using GDB",
+   "file": "exploring-python-using-gdb.md"
+  },
+  {
+   "url": "https://stripe.com/blog/globe",
+   "date": "2020-09-01",
+   "title": "To design and develop an interactive globe",
+   "file": "globe.md"
+  },
+  {
+   "url": "https://stripe.com/blog/hypothesis",
+   "date": "2017-09-01",
+   "title": "Supporting Hypothesis",
+   "file": "hypothesis.md"
+  },
+  {
+   "url": "https://stripe.com/blog/idempotency",
+   "date": "2017-02-22",
+   "title": "Designing robust and predictable APIs with idempotency",
+   "file": "idempotency.md"
+  },
+  {
+   "url": "https://stripe.com/blog/introducing-veneur-high-performance-and-global-aggregation-for-datadog",
+   "date": "2016-10-18",
+   "title": "Introducing Veneur: high performance and global aggregation for Datadog",
+   "file": "introducing-veneur-high-performance-and-global-aggregation-for-datadog.md"
+  },
+  {
+   "url": "https://stripe.com/blog/online-migrations",
+   "date": "2017-02-02",
+   "title": "Online migrations at scale",
+   "file": "online-migrations.md"
+  },
+  {
+   "url": "https://stripe.com/blog/open-source-retreat-2016",
+   "date": "2015-09-03",
+   "title": "Open-Source Retreat 2016",
+   "file": "open-source-retreat-2016.md"
+  },
+  {
+   "url": "https://stripe.com/blog/open-source-retreat-2016-grantees",
+   "date": "2015-12-08",
+   "title": "Open-Source Retreat 2016 grantees",
+   "file": "open-source-retreat-2016-grantees.md"
+  },
+  {
+   "url": "https://stripe.com/blog/open-source-retreat-meetup",
+   "date": "2014-10-16",
+   "title": "Open-Source Retreat meetup",
+   "file": "open-source-retreat-meetup.md"
+  },
+  {
+   "url": "https://stripe.com/blog/open-source-retreat-meetup-2016",
+   "date": "2016-03-17",
+   "title": "Open-Source Retreat meetup 2016",
+   "file": "open-source-retreat-meetup-2016.md"
+  },
+  {
+   "url": "https://stripe.com/blog/operating-kubernetes",
+   "date": "2017-12-20",
+   "title": "Learning to operate Kubernetes reliably",
+   "file": "operating-kubernetes.md"
+  },
+  {
+   "url": "https://stripe.com/blog/railyard-training-models",
+   "date": "2019-05-07",
+   "title": "Railyard: how we rapidly train machine learning models with Kubernetes",
+   "file": "railyard-training-models.md"
+  },
+  {
+   "url": "https://stripe.com/blog/rate-limiters",
+   "date": "2017-03-30",
+   "title": "Scaling your API with rate limiters",
+   "file": "rate-limiters.md"
+  },
+  {
+   "url": "https://stripe.com/blog/remote-hub",
+   "date": "2019-05-02",
+   "title": "Stripe’s fifth engineering hub is Remote",
+   "file": "remote-hub.md"
+  },
+  {
+   "url": "https://stripe.com/blog/remote-hub-one-year",
+   "date": "2020-05-28",
+   "title": "Stripe’s remote engineering hub, one year in",
+   "file": "remote-hub-one-year.md"
+  },
+  {
+   "url": "https://stripe.com/blog/reproducible-research",
+   "date": "2016-11-22",
+   "title": "Reproducible research: Stripe’s approach to data science",
+   "file": "reproducible-research.md"
+  },
+  {
+   "url": "https://stripe.com/blog/scaling-email-transparency",
+   "date": "2014-12-08",
+   "title": "Scaling email transparency",
+   "file": "scaling-email-transparency.md"
+  },
+  {
+   "url": "https://stripe.com/blog/secret-life-of-dns",
+   "date": "2019-05-21",
+   "title": "The secret life of DNS packets: investigating complex networks",
+   "file": "secret-life-of-dns.md"
+  },
+  {
+   "url": "https://stripe.com/blog/service-discovery-at-stripe",
+   "date": "2016-10-31",
+   "title": "Service discovery at Stripe",
+   "file": "service-discovery-at-stripe.md"
+  },
+  {
+   "url": "https://stripe.com/blog/similarity-clustering",
+   "date": "2020-02-20",
+   "title": "Similarity clustering to catch fraud rings",
+   "file": "similarity-clustering.md"
+  },
+  {
+   "url": "https://stripe.com/blog/singapore-eng-office",
+   "date": "2019-09-26",
+   "title": "Singapore engineering hub",
+   "file": "singapore-eng-office.md"
+  },
+  {
+   "url": "https://stripe.com/blog/stripe-cli",
+   "date": "2019-11-05",
+   "title": "Introducing the Stripe CLI",
+   "file": "stripe-cli.md"
+  },
+  {
+   "url": "https://stripe.com/blog/stripe-dotnet",
+   "date": "2017-08-08",
+   "title": "Official support for .NET",
+   "file": "stripe-dotnet.md"
+  },
+  {
+   "url": "https://stripe.com/blog/stripe-open-source-retreat",
+   "date": "2014-04-24",
+   "title": "Stripe Open-Source Retreat",
+   "file": "stripe-open-source-retreat.md"
+  },
+  {
+   "url": "https://stripe.dev/blog/fast-secure-builds-choose-two",
+   "date": "2022-05-04",
+   "title": "Fast builds, secure builds. Choose two",
+   "file": "fast-secure-builds-choose-two.md"
+  },
+  {
+   "url": "https://stripe.dev/blog/markdoc",
+   "date": "2022-09-13",
+   "title": "How Stripe builds interactive docs with Markdoc",
+   "file": "markdoc.md"
+  },
+  {
+   "url": "https://stripe.dev/blog/migrating-to-typescript",
+   "date": "2022-05-20",
+   "title": "Migrating millions of lines of code to TypeScript",
+   "file": "migrating-to-typescript.md"
+  },
+  {
+   "url": "https://stripe.dev/blog/payment-api-design",
+   "date": "2020-12-15",
+   "title": "Stripe’s payments APIs: The first 10 years",
+   "file": "payment-api-design.md"
+  },
+  {
+   "url": "https://stripe.dev/blog/sorbet-stripes-type-checker-for-ruby",
+   "date": "2022-03-28",
+   "title": "Sorbet: Stripe’s type checker for Ruby",
+   "file": "sorbet-stripes-type-checker-for-ruby.md"
+  }
+ ]
+}

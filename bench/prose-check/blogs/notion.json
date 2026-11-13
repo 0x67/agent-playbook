@@ -1,0 +1,38 @@
+{
+ "platform": "notion",
+ "source": "https://www.notion.com/blog/topic/tech (pages 1..N) and individual post pages, fetched live, 1 req/s, UA 'prose-bench/0.1 (local text statistics; no redistribution)'",
+ "filter": "posts linked from /blog/topic/tech (topic label 'tech'), all pages; date from article:published_time (fallbacks: JSON-LD datePublished, time element); published < 2022-11-30",
+ "cutoff": "2022-11-30",
+ "containers": [
+  [
+   "article",
+   "richText"
+  ]
+ ],
+ "posts": [
+  {
+   "url": "https://www.notion.com/blog/creating-the-notion-api",
+   "date": "2022-01-20",
+   "title": "Creating the Notion API",
+   "file": "creating-the-notion-api.md"
+  },
+  {
+   "url": "https://www.notion.com/blog/data-model-behind-notion",
+   "date": "2021-05-18",
+   "title": "The data model behind Notion's flexibility",
+   "file": "data-model-behind-notion.md"
+  },
+  {
+   "url": "https://www.notion.com/blog/migrating-notion-marketing-to-next-js",
+   "date": "2021-08-11",
+   "title": "Migrating Notion's marketing site to Next.js",
+   "file": "migrating-notion-marketing-to-next-js.md"
+  },
+  {
+   "url": "https://www.notion.com/blog/sharding-postgres-at-notion",
+   "date": "2021-10-06",
+   "title": "Herding elephants: Lessons learned from sharding Postgres at Notion",
+   "file": "sharding-postgres-at-notion.md"
+  }
+ ]
+}

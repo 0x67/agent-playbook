@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """Benchmark prose-check on whole corpora: finding rates, per-rule rates, Vale parity, speed, and separation.
 
-usage: scripts/prose-bench.py [--json OUT] [--top N] LABEL=DIR ...
+usage: scripts/prose-bench.py [--json OUT] [--top N] [--auc HUMAN:AI ...] LABEL=DIR ...
 
 Each DIR holds Markdown files, one document per file. For every corpus it reports words (code and front
 matter masked, as the port sees them), findings per 1,000 words from Vale and from the Python port, the
 cross-sentence checks, the share of Vale's non-sequence rule findings the port also reports, and seconds per 100,000
-words for each engine. Labels that start with "human" or "ai" are paired: the script then reports the
-AUC of a per-document score (findings per 100 words), the chance that a random AI document scores above
-a random human one. Run it through skills/prose-check/scripts/run.sh's interpreter to include `regex`.
+words for each engine. Each --auc HUMAN:AI names two comma-separated label lists (shell-style patterns
+allowed) and reports the AUC of a per-document score (findings per 100 words): the chance that a random
+document from the AI side scores above a random one from the human side. Without --auc, labels starting
+with "human" are compared with labels starting with "ai". Run it through skills/prose-check/scripts/run.sh's interpreter to include `regex`.
 """
 import argparse
 import collections
+import fnmatch
 import json
 import re
 import subprocess
@@ -106,6 +108,7 @@ def main():
     parser.add_argument("corpora", nargs="+", metavar="LABEL=DIR")
     parser.add_argument("--json", help="write the full results here")
     parser.add_argument("--top", type=int, default=12, help="rules to list per corpus")
+    parser.add_argument("--auc", action="append", default=[], metavar="HUMAN:AI", help="label patterns to compare, e.g. human-blog-*:ai-sonnet,ai-opus")
     args = parser.parse_args()
 
     rules, ignores = vale_lite.load_rules()
@@ -120,13 +123,19 @@ def main():
         top = ", ".join(f"{k} {v}" for k, v in list(r["rules_per_1k"].items())[:args.top])
         print(f"  {r['label']}: {top}")
 
-    human = [s for r in results if r["label"].startswith("human") for s in r["scores"].values()]
-    ai = [s for r in results if r["label"].startswith("ai") for s in r["scores"].values()]
-    if human and ai:
-        print(f"AUC, AI above human (findings per 100 words): {auc(ai, human):.3f}")
+    def pooled(patterns):
+        wanted = patterns.split(",")
+        return [s for r in results if any(fnmatch.fnmatch(r["label"], w) for w in wanted) for s in r["scores"].values()]
+
+    comparisons = {}
+    for spec in args.auc or ["human*:ai*"]:
+        human_side, ai_side = spec.split(":", 1)
+        comparisons[spec] = round(auc(pooled(ai_side), pooled(human_side)), 3)
+        print(f"AUC {spec}: {comparisons[spec]}")
 
     if args.json:
-        Path(args.json).write_text(json.dumps([{k: v for k, v in r.items() if k != "scores"} for r in results], indent=1))
+        corpora = [{k: v for k, v in r.items() if k != "scores"} for r in results]
+        Path(args.json).write_text(json.dumps({"corpora": corpora, "auc": comparisons}, indent=1) + "\n")
 
 
 if __name__ == "__main__":

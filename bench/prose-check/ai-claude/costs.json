@@ -1,0 +1,410 @@
+{
+ "generated": "2026-11-13",
+ "models": {
+  "sonnet": "claude-sonnet-5-5",
+  "opus": "claude-opus-5-5"
+ },
+ "total_usd": 3.9314,
+ "runs": [
+  {
+   "model": "sonnet",
+   "title": "The Go Collective on Stack Overflow",
+   "usd": 0.0171
+  },
+  {
+   "model": "sonnet",
+   "title": "Go 1.10 is released",
+   "usd": 0.0183
+  },
+  {
+   "model": "sonnet",
+   "title": "Concurrency is not parallelism",
+   "usd": 0.0189
+  },
+  {
+   "model": "sonnet",
+   "title": "Gobs of data",
+   "usd": 0.0191
+  },
+  {
+   "model": "sonnet",
+   "title": "Announcing the 2021 Go Developer Survey",
+   "usd": 0.0171
+  },
+  {
+   "model": "sonnet",
+   "title": "Participate in the 2016 Go User Survey and Company Questionnaire",
+   "usd": 0.0159
+  },
+  {
+   "model": "sonnet",
+   "title": "Organizing Go code",
+   "usd": 0.0192
+  },
+  {
+   "model": "sonnet",
+   "title": "Half a decade with Go",
+   "usd": 0.0183
+  },
+  {
+   "model": "sonnet",
+   "title": "Go\u00a0and the Google Cloud\u00a0Platform",
+   "usd": 0.0208
+  },
+  {
+   "model": "sonnet",
+   "title": "A preview of Go version 1",
+   "usd": 0.0183
+  },
+  {
+   "model": "sonnet",
+   "title": "Go Modules: v2 and Beyond",
+   "usd": 0.0188
+  },
+  {
+   "model": "sonnet",
+   "title": "Go App Engine SDK 1.5.5 released",
+   "usd": 0.0197
+  },
+  {
+   "model": "sonnet",
+   "title": "Introducing the Developer Experience Working Group",
+   "usd": 0.0169
+  },
+  {
+   "model": "sonnet",
+   "title": "Contexts and structs",
+   "usd": 0.0194
+  },
+  {
+   "model": "sonnet",
+   "title": "The Go Gopher",
+   "usd": 0.019
+  },
+  {
+   "model": "sonnet",
+   "title": "Go at Google I/O and\u00a0Gopher\u00a0SummerFest",
+   "usd": 0.0223
+  },
+  {
+   "model": "sonnet",
+   "title": "From zero to Go: launching on the Google homepage in 24 hours",
+   "usd": 0.0196
+  },
+  {
+   "model": "sonnet",
+   "title": "GopherCon 2014 Wrap Up",
+   "usd": 0.0164
+  },
+  {
+   "model": "sonnet",
+   "title": "Go, the Go Community, and the Pandemic",
+   "usd": 0.0174
+  },
+  {
+   "model": "sonnet",
+   "title": "Code of Conduct Updates",
+   "usd": 0.019
+  },
+  {
+   "model": "sonnet",
+   "title": "Introducing the Go Playground",
+   "usd": 0.0179
+  },
+  {
+   "model": "sonnet",
+   "title": "Announcing the 2020 Go Developer Survey",
+   "usd": 0.0168
+  },
+  {
+   "model": "sonnet",
+   "title": "Go: one year ago today",
+   "usd": 0.0186
+  },
+  {
+   "model": "sonnet",
+   "title": "A GIF decoder: an exercise in Go interfaces",
+   "usd": 0.0216
+  },
+  {
+   "model": "sonnet",
+   "title": "Hello, \u4e2d\u56fd!",
+   "usd": 0.018
+  },
+  {
+   "model": "sonnet",
+   "title": "Proposals for Go 1.15",
+   "usd": 0.0194
+  },
+  {
+   "model": "sonnet",
+   "title": "Spotlight on external Go libraries",
+   "usd": 0.0212
+  },
+  {
+   "model": "sonnet",
+   "title": "The Gopher Gala\u00a0is the first worldwide Go hackathon",
+   "usd": 0.0189
+  },
+  {
+   "model": "sonnet",
+   "title": "Automatic cipher suite ordering in crypto/tls",
+   "usd": 0.0192
+  },
+  {
+   "model": "sonnet",
+   "title": "The App Engine SDK and workspaces (GOPATH)",
+   "usd": 0.0216
+  },
+  {
+   "model": "sonnet",
+   "title": "Debugging Go programs with the GNU Debugger",
+   "usd": 0.0216
+  },
+  {
+   "model": "sonnet",
+   "title": "Go becomes more stable",
+   "usd": 0.0189
+  },
+  {
+   "model": "sonnet",
+   "title": "Building StatHat with Go",
+   "usd": 0.018
+  },
+  {
+   "model": "sonnet",
+   "title": "Upcoming Google I/O Go Events",
+   "usd": 0.0188
+  },
+  {
+   "model": "sonnet",
+   "title": "Contributors Summit",
+   "usd": 0.0189
+  },
+  {
+   "model": "sonnet",
+   "title": "The cover story",
+   "usd": 0.0176
+  },
+  {
+   "model": "sonnet",
+   "title": "Go Turns 10",
+   "usd": 0.0172
+  },
+  {
+   "model": "sonnet",
+   "title": "Eleven Years of Go",
+   "usd": 0.0172
+  },
+  {
+   "model": "sonnet",
+   "title": "The Next Step for Generics",
+   "usd": 0.0173
+  },
+  {
+   "model": "sonnet",
+   "title": "Participate in the 2017 Go User Survey",
+   "usd": 0.0164
+  },
+  {
+   "model": "opus",
+   "title": "The Go Collective on Stack Overflow",
+   "usd": 0.0574
+  },
+  {
+   "model": "opus",
+   "title": "Go 1.10 is released",
+   "usd": 0.1209
+  },
+  {
+   "model": "opus",
+   "title": "Concurrency is not parallelism",
+   "usd": 0.0588
+  },
+  {
+   "model": "opus",
+   "title": "Gobs of data",
+   "usd": 0.1062
+  },
+  {
+   "model": "opus",
+   "title": "Announcing the 2021 Go Developer Survey",
+   "usd": 0.0503
+  },
+  {
+   "model": "opus",
+   "title": "Participate in the 2016 Go User Survey and Company Questionnaire",
+   "usd": 0.0501
+  },
+  {
+   "model": "opus",
+   "title": "Organizing Go code",
+   "usd": 0.039
+  },
+  {
+   "model": "opus",
+   "title": "Half a decade with Go",
+   "usd": 0.0508
+  },
+  {
+   "model": "opus",
+   "title": "Go\u00a0and the Google Cloud\u00a0Platform",
+   "usd": 0.0937
+  },
+  {
+   "model": "opus",
+   "title": "A preview of Go version 1",
+   "usd": 0.0619
+  },
+  {
+   "model": "opus",
+   "title": "Go Modules: v2 and Beyond",
+   "usd": 0.0934
+  },
+  {
+   "model": "opus",
+   "title": "Go App Engine SDK 1.5.5 released",
+   "usd": 0.0904
+  },
+  {
+   "model": "opus",
+   "title": "Introducing the Developer Experience Working Group",
+   "usd": 0.0674
+  },
+  {
+   "model": "opus",
+   "title": "Contexts and structs",
+   "usd": 0.0932
+  },
+  {
+   "model": "opus",
+   "title": "The Go Gopher",
+   "usd": 0.0531
+  },
+  {
+   "model": "opus",
+   "title": "Go at Google I/O and\u00a0Gopher\u00a0SummerFest",
+   "usd": 0.0679
+  },
+  {
+   "model": "opus",
+   "title": "From zero to Go: launching on the Google homepage in 24 hours",
+   "usd": 0.0987
+  },
+  {
+   "model": "opus",
+   "title": "GopherCon 2014 Wrap Up",
+   "usd": 0.1126
+  },
+  {
+   "model": "opus",
+   "title": "Go, the Go Community, and the Pandemic",
+   "usd": 0.056
+  },
+  {
+   "model": "opus",
+   "title": "Code of Conduct Updates",
+   "usd": 0.0417
+  },
+  {
+   "model": "opus",
+   "title": "Introducing the Go Playground",
+   "usd": 0.0904
+  },
+  {
+   "model": "opus",
+   "title": "Announcing the 2020 Go Developer Survey",
+   "usd": 0.0417
+  },
+  {
+   "model": "opus",
+   "title": "Go: one year ago today",
+   "usd": 0.0923
+  },
+  {
+   "model": "opus",
+   "title": "A GIF decoder: an exercise in Go interfaces",
+   "usd": 0.0828
+  },
+  {
+   "model": "opus",
+   "title": "Hello, \u4e2d\u56fd!",
+   "usd": 0.115
+  },
+  {
+   "model": "opus",
+   "title": "Proposals for Go 1.15",
+   "usd": 0.1594
+  },
+  {
+   "model": "opus",
+   "title": "Spotlight on external Go libraries",
+   "usd": 0.0829
+  },
+  {
+   "model": "opus",
+   "title": "The Gopher Gala\u00a0is the first worldwide Go hackathon",
+   "usd": 0.0664
+  },
+  {
+   "model": "opus",
+   "title": "Automatic cipher suite ordering in crypto/tls",
+   "usd": 0.0843
+  },
+  {
+   "model": "opus",
+   "title": "The App Engine SDK and workspaces (GOPATH)",
+   "usd": 0.0556
+  },
+  {
+   "model": "opus",
+   "title": "Debugging Go programs with the GNU Debugger",
+   "usd": 0.099
+  },
+  {
+   "model": "opus",
+   "title": "Go becomes more stable",
+   "usd": 0.1071
+  },
+  {
+   "model": "opus",
+   "title": "Building StatHat with Go",
+   "usd": 0.0856
+  },
+  {
+   "model": "opus",
+   "title": "Upcoming Google I/O Go Events",
+   "usd": 0.0625
+  },
+  {
+   "model": "opus",
+   "title": "Contributors Summit",
+   "usd": 0.0866
+  },
+  {
+   "model": "opus",
+   "title": "The cover story",
+   "usd": 0.07
+  },
+  {
+   "model": "opus",
+   "title": "Go Turns 10",
+   "usd": 0.0996
+  },
+  {
+   "model": "opus",
+   "title": "Eleven Years of Go",
+   "usd": 0.0958
+  },
+  {
+   "model": "opus",
+   "title": "The Next Step for Generics",
+   "usd": 0.0661
+  },
+  {
+   "model": "opus",
+   "title": "Participate in the 2017 Go User Survey",
+   "usd": 0.0778
+  }
+ ]
+}
