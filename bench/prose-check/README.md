@@ -14,7 +14,7 @@ Results are in `results.json` and summarized in [docs/benchmarks.md](../../docs/
 
 **What is committed and what is fetched**
 
-1. `blogs/<platform>.json`: URL manifests for the engineering blogs of discord, notion, slack, spotify and stripe. Each lists posts published before 2022-11-30 with url, date, title and the file name to write. The posts are copyrighted by their publishers, so only URLs are committed.
+1. `blogs/<platform>.json`: URL manifests for the engineering blogs of cloudflare, discord, notion, slack, spotify and stripe. Each lists posts published before 2022-11-30 with url, date, title and the file name to write. The posts are copyrighted by their publishers, so only URLs are committed.
 2. `ai-claude/{sonnet,opus}`: 80 posts written by Claude Sonnet 5.5 and Opus 5.5. This is our own output and is committed. Generation cost $3.93 (see `ai-claude/costs.json`).
 3. Fetched by `fetch-open.py`, not committed:
    - The Rust Book at the last commit of 2021 (MIT or Apache-2.0).
@@ -27,7 +27,6 @@ Results are in `results.json` and summarized in [docs/benchmarks.md](../../docs/
 1. Netflix: serves a Cloudflare challenge, and its robots.txt disallows AI crawlers by name.
 2. Dropbox: AWS WAF began challenging after 33 pages.
 3. Uber: the live site serves a bot challenge (def.uber.com/challenge).
-4. Cloudflare: no manifest exists. The URL scan had not finished, so the platform is not in this run.
 
 **Rebuild steps**
 
