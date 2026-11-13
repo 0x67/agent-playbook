@@ -19,7 +19,7 @@ The checker only flags. Fixing is a rewrite under the humanizer rules: keep ever
 
 `run.sh` uses `python3` when it already has the `regex` module, then `uv` with the pinned `regex`, then plain `python3`. The Python port runs the 132 existence, substitution and occurrence rules and skips the 5 sequence rules, which need Vale's part-of-speech tagger. Without `regex`, 14 lookbehind patterns are skipped as well. On the files it was compared on, it reports 97% of Vale's findings.
 
-The plugin's hooks also run this check without being asked. After a Write or Edit to a prose or UI file, the findings in the written lines come back for revision. Before a Slack, Jira, Confluence, Gmail, Notion, Claude Docs, Google Docs or Google Slides send or write, a flagged message is stopped once with its findings; sending the identical text again goes through, which is the way to send text the user wrote. Before an Artifact publish, the local files are checked, and the publish stops only for findings that file has not shown before.
+The plugin's hooks also run this check without being asked. After a Write or Edit to a prose or UI file, the findings in the written lines come back for revision. Before a Slack, Jira, Confluence, Gmail, Notion, Claude Docs, Google Docs or Google Slides send or write, and before a `git commit` or `gh pr`/`gh issue` command with a message body, a flagged message is stopped once with its findings; sending the identical text again goes through, which is the way to send text the user wrote. Before an Artifact publish, the local files are checked, and the publish stops only for findings that file has not shown before.
 
 ## Read the findings
 

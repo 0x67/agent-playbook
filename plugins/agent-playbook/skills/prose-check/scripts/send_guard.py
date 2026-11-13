@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""PreToolUse hook: check prose before it leaves through a message or publishing tool.
+"""PreToolUse hook: check prose before it leaves through a message, publishing, or commit command.
 
 Messages (Slack, Jira, Confluence, Gmail, Notion, Claude Docs, Google Docs and Slides): the text in the tool
 input is checked. A flagged message is denied once with its findings; resending the identical text goes
 through, which covers text the user wrote, and a third flagged attempt on the same tool within 10 minutes
 also goes through, so a revise loop cannot stall the task. Messages under 12 words pass.
+
+Bash: the message of `git commit -m/-F` (heredoc form included) and the body of `gh pr|issue create, edit,
+comment` (`--body`, `--body-file`) go through the same check as messages. A header-only commit is too
+short to be checked.
 
 Artifact publishes: the local files being published (HTML, Markdown, text, JSON data, PowerPoint) are
 checked. A publish is denied only for findings not seen before for that file, so findings the agent kept
@@ -15,6 +19,7 @@ State lives in the temp directory per session.
 import hashlib
 import json
 import re
+import shlex
 import sys
 import tempfile
 import time
@@ -45,6 +50,53 @@ def collect(value, key=None, out=None):
         if looks_like_prose and ((key in TEXT_KEYS and words >= 2) or words >= 8):
             out.append(value.strip())
     return out
+
+
+OPERATORS = {"&&", "||", ";", "|", "&"}
+HEREDOC = re.compile(r"<<-?\s*['\"]?(\w+)['\"]?\n(.*?)\n\s*\1\b", re.S)
+
+
+def unwrap(value):
+    """The text of a "$(cat <<'EOF' ... EOF)" argument, or the argument itself."""
+    match = HEREDOC.search(value)
+    return match.group(2) if match else value
+
+
+def read_file(path, cwd):
+    target = Path(path) if Path(path).is_absolute() else Path(cwd or ".") / path
+    try:
+        return target.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return ""
+
+
+def bash_text(command, cwd):
+    """Message text from git commit and gh pr/issue commands in a shell command line."""
+    try:
+        tokens = shlex.split(command, posix=True)
+    except ValueError:
+        return ""
+
+    texts, i = [], 0
+    while i < len(tokens):
+        is_commit = tokens[i] == "git" and "commit" in tokens[i + 1:i + 4]
+        is_gh = tokens[i] == "gh" and tokens[i + 1:i + 2] and tokens[i + 1] in ("pr", "issue")
+        if not (is_commit or is_gh):
+            i += 1
+            continue
+
+        j = i + 1
+        while j < len(tokens) and tokens[j] not in OPERATORS:
+            flag, value = tokens[j], tokens[j + 1] if j + 1 < len(tokens) else ""
+            if flag.startswith("--") and "=" in flag:
+                flag, value = flag.split("=", 1)
+            if (is_commit and flag in ("-m", "--message")) or (is_gh and flag in ("-b", "--body")):
+                texts.append(unwrap(value))
+            elif (is_commit and flag in ("-F", "--file")) or (is_gh and flag in ("-F", "--body-file")):
+                texts.append(read_file(value, cwd))
+            j += 1
+        i = j
+    return "\n\n".join(t.strip() for t in texts if t.strip())
 
 
 def artifact_files(tool_input, cwd):
@@ -123,7 +175,10 @@ def main():
                 print("{}")
             return
 
-        text = "\n\n".join(dict.fromkeys(collect(tool_input)))
+        if tool == "Bash":
+            text = bash_text(tool_input.get("command", ""), payload.get("cwd"))
+        else:
+            text = "\n\n".join(dict.fromkeys(collect(tool_input)))
         if len(text.split()) < MIN_WORDS:
             print("{}")
             return
@@ -143,7 +198,7 @@ def main():
         state["denials"] = [d for d in state["denials"] if now - d["at"] < WINDOW_S] + [{"tool": tool, "at": now}]
         path.write_text(json.dumps(state))
         print(json.dumps(deny(
-            f"Prose check flagged {len(found)} AI-like pattern(s) in this message, so it was not sent. Revise the "
+            f"Prose check flagged {len(found)} AI-like pattern(s) in this message, so it was stopped. Revise the "
             f"text under the humanizer rules, keeping every fact and adding none, then send again. If the user "
             f"wrote this text or asked to send it as is, send the identical text again and it will go through.\n"
             f"{listing([('', rule, message) for _, rule, message in found])}"
