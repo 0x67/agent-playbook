@@ -68,7 +68,7 @@ Naming, function size, module boundaries, and architecture (SOLID, layered, MVC,
 - Push, publish, deploy, and apply commands need the user's go-ahead in this conversation.
 - Destructive database commands (`DROP`, `TRUNCATE`, `DELETE` or `UPDATE` without `WHERE`, a migration reset or rollback) and writes to a database that is not local need the same go-ahead. Reach production through a read-only role.
 
-In Claude Code the `security-guard` hook backs these with a permission prompt: OSV advisories for new dependencies, SkillSpector for skills and plugins, gitleaks before commits, zizmor for workflow edits, and every push, publish, or deploy. The `db-guard` hook asks before the database commands above, in shell commands and in database MCP tools.
+In Claude Code, hooks back these with a permission prompt. `dep-guard` checks each new dependency and the packages it pulls in for OSV advisories, install scripts, and versions published less than 7 days ago (`AGENT_PLAYBOOK_MIN_AGE_DAYS`). `security-guard` runs SkillSpector on skills and plugins, gitleaks before commits, and zizmor on workflow edits, and asks before every push, publish, or deploy. `db-guard` asks before the database commands above, in shell commands and in database MCP tools.
 
 # Commits and Pull Requests
 

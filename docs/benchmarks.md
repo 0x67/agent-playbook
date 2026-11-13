@@ -284,6 +284,19 @@ The `security-guard` hook (1.1.0) runs before every Bash, Edit, and Write call a
 
 AWS's documentation example keys pass gitleaks on purpose (they are allowlisted); real-format tokens are caught.
 
+Since 1.12.0 the dependency rows run in the `dep-guard` hook, which also checks release age, install scripts, and the packages a dependency pulls in. Checked by hand on 2026-11-14 in scratch npm and pnpm projects:
+
+| Trigger | Result |
+|---|---|
+| `npm install lodash@4.17.15`, `pnpm add lodash@4.17.15` | asked, with advisory ids; resolved in a temp copy in about 3 s, project files byte-identical afterwards |
+| `npm i -D esbuild@0.24.0` | asked: an advisory, and an install script |
+| `npm install typescript@next` | asked: 8 platform packages published 9 hours earlier; no prompt with `AGENT_PLAYBOOK_MIN_AGE_DAYS=0` |
+| `npm ci` after lodash and esbuild were added to the lockfile | asked with both; no prompt once the lockfile matched `HEAD` |
+| `npm install left-pad` already in the lockfile | no prompt |
+| `pip install requests==2.19.0` | known vulnerabilities; 1.11.0 and earlier called it malicious because an advisory summary mentions "malicious URLs" |
+| `npm install flatmap-stream@0.1.1`, `event-stream@3.3.6` | asked: malicious package |
+| Registry and OSV unreachable | no prompt, under a second |
+
 ## UI copy and typography skills
 
 [better-writing and better-typography](https://github.com/jakubkrehel/skills) review interface copy and how text renders. A React and Tailwind component with seven copy problems (an "Oops" error, an empty state with no next step, a plural built by concatenation, "Click here", mixed capitalization, "Are you sure?" with Yes and No, a negative toggle label) and four typography problems (weight 300 at 14px, line-height in px, a live total without `tabular-nums`, a heading smaller than the body), two runs per arm with the full setup loaded in both:
