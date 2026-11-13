@@ -7,7 +7,7 @@ description: Checks written text for patterns readers often take as machine-writ
 
 The checker only flags. Fixing is a rewrite under the humanizer rules: keep every fact and add none.
 
-It checks style and cannot detect AI authorship. Human engineering blogs from before 2022 score 9.9 to 11.4 findings per 1,000 words and Claude Sonnet 5.5 and Opus 5.5 posts 11.7 to 13.5, with too much overlap to tell them apart (AUC 0.62). A finding marks a pattern to reread, whoever wrote the text.
+It checks style and cannot detect AI authorship. Human engineering blogs from before 2022 score 8.5 to 11.4 findings per 1,000 words and Claude Sonnet 5.5 and Opus 5.5 posts 11.7 to 13.5, with too much overlap to tell them apart (AUC 0.66). A finding marks a pattern to reread, whoever wrote the text.
 
 ## Run it
 

@@ -9,7 +9,7 @@ Measurements behind the optional extras in the README, taken on 2026-11-05 and 2
 3. **Cost more than they returned here:** forced subagents on a multi-question prompt, spec-driven on small and three-module tasks, code-review-subagent, the LSP tool (it found nothing in a fresh session and matched Grep at higher cost once indexed), and rtk on outputs just over Claude Code's 30 KB preview limit.
 4. **Language skills help only where the model lacks the fact:** on version-compatibility facts bare Sonnet 5.5 got wrong (Lombok for JDK 26, the last Error Prone that runs on JDK 17), the jvm skill fixed every run; on facts it already knew they did not change the result. Since 1.0.0 they load on edits only.
 5. **No measured quality gain yet:** the fable skills (never invoked, removed in 1.0.0), the humanizer rules (no tells with or without them), and spec-driven even on a request with open questions.
-6. **prose-check is a style check and cannot detect AI authorship:** on an internal spec and its UI copy, `prose-check` reported 48 findings where a multi-agent review workflow reported one, and its Python port matched Vale on 97% of rule findings. On about 1.4M words of human and Claude text the scan does not separate them well (AUC 0.62 for engineering blogs against Claude 5.5 posts), so a finding is a place to start reading ([prose-check](#prose-check), [large corpora](#large-corpora)).
+6. **prose-check is a style check and cannot detect AI authorship:** on an internal spec and its UI copy, `prose-check` reported 48 findings where a multi-agent review workflow reported one, and its Python port matched Vale on 97% of rule findings. On about 1.4M words of human and Claude text the scan does not separate them well (AUC 0.66 for engineering blogs against Claude 5.5 posts), so a finding is a place to start reading ([prose-check](#prose-check), [large corpora](#large-corpora)).
 
 ## rtk
 
@@ -360,34 +360,35 @@ The scan flags style patterns and cannot say who wrote a text: human engineering
 
 | Corpus | Files | Words | Vale per 1k | Port per 1k | Cross-sentence per 1k | Port parity | Vale s | Port s |
 |---|---|---|---|---|---|---|---|---|
-| Rust Book (human) | 105 | 150,700 | 5.71 | 4.84 | 2.05 | 97.5% | 2.42 | 9.17 |
-| Go blog (human) | 252 | 176,698 | 8.64 | 7.79 | 2.45 | 97.6% | 2.52 | 8.60 |
-| Discord blog (human) | 29 | 49,222 | 10.44 | 9.33 | 2.03 | 99.6% | 2.51 | 8.17 |
-| Notion blog (human) | 4 | 10,157 | 15.26 | 14.28 | 3.25 | 100.0% | 3.93 | 8.18 |
-| Slack blog (human) | 100 | 199,089 | 10.21 | 8.97 | 2.07 | 99.3% | 2.43 | 8.62 |
-| Spotify blog (human) | 100 | 130,482 | 11.38 | 10.00 | 2.71 | 98.5% | 2.60 | 8.52 |
-| Stripe blog (human) | 37 | 63,310 | 9.90 | 8.73 | 2.16 | 99.8% | 2.61 | 8.64 |
-| HC3 human answers | 1,500 | 261,863 | 7.29 | 6.50 | 2.60 | 99.8% | 2.58 | 7.51 |
-| HC3 ChatGPT answers | 1,500 | 273,054 | 9.17 | 7.80 | 2.85 | 99.1% | 2.63 | 7.47 |
-| Claude Sonnet 5.5 posts | 40 | 30,446 | 13.47 | 13.01 | 2.59 | 97.5% | 2.55 | 7.64 |
-| Claude Opus 5.5 posts | 40 | 30,222 | 11.71 | 11.22 | 2.55 | 98.0% | 3.45 | 8.54 |
-| vale-ai-tells positive fixture | 1 | 12,808 | 126.48 | 124.14 | 2.89 | 99.4% | 9.65 | 7.92 |
-| vale-ai-tells negative fixture | 1 | 6,860 | 0.00 | 1.02 | 2.19 | 100.0% | 9.62 | 7.85 |
+| Rust Book (human) | 105 | 150,700 | 5.71 | 4.84 | 2.05 | 97.5% | 2.37 | 9.25 |
+| Go blog (human) | 252 | 176,698 | 8.64 | 7.79 | 2.45 | 97.6% | 2.50 | 9.05 |
+| Cloudflare blog (human) | 100 | 148,470 | 8.46 | 7.61 | 2.16 | 99.5% | 2.77 | 9.00 |
+| Discord blog (human) | 29 | 49,222 | 10.44 | 9.33 | 2.03 | 99.6% | 2.66 | 8.79 |
+| Notion blog (human) | 4 | 10,157 | 15.26 | 14.28 | 3.25 | 100.0% | 3.79 | 8.55 |
+| Slack blog (human) | 100 | 199,089 | 10.21 | 8.97 | 2.07 | 99.3% | 2.73 | 9.11 |
+| Spotify blog (human) | 100 | 130,482 | 11.38 | 10.00 | 2.71 | 98.5% | 2.71 | 8.97 |
+| Stripe blog (human) | 37 | 63,310 | 9.90 | 8.73 | 2.16 | 99.8% | 2.84 | 8.84 |
+| HC3 human answers | 1,500 | 261,863 | 7.29 | 6.50 | 2.60 | 99.8% | 2.70 | 7.87 |
+| HC3 ChatGPT answers | 1,500 | 273,054 | 9.17 | 7.80 | 2.85 | 99.1% | 2.70 | 7.53 |
+| Claude Sonnet 5.5 posts | 40 | 30,446 | 13.47 | 13.01 | 2.59 | 97.5% | 2.49 | 7.66 |
+| Claude Opus 5.5 posts | 40 | 30,222 | 11.71 | 11.22 | 2.55 | 98.0% | 2.32 | 7.84 |
+| vale-ai-tells positive fixture | 1 | 12,808 | 126.48 | 124.14 | 2.89 | 99.4% | 9.84 | 8.07 |
+| vale-ai-tells negative fixture | 1 | 6,860 | 0.00 | 1.02 | 2.19 | 100.0% | 9.50 | 8.18 |
 
-The blogs are posts published before 2022-11-30. Cloudflare is not in this run (its URL scan had not finished), and Netflix, Dropbox and Uber were excluded because their sites serve bot challenges.
+The blogs are posts published before 2022-11-30. Netflix, Dropbox and Uber were excluded because their sites serve bot challenges.
 
 AUC of findings per 100 words per document:
 
-1. Human blogs against Claude posts: 0.621.
+1. Human blogs against Claude posts: 0.656.
 2. HC3 human answers against HC3 ChatGPT answers: 0.565.
 
 **Findings**
 
 1. Human engineering blogs and books score in the same range as Claude 5.5 posts (5.7 to 15.3 findings per 1,000 words for human text, 11.7 and 13.5 for Claude), so a finding is a place to start reading, and it says little about who wrote the text.
-2. Em dashes are now a human marker. `EmDashUsage` is the top rule on every human blog, at 1.58 to 5.42 per 1,000 words, and it matches 0.26 per 1,000 on both Claude 5.5 sets.
+2. Em dashes are now a human marker. `EmDashUsage` is the top rule on every human blog except Cloudflare, at 1.58 to 5.42 per 1,000 words (0.88 on Cloudflare, behind `OverusedVocabulary`), and it matches 0.26 per 1,000 on both Claude 5.5 sets.
 3. The Vale-only `sequence` rules AIAdjectiveNounPairs, EmptyPadding, EmptyPaddingStacked, NounString and OverusedVocabularyVerbs fired 1.15 to 1.26 per 1,000 words on Slack, Spotify and Stripe posts against 0.16 (Sonnet) and 0.26 (Opus) on Claude posts. They flag human text about 4 to 8 times as often.
 4. Tuning from these corpora: FormalRegister moved to suggestion level, list items no longer count for colon reveals or short closers, pointer lines ("See X.") are not closers, and repeated openings need 3 within 6 consecutive sentences. On the Rust Book that took Vale findings from 9.0 to 5.6 per 1,000 words (5.71 in the current run). The port now matches Vale on exceptions, HTML comments, indented code and front matter.
-5. An earlier partial run reported an AUC of 0.77 for blogs against Claude, but Vale had skipped blog files with invalid YAML front matter. The 0.621 above replaces it.
+5. An earlier partial run reported an AUC of 0.77 for blogs against Claude, but Vale had skipped blog files with invalid YAML front matter. The 0.656 above replaces it.
 
 ## Plugin evals
 
