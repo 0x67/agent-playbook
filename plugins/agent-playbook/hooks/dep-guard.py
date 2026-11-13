@@ -16,6 +16,8 @@ import urllib.request
 
 OSV_URL = "https://api.osv.dev/v1/querybatch"
 OSV_TIMEOUT_S = 4
+# a summary that only mentions malicious input ("malicious URLs") is an ordinary vulnerability
+MALWARE_SUMMARY = re.compile(r"\bmalware\b|\bmalicious\s+(code|package|version|release|payload)s?\b|\bbackdoor", re.I)
 
 
 def emit(reasons):
@@ -141,7 +143,7 @@ def is_malware(vuln_id):
         except Exception:
             d = {}
         cwes = (d.get("database_specific") or {}).get("cwe_ids") or []
-        _malware_checked[vuln_id] = "CWE-506" in cwes or bool(re.search(r"\bmalware\b|\bmalicious\b", d.get("summary", ""), re.I))
+        _malware_checked[vuln_id] = "CWE-506" in cwes or bool(MALWARE_SUMMARY.search(d.get("summary", "")))
     return _malware_checked[vuln_id]
 
 
