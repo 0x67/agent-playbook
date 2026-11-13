@@ -65,7 +65,8 @@
       {
         "matcher": "Bash|Edit|Write",
         "hooks": [
-          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/security-guard.py\"", "timeout": 120, "statusMessage": "Checking dependencies, installs, secrets, and deploys..." }
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/dep-guard.py\"", "timeout": 120, "statusMessage": "Checking new dependencies..." },
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/security-guard.py\"", "timeout": 120, "statusMessage": "Checking installs, secrets, and deploys..." }
         ]
       },
       {
