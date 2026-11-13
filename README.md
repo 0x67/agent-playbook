@@ -93,7 +93,7 @@ In claude.ai, add this repo under Customize, Add marketplace, Add from a reposit
 
 ## Prose check
 
-`skills/prose-check` flags AI-like patterns in writing at the word, sentence and paragraph level, and across sets of UI strings. Text stays on the machine, or in claude.ai's sandbox when the skill runs there.
+`skills/prose-check` flags writing patterns that readers often take as machine-written (stock phrasing, contrast formulas, templated sentences) at the word, sentence and paragraph level, and across sets of UI strings. It is a style check: it cannot tell whether a person or a model wrote a text, because human engineering blogs from before 2022 score in the same range as Claude output ([benchmarks](docs/benchmarks.md#large-corpora)). Text stays on the machine, or in claude.ai's sandbox when the skill runs there.
 
 **Setup**
 

@@ -9,7 +9,7 @@ Measurements behind the optional extras in the README, taken on 2026-11-05 and 2
 3. **Cost more than they returned here:** forced subagents on a multi-question prompt, spec-driven on small and three-module tasks, code-review-subagent, the LSP tool (it found nothing in a fresh session and matched Grep at higher cost once indexed), and rtk on outputs just over Claude Code's 30 KB preview limit.
 4. **Language skills help only where the model lacks the fact:** on version-compatibility facts bare Sonnet 5.5 got wrong (Lombok for JDK 26, the last Error Prone that runs on JDK 17), the jvm skill fixed every run; on facts it already knew they did not change the result. Since 1.0.0 they load on edits only.
 5. **No measured quality gain yet:** the fable skills (never invoked, removed in 1.0.0), the humanizer rules (no tells with or without them), and spec-driven even on a request with open questions.
-6. **A local prose scan finds AI-like structure that a model review missed:** on an internal spec and its UI copy, `prose-check` reported 48 findings where a multi-agent review workflow reported one, and its Python port matched Vale on 97% of rule findings. On about 1.4M words of human and Claude text the scan does not separate them well (AUC 0.62 for engineering blogs against Claude 5.5 posts), so a finding is a place to start reading ([prose-check](#prose-check), [large corpora](#large-corpora)).
+6. **prose-check is a style check and cannot detect AI authorship:** on an internal spec and its UI copy, `prose-check` reported 48 findings where a multi-agent review workflow reported one, and its Python port matched Vale on 97% of rule findings. On about 1.4M words of human and Claude text the scan does not separate them well (AUC 0.62 for engineering blogs against Claude 5.5 posts), so a finding is a place to start reading ([prose-check](#prose-check), [large corpora](#large-corpora)).
 
 ## rtk
 
@@ -356,7 +356,7 @@ The scan finds 20 issues in the raw doc and 9 in the raw page. After the rewrite
 
 ### Large corpora
 
-`bench/prose-check/` rebuilds the corpora and reruns the scan (see its [README](../bench/prose-check/README.md)). The table comes from `results.json`. Seconds are per 100,000 words. Cross-sentence is the port's cross-sentence checks per 1,000 words.
+The scan flags style patterns and cannot say who wrote a text: human engineering blogs and books from before 2022 score in the same range as Claude 5.5 posts. Use it to find patterns to reread, whoever wrote the text. `bench/prose-check/` rebuilds the corpora and reruns the scan (see its [README](../bench/prose-check/README.md)). The table comes from `results.json`. Seconds are per 100,000 words. Cross-sentence is the port's cross-sentence checks per 1,000 words.
 
 | Corpus | Files | Words | Vale per 1k | Port per 1k | Cross-sentence per 1k | Port parity | Vale s | Port s |
 |---|---|---|---|---|---|---|---|---|

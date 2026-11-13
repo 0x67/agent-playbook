@@ -2,6 +2,9 @@
 
 **What it measures**
 
+The benchmark tests how often the `prose-check` rules fire on human and Claude-written text. The rules flag style patterns; the results show they cannot tell the two apart reliably, so the tool is a style check and not an AI detector.
+
+
 1. Findings per 1,000 words from Vale and from the Python port of `prose-check`, plus the cross-sentence checks, on human and Claude-written text.
 2. Port parity: the share of Vale's non-sequence rule findings that the port also reports.
 3. Speed: seconds per 100,000 words for each engine.
