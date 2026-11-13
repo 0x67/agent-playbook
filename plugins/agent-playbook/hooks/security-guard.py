@@ -35,6 +35,7 @@ DEPLOY = [
     (r"\bhelm\s+(install|upgrade|uninstall|rollback)\b", "Helm release change"),
     (r"\b(terraform|tofu)\s+(apply|destroy|import)\b|\bpulumi\s+(up|destroy)\b", "infrastructure change"),
     (r"\bgh\s+release\s+(create|upload|delete)\b|\bgh\s+pr\s+merge\b", "GitHub release or merge"),
+    (r"\bgh\s+stack\s+(push|submit|sync|link|merge|unstack|delete)\b", "gh stack push, PR, or merge"),
     (r"\b(vercel\s+(--prod|deploy)|netlify\s+deploy|fly\s+deploy|wrangler\s+(deploy|publish)|firebase\s+deploy)\b", "deploy"),
 ]
 REMOTE_EXEC = re.compile(r"\b(curl|wget)\b[^|;&]*\|\s*(sudo\s+)?(sh|bash|zsh|python3?|node)\b|\b(sh|bash)\s+<\(\s*(curl|wget)\b|\biwr\b[^|]*\|\s*iex\b")

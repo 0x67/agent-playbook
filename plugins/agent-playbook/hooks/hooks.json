@@ -39,7 +39,9 @@
         "hooks": [
           { "type": "command", "command": "sh \"${CLAUDE_PLUGIN_ROOT}/skills/prose-check/scripts/run.sh\" send_guard.py", "if": "Bash(git commit *)", "timeout": 30, "statusMessage": "Checking message prose..." },
           { "type": "command", "command": "sh \"${CLAUDE_PLUGIN_ROOT}/skills/prose-check/scripts/run.sh\" send_guard.py", "if": "Bash(gh pr *)", "timeout": 30, "statusMessage": "Checking message prose..." },
-          { "type": "command", "command": "sh \"${CLAUDE_PLUGIN_ROOT}/skills/prose-check/scripts/run.sh\" send_guard.py", "if": "Bash(gh issue *)", "timeout": 30, "statusMessage": "Checking message prose..." }
+          { "type": "command", "command": "sh \"${CLAUDE_PLUGIN_ROOT}/skills/prose-check/scripts/run.sh\" send_guard.py", "if": "Bash(gh issue *)", "timeout": 30, "statusMessage": "Checking message prose..." },
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/pr-guard.py\"", "if": "Bash(gh pr create *)", "timeout": 15, "statusMessage": "Checking PR size and naming..." },
+          { "type": "command", "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/pr-guard.py\"", "if": "Bash(gh stack *)", "timeout": 20, "statusMessage": "Checking stack size and naming..." }
         ]
       },
       {

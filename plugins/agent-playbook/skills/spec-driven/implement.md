@@ -215,6 +215,9 @@ If workspace lacks `lat.md/`: skip all lat.md steps.
     format).
 - Do not push without explicit operator approval (separate from commit
   approval).
+- A spec with more than one group goes out as stacked PRs, one per
+  group in group order (adjacent small groups may share one), as in
+  the `conventional-commits` skill's `references/stacked-prs.md`.
 
 ## Final step: adversarial pass
 

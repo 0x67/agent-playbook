@@ -5,7 +5,8 @@ description: >
   before `git commit`, `gh pr create`, or `gh pr edit`, and whenever writing or
   rewording a commit message, a pull request title, or a pull request
   description, choosing a type or scope (feat, fix, perf, refactor, test, docs,
-  build, ci, chore, revert), or marking a breaking change.
+  build, ci, chore, revert), marking a breaking change, naming a branch, or
+  splitting a large feature into stacked PRs.
 ---
 
 # Commits and pull requests
@@ -50,6 +51,14 @@ When a change spans types, pick the one that matters to someone reading the chan
 ## PR title
 
 Same header format. A squash merge turns the title into the commit on the main branch, so it describes the whole change, not the last commit. A draft that collects a phase of commits takes the type of its main change, as in `feat: interop phase`.
+
+## Branch name
+
+Copy the repo's pattern from `git branch -r` and recent PR heads (`gh pr list --state all --limit 20 --json headRefName`). Without one, use `<type>/<slug>`: the PR title's type and a short lowercase kebab-case slug, as in `fix/cache-expiry`. Keep stack positions such as `part-2` out of branch names.
+
+## Stacked PRs
+
+A feature over about 400 changed lines (lockfiles not counted), or one that mixes concerns, goes out as a stack of PRs, one concern each, every PR named by the rules above. Read `references/stacked-prs.md` before the first edit of such a feature. It has the size rule, how to plan the stack, the Stack section for the PR body, and the git and gh commands. When `gh extension list` shows GitHub's `github/gh-stack`, follow its gh stack section.
 
 ## PR body
 
@@ -103,5 +112,8 @@ A PR that changes what a screen looks like or how it behaves carries the Screens
 | Commit message with a body or trailers | Move the detail into the PR body |
 | `!` with no breaking-change note in the PR body | Add the note, or drop the `!` |
 | PR title that only describes the last commit | Retitle for the whole change |
+| PR over about 400 changed lines, or mixing concerns | Split it into stacked PRs (`references/stacked-prs.md`) |
+| Stack position (`[2/3]`, `Part 2`, `part-2`) in a PR title or branch name | Move it to the PR body's Stack section |
+| Branch name outside the repo's pattern | Rename it with `git branch -m <new-name>` before pushing |
 | UI change with no before and after images | Capture them and attach with `--attach` |
 | Screenshot showing real names, emails, or tokens | Recapture with test data, or crop and blur |

@@ -73,6 +73,8 @@ In Claude Code the `security-guard` hook backs these with a permission prompt: O
 
 Before writing a commit message, a PR title, or a PR body, load skill `conventional-commits` (`agent-playbook:conventional-commits` in Claude Code): Conventional Commits headers, one-line commits with no AI attribution, and a Summary, Changes, Testing PR body. The repository's commitlint config, PR template, and commit history override it.
 
+A feature that would put more than about 400 changed lines (lockfiles not counted) or more than one concern into one PR is split into stacked PRs, planned before the first edit: `references/stacked-prs.md` in that skill. Every PR in a stack keeps the usual names: the repo's branch pattern (default `<type>/<slug>`), a Conventional Commits title for its own change, and no stack position such as `[2/3]` in a title or branch. In Claude Code the `pr-guard` hook asks before a `gh pr create` or `gh stack` command that goes over the size limit, breaks these names, or would open PRs with generated titles.
+
 # Worktree Commit Handoff
 
 Work in a git worktree or on a branch other than the user's workspace branch:

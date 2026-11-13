@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: stacked-prs
+description: A large branch with several concerns is planned as stacked PRs that keep Conventional Commits titles and type/slug branch names.
+tags: [rules, git]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |
+    Branch feat/orders is ready for review against main. Plan the pull requests for it: for each PR give the branch
+    name, its base, and its title. Do not push, run gh, or change any files.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?conventional-commits"'
+    arm: both
+  - name: stack-with-names
+    type: llm
+    criteria: |
+      PASS if the plan splits the branch into at least two PRs where each PR after the first uses the previous PR's
+      branch as its base, the pieces follow the concerns in the diff (moving pricing out of the service, the discount
+      codes with their tests, the checkout command), every PR title is a Conventional Commits header such as
+      `refactor(orders): ...` or `feat(orders): ...` describing that PR's own change, every branch name has the form
+      `<type>/<kebab-slug>`, and no title or branch name carries a stack position such as `[2/3]`, `(2/3)`, `Part 2`,
+      or `part-2`. FAIL if it proposes a single PR, bases every PR on main, or breaks any of the naming rules.
