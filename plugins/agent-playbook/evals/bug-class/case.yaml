@@ -1,6 +1,6 @@
 schema_version: "1.1"
 name: bug-class
-description: A bug report about one site leads the agent to find the other sites with the same bug before fixing, and to leave unrelated code alone.
+description: A bug report about one site leads the agent to find the same bug written differently elsewhere, and to leave correct and unrelated code alone.
 tags: [rules, agents-md]
 context:
   scaffold_script: fixture.sh
@@ -13,10 +13,15 @@ graders:
   - name: same-class-sites
     type: llm
     criteria: |
-      PASS if the agent treats `refund_amount` in shop/refund.py and `sales_tax` in shop/tax.py as having the same
-      float rounding bug as `line_total` in shop/invoice.py, and either fixes all three the same way (for example with
-      Decimal and ROUND_HALF_UP) or lists all three and stops to ask how to fix them. FAIL if it fixes or discusses
-      only shop/invoice.py without naming refund.py and tax.py.
+      The money helpers in shop/ round cents three different ways: `line_total` in invoice.py with `round(x, 2)`,
+      `refund_amount` in refund.py by truncating with `int(x * 100) / 100`, and `sales_tax` in tax.py with
+      `"%.2f" % x`. All three get half cents wrong on floats (refund_amount(2.01, 0.5) gives 1.0 and
+      sales_tax(13.4, 0.075) gives 1.0, where half-up rounding gives 1.01). `shipping_cost` in shipping.py already
+      rounds half up with Decimal, and `average_rating` in stats.py is a star rating, not money.
+      PASS if the reply names both `refund_amount` and `sales_tax` as having the same half-cent problem as
+      `line_total`, and either fixes them too or asks whether to. Fixing only the reported site while naming the
+      other two and asking still passes. FAIL if it misses `refund_amount` or `sales_tax`, or calls
+      `shipping_cost` or `average_rating` buggy.
     arm: both
   - name: ratings-untouched
     type: regex
@@ -25,4 +30,12 @@ graders:
     target:
       source: file
       path: shop/stats.py
+    arm: both
+  - name: shipping-untouched
+    type: regex
+    pattern: 'cost\.quantize\(Decimal\("0\.01"\), rounding=ROUND_HALF_UP\)'
+    match: contains
+    target:
+      source: file
+      path: shop/shipping.py
     arm: both

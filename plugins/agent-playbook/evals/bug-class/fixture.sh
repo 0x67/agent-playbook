@@ -14,14 +14,24 @@ X
 
 cat > shop/refund.py <<'X'
 def refund_amount(paid, fraction):
-    """Partial refund in dollars."""
-    return round(paid * fraction, 2)
+    """Partial refund in dollars, in whole cents."""
+    return int(paid * fraction * 100) / 100
 X
 
 cat > shop/tax.py <<'X'
 def sales_tax(amount, rate):
-    """Sales tax in dollars."""
-    return round(amount * rate, 2)
+    """Sales tax in dollars, as printed on the receipt."""
+    return float("%.2f" % (amount * rate))
+X
+
+cat > shop/shipping.py <<'X'
+from decimal import ROUND_HALF_UP, Decimal
+
+
+def shipping_cost(weight_kg, rate_per_kg):
+    """Shipping in dollars, rounded half up to the cent."""
+    cost = Decimal(str(weight_kg)) * Decimal(str(rate_per_kg))
+    return float(cost.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
 X
 
 cat > shop/stats.py <<'X'
@@ -38,4 +48,4 @@ cat > ISSUE.md <<'X'
 X
 
 git add -A
-git commit -qm "feat(shop): add invoice, refund, and tax amounts"
+git commit -qm "feat(shop): add invoice, refund, tax, and shipping amounts"
