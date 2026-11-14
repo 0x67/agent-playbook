@@ -12,7 +12,10 @@ short to be checked.
 
 Artifact publishes: the local files being published (HTML, Markdown, text, JSON data, PowerPoint) are
 checked. A publish is denied only for findings not seen before for that file, so findings the agent kept
-on purpose do not block every later publish.
+on purpose do not block every later publish. Before that, a publish from an agent whose transcript shows no
+load of the humanizer skill since its last compaction is denied once with a request to load it. The next
+publish goes through either way, so a lane without the skill is not blocked. A subagent is judged by its
+own transcript.
 
 State lives in the temp directory per session.
 """
@@ -33,6 +36,7 @@ MIN_WORDS = 12
 MAX_DENIALS = 2
 WINDOW_S = 600
 MAX_REPORTED = 10
+HUMANIZER_SKILLS = {"humanizer", "humanizer:humanizer"}
 
 
 def collect(value, key=None, out=None):
@@ -116,6 +120,53 @@ def artifact_files(tool_input, cwd):
     return [p for p in paths if p.is_file() and p.suffix.lower() in CHECKABLE]
 
 
+def agent_transcript(payload):
+    """The transcript of the agent making the call; a subagent (`agent_id`) has its own file under the session."""
+    path = payload.get("transcript_path")
+    if not path:
+        return None
+    agent = payload.get("agent_id")
+    return Path(path).with_suffix("") / "subagents" / f"agent-{agent}.jsonl" if agent else Path(path)
+
+
+def loads_humanizer(entry):
+    """Whether a transcript entry is a humanizer load: the agent's Skill call, or the skill text Claude Code adds
+    as a meta user message (a slash command included)."""
+    content = (entry.get("message") or {}).get("content")
+    if entry.get("type") == "assistant" and isinstance(content, list):
+        return any(part.get("type") == "tool_use" and part.get("name") == "Skill"
+                   and (part.get("input") or {}).get("skill") in HUMANIZER_SKILLS for part in content)
+    if entry.get("type") == "user" and entry.get("isMeta"):
+        parts = content if isinstance(content, list) else [{"type": "text", "text": content or ""}]
+        for part in parts:
+            text = (part.get("text") or "") if part.get("type") == "text" else ""
+            if text.startswith("Base directory for this skill:") and "/humanizer" in text.split("\n", 1)[0]:
+                return True
+    return False
+
+
+def humanizer_loaded(transcript):
+    """Whether the transcript shows a humanizer load after its last compaction, which cuts loaded skill text
+    short. An unreadable transcript counts as loaded."""
+    loaded = False
+    try:
+        with open(transcript, encoding="utf-8", errors="replace") as lines:
+            for line in lines:
+                if "compact_boundary" not in line and "humanizer" not in line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                except ValueError:
+                    continue
+                if entry.get("subtype") == "compact_boundary":
+                    loaded = False
+                elif loads_humanizer(entry):
+                    loaded = True
+    except (OSError, TypeError):
+        return True
+    return loaded
+
+
 def state_file(session):
     folder = Path(tempfile.gettempdir()) / "prose-check"
     folder.mkdir(exist_ok=True)
@@ -127,7 +178,7 @@ def load(path):
         state = json.loads(path.read_text())
     except (OSError, ValueError):
         state = {}
-    return {"flagged": [], "denials": [], "seen": {}, **state}
+    return {"flagged": [], "denials": [], "seen": {}, "humanizer_asked": [], **state}
 
 
 def deny(reason):
@@ -162,6 +213,17 @@ def main():
 
         if tool == "Artifact":
             files = artifact_files(tool_input, payload.get("cwd"))
+            agent = payload.get("agent_id") or "main"
+            if files and agent not in state["humanizer_asked"] and not humanizer_loaded(agent_transcript(payload)):
+                state["humanizer_asked"].append(agent)
+                path.write_text(json.dumps(state))
+                print(json.dumps(deny(
+                    "The humanizer skill has not been loaded in this conversation, so the publish was stopped. Load "
+                    "it with the Skill tool (`humanizer:humanizer`, embedded mode) and revise the prose in the files "
+                    "under its rules. Keep every fact and add none, then publish again. If the skill is not "
+                    "installed, publish again and this check will not stop it."
+                )))
+                return
             found = check_artifact(files, state) if files else []
             path.write_text(json.dumps(state))
             if found:
