@@ -3,7 +3,8 @@
 
 1. Skills, plugins, MCP servers, and remote scripts: SkillSpector scans a skill repo or marketplace
    before it is added; MCP servers, `curl | sh`, and git-URL tool installs always ask.
-2. Secrets: gitleaks scans the staged diff before `git commit`.
+2. Secrets: gitleaks scans the staged diff before `git commit`. A `git add` or `git commit` that would put the
+   friction log or a design-sweep report (`.agents/`) into git asks too, since those stay local.
 3. Deploy and publish commands always ask; GitHub workflow edits get a zizmor check.
 
 New dependencies are checked by dep-guard.py.
@@ -183,6 +184,38 @@ def gitleaks_reason(cmd, cwd):
     return f"gitleaks found {len(leaks)} possible secret(s) in what this commit adds: {where}"
 
 
+LOCAL_ONLY = re.compile(r"^\.agents/(friction\.md|design-sweep-[^/]*\.md)$")
+
+
+def local_only_reason(cmd, cwd):
+    """The friction log and design-sweep reports stay out of git (AGENTS.md, Bugs and Design Friction)."""
+    # only a `git add` that stages everything, or names .agents, can pick up the log
+    adding = re.search(r"\bgit\s+add\b[^;&|]*\s(-A|--all|-u|--update|\.|:/|\*|\.agents\S*)(?=\s|$)", cmd)
+    committing = re.search(r"\bgit\s+commit\b", cmd)
+    if not (adding or committing):
+        return None
+
+    def listed(*args):
+        try:
+            r = subprocess.run(["git", *args, "--", ":(top).agents"], cwd=cwd, capture_output=True, text=True,
+                               timeout=10, stdin=subprocess.DEVNULL)
+        except (OSError, subprocess.TimeoutExpired):
+            return []
+        return [p for p in r.stdout.splitlines() if LOCAL_ONLY.match(p)] if r.returncode == 0 else []
+
+    found = listed("diff", "--cached", "--name-only")
+    if adding:
+        found += listed("ls-files", "--others", "--exclude-standard") + listed("diff", "--name-only")
+    elif re.search(r"\bgit\s+commit\b[^;&|]*(\s-[A-Za-z]*a[A-Za-z]*\b|--all\b)", cmd):
+        found += listed("diff", "--name-only")
+    if not found:
+        return None
+    paths = ", ".join(f"`{p}`" for p in dict.fromkeys(found))
+    return (f"{paths} would go into git, but the friction log and design-sweep reports stay local. Unstage with "
+            "`git restore --staged <path>` and exclude both kinds with "
+            "`printf '%s\\n' .agents/friction.md '.agents/design-sweep-*.md' >> \"$(git rev-parse --git-common-dir)/info/exclude\"`")
+
+
 def deploy_reason(cmd):
     hits = [label for pat, label in DEPLOY if re.search(pat, cmd)]
     if hits:
@@ -225,7 +258,7 @@ def main():
     if tool == "Bash":
         cmd = ti.get("command", "")
         reasons += extension_reasons(cmd)
-        reasons += [r for r in (gitleaks_reason(cmd, cwd), deploy_reason(cmd)) if r]
+        reasons += [r for r in (gitleaks_reason(cmd, cwd), local_only_reason(cmd, cwd), deploy_reason(cmd)) if r]
     elif tool in ("Edit", "Write"):
         reasons += [r for r in (new_skill_file_reason(tool, ti), workflow_reason(tool, ti)) if r]
     emit(reasons)
