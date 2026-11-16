@@ -64,5 +64,22 @@
       "reviewed": "2026-11-09",
       "note": "Findings were CJK text, HTML template comments, cleanup of its own temp files, and install hints. Network use: a daily check of the latest GitHub release, font downloads from jsDelivr and tsanger.cn in ensure-fonts.sh, and npm ci --ignore-scripts from its lockfile for the math renderer."
     }
+  },
+  {
+    "name": "modern-web-guidance",
+    "repo": "GoogleChrome/modern-web-guidance",
+    "path": "skills/modern-web-guidance",
+    "sha": "4dd968349e54ca45a05dd5c818fb035c9054b022",
+    "replace": {
+      "npx -y modern-web-guidance@latest": "DISABLE_TELEMETRY=1 npx -y modern-web-guidance@1.0.0",
+      "pnpx modern-web-guidance@latest": "DISABLE_TELEMETRY=1 pnpx modern-web-guidance@1.0.0",
+      "## Using npx / pnpx\n\n": "## Using npx / pnpx\n\n- **Pinned version**: This copy pins the CLI to 1.0.0 with telemetry off. Run every command as `DISABLE_TELEMETRY=1 npx -y modern-web-guidance@1.0.0 ...`, also when a retrieved guide quotes it with `@latest`.\n"
+    },
+    "accepted": {
+      "sha": "4dd968349e54ca45a05dd5c818fb035c9054b022",
+      "severity": "CRITICAL",
+      "reviewed": "2026-11-16",
+      "note": "The 14 findings were phrase matches in guide text and code samples (autofill forms, accessibility notes, WebMCP, example.com URLs in a header example) and a mixed-script flag for a micro sign. The scan does not cover the npm CLI the skill runs. Its search and retrieve commands read files bundled in the package, and its only network call is usage telemetry, including search queries, to play.googleapis.com, which the DISABLE_TELEMETRY=1 prefix from `replace` turns off."
+    }
   }
 ]

@@ -7,9 +7,11 @@ Each entry in scripts/vendor-skills.json names a GitHub repo, the skill folder i
 commit to take it from. The script downloads that commit, scans the folder with
 `skillspector scan --no-llm`, and replaces plugins/vetted-skills/skills/<name> only when the scan
 recommends SAFE, or when the entry's `accepted` block records a review of the same commit at the
-same or a higher severity. --bump moves each pin to the head of the repo's default branch first,
-so a bumped entry that relies on `accepted` fails until someone reviews the new commit.
-Downloaded files are only extracted and scanned, never run.
+same or a higher severity. An entry's `replace` map rewrites text in the skill's Markdown files
+before the scan, for example to pin a CLI version the skill runs. --bump moves each pin to the
+head of the repo's default branch first, so a bumped entry that relies on `accepted` or `replace`
+fails until someone reviews the new commit. Downloaded files are only extracted and scanned,
+never run.
 """
 import argparse
 import io
@@ -66,6 +68,22 @@ def add_license(top, stage):
     return False
 
 
+def rewrite(stage, replace):
+    """Apply `replace` to every Markdown file in the skill; a key that matches nothing fails the entry."""
+    hits = dict.fromkeys(replace, 0)
+    for path in stage.rglob("*.md"):
+        text = original = path.read_text(encoding="utf-8")
+        for old, new in replace.items():
+            hits[old] += text.count(old)
+            text = text.replace(old, new)
+        if text != original:
+            path.write_text(text, encoding="utf-8")
+
+    if missing := [old for old, count in hits.items() if not count]:
+        raise RuntimeError(f"replace matched nothing for: {', '.join(missing)}")
+    return sum(hits.values())
+
+
 def scan(folder, workdir):
     report = workdir / "report.json"
     # skillspector exits non-zero for risky skills, so the report decides, not the exit code
@@ -117,6 +135,8 @@ def lint(skill, name):
 
 def vendor(entry, bump):
     sha = head_sha(entry["repo"]) if bump else entry["sha"]
+    if entry.get("replace") and sha != entry["sha"]:
+        raise RuntimeError(f"head moved to {sha[:7]}; check the `replace` pins against it, then set `sha` by hand")
 
     with tempfile.TemporaryDirectory() as tmp:
         workdir = Path(tmp)
@@ -126,10 +146,13 @@ def vendor(entry, bump):
         stage = workdir / entry["name"]
         shutil.copytree(skill, stage)
         licensed = add_license(top, stage)
+        replaced = rewrite(stage, entry["replace"]) if entry.get("replace") else 0
 
         severity, recommendation = scan(stage, workdir)
         passed, reason = verdict(entry, sha, severity, recommendation)
         print(f"{entry['name']:20} {sha[:7]}  {reason}")
+        if replaced:
+            print(f"  replace: {replaced} occurrence(s) rewritten")
         if not licensed:
             print("  no LICENSE file in the skill folder or at the repo root")
         for warning in lint(stage, entry["name"]):
