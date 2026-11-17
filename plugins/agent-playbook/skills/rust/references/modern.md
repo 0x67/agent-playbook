@@ -1,6 +1,6 @@
 # Modern Rust by Version
 
-Loaded via `rust` SKILL.md routing table. Sources: Rust release notes 1.75 through 1.99 (releases.rs), Edition Guide 2024. Checked 2026-11-05.
+Loaded via `rust` SKILL.md routing table. Sources: Rust release notes 1.75 through 1.100 (releases.rs), Edition Guide 2024. Checked 2026-11-17.
 
 ## Rule
 
@@ -39,6 +39,7 @@ Loaded via `rust` SKILL.md routing table. Sources: Rust release notes 1.75 throu
 | 1.97 | `build.warnings` config, `resolver.lockfile-path`, `bit_width`/`isolate_highest_one` int ops, rustdoc `--emit`, `cargo -m` alias, v0 symbol mangling default, `pin!` blocks deref coercion, `unused_pub_in_binary` style lint |
 | 1.98 | `str::substr_range`, `String::from_utf16le`, `strip_circumfix`, algebraic float ops, `derive` at `std::derive`, atomic conversions, `invalid_runtime_symbol_definitions` deny, `c_void_returns` warn, stricter `repr(transparent)` |
 | 1.99 | C-variadic function definitions, `core::ffi::VaList`, `#[my_macro] mod foo;` in attribute and derive macros, `IntoIterator` for `Box<[T; N]>`, `VecDeque::retain_back`, `Box::into_non_null`/`from_non_null`, `Vec::into_parts`/`from_parts`, `String::from_utf8_lossy_owned`, `fs::set_times`, `LocalKey<Cell<T>>::update`, cargo `debug` profile, workspace `default-features = false` override on edition 2024, `no_mangle_generic_items` hard error, legacy integral modules (`std::i32::MAX`) fully deprecated, cargo incremental off in CI, LLVM 23 |
+| 1.100 | never type `!` stabilized, `extern "custom"`, custom allocators (`Allocator`, `Box::new_in`, `Vec::new_in`, `Vec::with_capacity_in`), `bool::toggle`, `Box::take`/`map`, `Rc::map`, `Arc::map`, `str::trim_prefix`/`trim_suffix`, `Vec::from_fn`, `-Cprofile-sample-use`, cargo `[lints.cargo]` table, cargo minimum publish age (dependency cooldowns), `cargo install` uses the lockfile in the `.crate` tarball by default, new cargo build directory layout, `box` patterns no longer allowed |
 
 ## Edition 2024 migration checklist
 

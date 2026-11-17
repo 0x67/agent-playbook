@@ -1,6 +1,6 @@
 # io-uring (Rust)
 
-Loaded via the low-latency SKILL.md routing table. Checked against io-uring 0.7.15 on 2026-11-06. Sources: io-uring 0.7.15 crate source (`src/lib.rs`, `squeue.rs`, `cqueue.rs`, `submit.rs`, `opcode.rs`, `types.rs`, `register.rs`, `examples/tcp_echo.rs`), man pages io_uring_setup(2), io_uring_enter(2), io_uring_register(2), io_uring_register_buf_ring(3), io_uring_prep_recv_multishot(3), kernel `include/trace/events/io_uring.h`.
+Loaded via the low-latency SKILL.md routing table. Checked against io-uring 0.7.16 on 2026-11-17. Sources: io-uring 0.7.15 crate source (`src/lib.rs`, `squeue.rs`, `cqueue.rs`, `submit.rs`, `opcode.rs`, `types.rs`, `register.rs`, `examples/tcp_echo.rs`), man pages io_uring_setup(2), io_uring_enter(2), io_uring_register(2), io_uring_register_buf_ring(3), io_uring_prep_recv_multishot(3), kernel `include/trace/events/io_uring.h`.
 
 ## When to use it
 
@@ -25,7 +25,7 @@ let mut ring: IoUring = IoUring::builder()
 ```
 
 - `IoUring::new(n)` is `IoUring::builder().build(n)`. `Builder` setters take `&mut self`. `ring.params()` reports what the kernel granted: `is_feature_nodrop()`, `is_feature_fast_poll()`, `is_feature_recvsend_bundle()`, `is_feature_skip_cqe_on_success()`, `is_setup_sqpoll()`, `sq_entries()`, `cq_entries()`.
-- Setup flags in 0.7.15: `setup_sqpoll(idle_ms)`, `setup_sqpoll_cpu(cpu)`, `setup_iopoll()` (`O_DIRECT` files on polling filesystems), `setup_cqsize(n)`, `setup_clamp()`, `setup_attach_wq(fd)`, `setup_r_disabled()` (5.10), `setup_submit_all()` (5.18), `setup_coop_taskrun()` and `setup_taskrun_flag()` (5.19), `setup_single_issuer()` (6.0), `setup_defer_taskrun()` (6.1), `setup_no_sqarray()` (6.6), `dontfork()`.
+- Setup flags in 0.7.16: `setup_sqpoll(idle_ms)`, `setup_sqpoll_cpu(cpu)`, `setup_iopoll()` (`O_DIRECT` files on polling filesystems), `setup_cqsize(n)`, `setup_clamp()`, `setup_attach_wq(fd)`, `setup_r_disabled()` (5.10), `setup_submit_all()` (5.18), `setup_coop_taskrun()` and `setup_taskrun_flag()` (5.19), `setup_single_issuer()` (6.0), `setup_defer_taskrun()` (6.1), `setup_no_sqarray()` (6.6), `dontfork()`.
 - Builders: `opcode::X::new(required).optional(v).build()` returns `squeue::Entry`. Chain `.user_data(u64)` and `.flags(squeue::Flags::...)` on the entry. The `fd` argument takes `types::Fd(raw)` or `types::Fixed(index)`.
 - Receive opcodes: `Recv::new(fd, buf: *mut u8, len)` with `.flags(i32)` and `.buf_group(u16)` (5.6). `RecvMulti::new(fd, buf_group)` with optional `.len(cap)` (6.0). `RecvMsgMulti::new(fd, msghdr_ptr, buf_group)` (6.0); parse each buffer with `types::RecvMsgOut::parse(buf, &msghdr)` for source address and payload. `RecvBundle` and `RecvMultiBundle` (6.10). `ReadFixed::new(fd, buf, len, buf_index)`. `ReadMulti::new(fd, len, buf_group)` (6.7).
 
