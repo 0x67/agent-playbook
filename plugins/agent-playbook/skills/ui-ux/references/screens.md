@@ -9,7 +9,7 @@ Before drawing, write a table and show it to the user:
 | Invite a member | 1 | Members list | ideal, empty (first use), loading, error | Table, Button, Empty block | existing |
 | Invite a member | 2 | Invite dialog | default, invalid email, sending, sent, failed | Dialog, Field, Button | existing |
 
-1. With a PRD, copy its Experience table and add the component columns. Without one, derive flows from the request and the current product, and mark what you assumed.
+1. With a PRD, copy its Experience table and add the component columns. Without one, derive flows from the request and the current product, and mark what you assumed. For a product that exists in code, read the router first (`references/existing-product.md`).
 2. A flow starts where the user is and ends when their goal is met or abandoned. Include the way in (a link, a notification, a deep link) and the way out.
 3. One screen can serve several flows. List it once per flow, and design it once.
 4. The inventory is also the scope. A screen that is not on it is not designed without asking.

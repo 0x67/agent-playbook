@@ -150,7 +150,7 @@ The Design System artifact type holds a system as files that the Design canvas a
 3. Put the primary theme first. A token with no value for a later theme inherits the first theme's value.
 4. Type is shaped differently: `fonts`, `families`, and `groups` of named styles.
 5. Each component preview starts with a `<!-- @dsCard group="..." height=N -->` line and renders one component in a few states.
-6. A system built from a repository records its source, and a later sync merges into it file by file. A system kept in sync by Claude Code's `/design-sync` is read-only on the page: change the code and sync again.
+6. A system built from a repository records its source, and a later sync merges into it file by file. A system kept in sync by Claude Code's `/design-sync` is read-only on the page: change the code and sync again. `/design-sync` writes to design-system projects on standalone Claude Design (claude.ai/design), which closes by December 14, 2026; check where the project is stored before relying on it.
 7. Before using a system in a design, read its `project/README.md` and `project/tokens.json`. Use real components from its bundle where it has them, and never draw look-alikes.
 
 ## Sources

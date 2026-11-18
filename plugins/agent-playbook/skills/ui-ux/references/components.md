@@ -3,8 +3,8 @@
 ## What becomes a component
 
 1. The system already defines it: use that one.
-2. The same structure with the same behavior appears a third time: extract it.
-3. Before the third use it stays markup on the screen. Things that look alike today and will change for different reasons are separate components.
+2. The screen inventory lists it on two or more screens: build it before the screens that use it.
+3. The same structure with the same behavior turns up a third time while drawing: extract it. Before that it is markup on the screen. Things that look alike today and will change for different reasons are separate components.
 4. A screen is not a component. Layout and copy that belong to one screen stay there.
 5. Split a component when its variants stop sharing structure (a "card" whose variants have different parts is several components).
 
@@ -92,7 +92,7 @@ Pick the selected style by what the choice does, and use the same style for that
 
 ## The state sheet
 
-Per component, lay the states out as a grid: one row per variant, one column per state.
+Per component, lay the states out as a grid: one row per variant, one column per state. On a Claude Design canvas the grid is its own artboard (`references/claude-design.md`, Component separation).
 
 1. List the combinations before drawing. An input's value, interaction, status, and validation states multiply into dozens of combinations. Draw the ones people will see, and let the precedence order under States settle the rest.
 2. For a button with 4 kinds and 3 sizes, show all kinds at one size across the states, then the sizes once in the default state.
