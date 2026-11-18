@@ -2,6 +2,8 @@
 
 Loaded via `golang` SKILL.md routing table. Sources: Go Code Review Comments, Google Go Style (tests), `testing` docs, go.dev/blog/subtests, go.dev/blog/fuzz-beta, `testing/synctest` docs.
 
+Write tests in risk order: first the failures with the worst impact, even rare ones, then the most likely ones. When the `test-cases` skill has an engineering test design or a risk table for the change, follow its priorities and test names.
+
 ## Framework
 
 - `testing` stdlib default. `testify` only when module already imports it; then `testifylint` on, `require` for fatal, `assert` for continue.

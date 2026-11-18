@@ -2,6 +2,8 @@
 
 Loaded via `rust` SKILL.md routing table. Sources: `cargo test` docs, nexte.st docs, rstest, insta, proptest, mockall 0.14, cargo-llvm-cov, cargo-mutants, Rust Style Guide.
 
+Write tests in risk order: first the failures with the worst impact, even rare ones, then the most likely ones. When the `test-cases` skill has an engineering test design or a risk table for the change, follow its priorities and test names.
+
 ## Runner
 
 - `cargo nextest run --workspace --all-features` is the gate when `cargo-nextest` installed. Per-test process isolation, parallel by default, retries, timeouts, JUnit.
