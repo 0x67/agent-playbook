@@ -2,6 +2,8 @@
 
 Loaded via `cpp` SKILL.md routing table. Sources: GoogleTest docs, Catch2 v3 docs, CMake GoogleTest and CTest docs, libFuzzer docs, Clang sanitizer and source-based coverage docs.
 
+Write tests in risk order: first the failures with the worst impact, even rare ones, then the most likely ones. When the `test-cases` skill has an engineering test design or a risk table for the change, follow its priorities and test names.
+
 ## Framework
 
 Use what the repo has. New project: GoogleTest (with GoogleMock) or Catch2 v3; doctest when compile time matters most.

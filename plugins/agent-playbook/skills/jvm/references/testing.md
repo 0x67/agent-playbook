@@ -2,6 +2,8 @@
 
 Loaded via `jvm` SKILL.md routing table. Sources: JUnit user guide (docs.junit.org), AssertJ docs, MockK and Kotest docs, kotlinx-coroutines-test docs, Mockito Javadoc (section 0.3, inline mocking on Java 21+), Testcontainers docs, ArchUnit user guide.
 
+Write tests in risk order: first the failures with the worst impact, even rare ones, then the most likely ones. When the `test-cases` skill has an engineering test design or a risk table for the change, follow its priorities and test names.
+
 ## Stack
 
 | Need | Default | Notes |
