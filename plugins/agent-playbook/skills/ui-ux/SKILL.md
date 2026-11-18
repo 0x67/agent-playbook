@@ -11,7 +11,8 @@ description: >
   "prototype", "user flow", "Claude Design", "design canvas", "artboard", or
   "Figma file structure"; and before building UI from a PRD. Works without a
   PRD; when the prd skill wrote one, its Experience section is the screen
-  inventory. Covers structure and completeness. Visual polish, color,
+  inventory. Also builds a system and screen inventory from an existing
+  codebase that has none. Covers structure and completeness. Visual polish, color,
   typography, layout, copy, and accessibility detail belong to the better-*
   and ui skills when installed.
 ---
@@ -29,23 +30,24 @@ Read the matching reference before designing. Paths are relative to this skill's
 | tokens, themes, naming, component inventory, documenting a system, a Design System artifact, syncing a system from code | `references/design-system.md` |
 | deciding what is a component, anatomy, variant axes, interactive states, props, composition | `references/components.md` |
 | screen inventory, flows, screen states (ideal, empty, loading, error, partial), responsive behavior, handoff | `references/screens.md` |
-| a Claude Design canvas: pages, artboards, rows, state variants, shared components, tweaks, prototypes | `references/claude-design.md` |
+| a Claude Design canvas: pages, artboards, rows, state variants, shared components, component sheets, flow maps, change notes, tweaks, prototypes | `references/claude-design.md` |
+| a repository with UI code that is missing a design system, screen designs, or designs for some screens | `references/existing-product.md` |
 
 When several rows match, read all of them. A new feature usually needs `screens.md` and `components.md`.
 
 ## Before designing
 
 1. Look for a PRD: `specs/<slug>/prd.md` or wherever the repo keeps them. When one exists, its Experience section and user stories are the starting inventory, and its out of scope table bounds the design. When none exists, carry on: write the inventory yourself from the request and the code, and say which parts you assumed.
-2. Find the existing system before inventing one. Look for a design system artifact or Figma library, token files, a theme object, `tailwind.config.*`, CSS custom properties, the component folder. Follow it. A new token, component, or pattern needs a reason the existing ones cannot serve.
+2. Find the existing system before inventing one. Look for a design system artifact or Figma library, token files, a theme object, `tailwind.config.*`, CSS custom properties, the component folder. Follow it. A new token, component, or pattern needs a reason the existing ones cannot serve. When there is UI code and no system, build one from the code first (`references/existing-product.md`).
 3. Read one finished screen of the product end to end (markup, styles, states) to learn its vocabulary.
 4. Settle the direction with the user when no system or reference sets the look. Two to four low-fidelity options that differ on an axis you can state serve better than one polished guess.
 5. Write the inventory before drawing: flows, screens per flow, states per screen, components needed and which already exist.
 
 ## Core rules
 
-- Values come from tokens. A raw hex, pixel size, or font name in a component is a finding unless the source system has no token for it.
+- Values come from tokens. A raw hex, pixel size, or font name in a component is a finding unless the source system has no token for it. In a codebase with no tokens yet, existing raw values go on the drift list in `references/existing-product.md`, and new work uses the proposed roles.
 - Components reference role tokens (`color-text-danger`), and role tokens reference primitives (`red-600`). Themes change the mapping between those two layers and nothing else.
-- A component exists when the same structure appears a third time or when the system already defines it. Before that, it is markup on a screen.
+- A component exists when the system already defines it, when the screen inventory lists it on two or more screens, or when the same structure turns up a third time while drawing. Before that, it is markup on a screen. Build the components before the screens that use them.
 - A variant is a choice the designer makes (kind, size, tone, density), while a state is a condition at run time (hover, focus, disabled, loading, error). Keep the two on separate axes and declare both lists per component.
 - Interactive components show default, hover, focus-visible, active, disabled, and loading where the action is asynchronous. Inputs add filled, read-only, and invalid.
 - A data-backed screen is designed in five states: ideal, empty, loading, error, partial. The ideal state comes first and the rest are designed against it.
@@ -90,6 +92,8 @@ Flag in a design or a UI diff:
 - Filler text, invented statistics, or sample names that hide real lengths.
 - Controls drawn as styled `div`s; icon-only buttons with no accessible name.
 - A design file with screens and components mixed on one page, unnamed artboards, or options renamed between rounds.
+- A component artboard that draws its own variant grid, so a screen that mounts it shows the whole grid.
+- A flow of more than two screens with no flow map, or a changed frame with no change note.
 - Scope in the design that the PRD or request does not contain.
 
 Report each finding with where it is and a concrete fix.
