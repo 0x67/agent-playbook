@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: test-cases
+description: A test case request loads the test-cases skill and the cases are runnable, split by audience, and cover both sides of the limits.
+tags: [workflow, testing]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 16
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Write UAT test cases for the requirement in requirement.md. Product will sign off on what the user sees and engineering on what the system records. Reply with the cases. Do not write code.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?test-cases"'
+    arm: both
+  - name: runnable-and-split
+    type: llm
+    criteria: |
+      PASS if all five hold: (1) every case and variant has a unique id and the suite cites PRD-7; (2) each case keeps the user-visible
+      expected result separate from the system expected result (two lists or two labelled sections); (3) the 5 TER
+      minimum is tested below and at the limit (for example 4 or 4.99, and 5), and insufficient balance and the
+      expired price lock are tested too, each as its own case or as a variant row with its own id; (4) at least one case works out the expected
+      total from quantity, price, and fee as a number; (5) expected results are numbered or bulleted separate
+      checks, not one sentence of clauses joined by semicolons. FAIL if any of the five is missing.
+    arm: both
