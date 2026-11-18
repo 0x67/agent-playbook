@@ -1,0 +1,26 @@
+schema_version: "1.1"
+name: ui-ux
+description: A screen design request loads the ui-ux skill and the plan covers screen states, component variants, and tokens.
+tags: [design]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 14
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Plan the design for the members screen described in brief.md, using the tokens in tokens.css. Give me the screen inventory and the component list with their variants and states. Do not write code.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?ui-ux"'
+    arm: both
+  - name: states-and-variants
+    type: llm
+    criteria: |
+      PASS only if the plan does all of these: lists the members screen in more than its ideal state, including an
+      empty state, a loading state, and an error state; separates variants (such as button kind or size) from run-time
+      states (such as hover, focus, disabled, loading) for at least one component; covers the invite dialog's invalid
+      email or failed send case; and refers to the existing tokens in tokens.css by name instead of proposing raw hex
+      values. FAIL otherwise.
+    arm: both
