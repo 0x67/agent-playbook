@@ -29,6 +29,13 @@ Bad: `// In milestone 4 we decided this should drain at the sink's pace` · `// 
 
 Skill `spec-driven` (`agent-playbook:spec-driven` in Claude Code; protocol files are bundled in it) loads on `/spec`, `REQ-*`, `TASK-*`, or spec paths and holds the rules, templates, artifact layout, and relay packet shape. Specs live in `specs/<task-slug>/` (legacy `plans/<task-slug>/` recognized). Small tasks without a spec folder: give subagents a lightweight inline spec with the same relay fields.
 
+# Product and Interface Design
+
+- Writing or reviewing a PRD, a product brief, or a feature's scope: load skill `prd` (`agent-playbook:prd`). The PRD lives in `specs/<slug>/prd.md` unless the repo keeps PRDs elsewhere, and a spec written afterwards cites its `PRD-*` ids.
+- Designing or reviewing a screen, flow, component, design system, or Claude Design canvas: load skill `ui-ux` (`agent-playbook:ui-ux`). It reads the PRD's Experience section when one exists and works without one.
+- Writing or reviewing test cases, a UAT or SIT suite, or a test design for a change: load skill `test-cases` (`agent-playbook:test-cases`). Cases cite `PRD-*` or `REQ-*` ids when those documents exist and work from a ticket or the code when they do not.
+- Scope found during design or test design (a new flow, a missing state, an undecided outcome) goes into the PRD or back to the requester before it is drawn or tested as agreed.
+
 # Project Terminology Guard
 
 - Do not introduce `semantic`, `facade`, `golden`, `canonical`, or `canonincal` as project-authored code terms: identifiers, test names, module/file names, fixtures, generated project-owned outputs, API names.

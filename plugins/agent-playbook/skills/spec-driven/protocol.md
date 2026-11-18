@@ -38,6 +38,8 @@ Before writing the first artifact, produce a Files-to-Read manifest:
 3. Quote 3-5 relevant signatures back in the response.
 4. Proceed to artifact write only after manifest is present.
 
+When `specs/<slug>/prd.md` exists (skill `prd`), it goes first in the manifest. Each `REQ-*` then cites the `PRD-*` id it comes from, and a `PRD-*` item with no `REQ-*` is reported as a non-goal or a gap.
+
 Without this manifest, the model writes from inference, not evidence.
 
 ## Search tool order (MANDATORY)
