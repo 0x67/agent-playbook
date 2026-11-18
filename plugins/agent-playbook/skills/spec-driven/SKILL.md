@@ -35,6 +35,8 @@ This skill enforces the canonical spec-driven workflow. `<skill-dir>` below is t
 - Files-to-Read manifest before any Write.
 - Re-Read inputs at the start of each artifact turn.
 - EARS form for every REQ; stable `REQ-*` ids; per-REQ symbol contract.
+- A `prd.md` in the spec folder (skill `prd`) is read first, and each REQ cites its `PRD-*` id.
+- Deriving the tests for `validation.md`: skill `test-cases`, engineering form.
 - `design.md` ends with a Source verification block.
 - Approach trial only when 2 to 5 approaches stay viable and the choice justifies spikes, or the user asks (`trial.md`).
 - Meta-talk uses `[meta]` prefix; never bare "turn N" in spec output.
