@@ -1,0 +1,31 @@
+schema_version: "1.1"
+name: prd
+description: A PRD request loads the prd skill and the document states non-goals, measurable goals, and testable requirements.
+tags: [workflow, product]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 20
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
+  prompt: |
+    Write a PRD for the request in request.md. Nobody is available to answer questions, so mark your assumptions. Save it in the repo, then reply with the full text of the saved document.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?prd"'
+    arm: both
+  - name: prd-file
+    type: file_exists
+    path: specs/*/prd.md
+    exists: true
+  - name: scoped-and-testable
+    type: llm
+    criteria: |
+      Judge the PRD text in the reply. PASS if all four hold: (1) it describes the current situation (finance staff
+      retyping invoices) before any requirement is listed; (2) an out-of-scope or non-goals section lists at least
+      one concrete item; (3) requirements are grouped under numbered user stories or carry ids, and are written as
+      checkable statements; (4) the requirements cover at least two failure or edge cases such as no invoices in the
+      range, a very large export, or a user without billing permission. Targets marked as assumed, TBD, or bracketed
+      placeholders are acceptable. FAIL if any of the four is missing.
+    arm: both
