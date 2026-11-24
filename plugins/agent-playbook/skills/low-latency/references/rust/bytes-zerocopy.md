@@ -1,6 +1,6 @@
 # bytes and zerocopy (Rust)
 
-Loaded via the low-latency SKILL.md routing table. Checked against bytes 1.12.1 and zerocopy 0.8.63 on 2026-11-06. Sources: bytes 1.12.1 crate source (`src/bytes.rs`, `src/bytes_mut.rs`, `src/buf/`), zerocopy 0.8.63 crate source (`src/lib.rs`, `src/ref.rs`, `src/byteorder.rs`, `src/error.rs`), and a measured decode spike over fixed-layout market-data messages (criterion wall clock on Apple M4 Pro, callgrind instruction counts on x86_64).
+Loaded via the low-latency SKILL.md routing table. Checked against bytes 1.12.2 and zerocopy 0.8.64 on 2026-11-23. Sources: bytes 1.12.1 crate source (`src/bytes.rs`, `src/bytes_mut.rs`, `src/buf/`), zerocopy 0.8.63 crate source (`src/lib.rs`, `src/ref.rs`, `src/byteorder.rs`, `src/error.rs`), and a measured decode spike over fixed-layout market-data messages (criterion wall clock on Apple M4 Pro, callgrind instruction counts on x86_64).
 
 ## When to use which
 
@@ -12,7 +12,7 @@ Loaded via the low-latency SKILL.md routing table. Checked against bytes 1.12.1 
 
 ## Core API
 
-bytes 1.12.1:
+bytes 1.12.2:
 
 - `BytesMut::with_capacity(n)`, `clear()` (keeps capacity), `extend_from_slice`, `spare_capacity_mut() -> &mut [MaybeUninit<u8>]`, unsafe `set_len`, unsafe `BufMut::advance_mut(n)`.
 - `reserve(additional)`: inline no-op while spare capacity covers it. `try_reclaim(additional) -> bool` runs the same reclaim logic and never allocates.
@@ -23,7 +23,7 @@ bytes 1.12.1:
 - `Buf`: `remaining`, `chunk`, `advance`, `get_u16`/`get_u32`/`get_u64` (big-endian, panic when short), `_le` variants, and `try_get_u32` and friends returning `Result<_, TryGetError>`. `copy_to_bytes(len)` is a `split_to` on `Bytes` and `BytesMut` but a copy on `&[u8]`.
 - `BufMut`: `put_u8`, `put_u16`/`put_u32`/`put_u64` (big-endian), `put_slice`, `chunk_mut`.
 
-zerocopy 0.8.63 (derives need feature `derive`):
+zerocopy 0.8.64 (derives need feature `derive`):
 
 - `FromBytes`: every bit pattern is valid. `IntoBytes`: no padding bytes. `KnownLayout`: layout zerocopy can reason about. `Immutable`: no interior mutability. `Unaligned`: `align_of::<T>() == 1`.
 - `T::ref_from_bytes(&[u8]) -> Result<&T, CastError<&[u8], T>>` needs the exact size. `ref_from_prefix` returns `(&T, &[u8])`, `ref_from_suffix` returns `(&[u8], &T)`. Bound: `T: KnownLayout + Immutable`.
