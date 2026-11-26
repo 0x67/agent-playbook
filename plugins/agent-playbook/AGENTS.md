@@ -66,7 +66,7 @@ Hot-path code (per-message receive loops, decoders, order books, queues between 
 
 Naming, function size, module boundaries, and architecture (SOLID, layered, MVC, hexagonal, DDD, CQRS): load skill `software-design` (`agent-playbook:software-design`) alongside the language skill when designing a module or service, naming new types or APIs, splitting code, or reviewing a design.
 
-Service code (outbound calls, handlers, webhooks, message consumers, background jobs, status changes stored in a database): load skill `services` (`agent-playbook:services`) alongside the language skill for timeouts, retries, idempotency, and the outbox.
+Service code (outbound calls, handlers, webhooks, message consumers, background jobs, status changes stored in a database): load skill `services` (`agent-playbook:services`) alongside the language skill for timeouts, retries, idempotency, the outbox, config, logging, metrics, input handling, and authorization.
 
 Code that computes, stores, or moves money (amounts, rounding, FX, fees, balances, ledgers, payouts, reconciliation, audit trails): load skill `money` (`agent-playbook:money`) alongside the language skill.
 
