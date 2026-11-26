@@ -1,20 +1,20 @@
 ---
 name: software-design
 description: >
-  Language-agnostic software design: naming, function and module size,
-  modularity, and architecture. Use when naming or renaming functions,
-  variables, booleans, classes, interfaces, DTOs, request and response
-  payloads, entities, view models, events, commands, errors, or packages;
-  on "what should I call this", "is this function too big", "too many
-  parameters", "split this module", "refactor for modularity", "where should
-  this logic live", or "circular dependency"; and when designing or
-  reviewing a module, service, or architecture: SOLID, layered, MVC, MVP,
-  MVVM, hexagonal, ports and adapters, clean or onion architecture, vertical
-  slices, DDD, aggregates, CQRS, event sourcing, event-driven, modular
-  monolith, microservices. Loads alongside the language skill (golang, rust,
-  cpp, java, kotlin), whose idioms win where they differ. Core rules inline;
-  specialist rules live in references/ and load through the routing table
-  below.
+  Language-agnostic software design: naming, function and module size, types
+  and construction, modularity, and architecture. Use when naming functions,
+  variables, booleans, classes, interfaces, DTOs, payloads, entities, view
+  models, events, commands, errors, or packages; on "what should I call this",
+  "is this function too big", "too many parameters", "split this module",
+  "where should this logic live", or "circular dependency"; when choosing a
+  plain class, record, or data class, a constructor, factory, builder, or
+  functional options, composition or inheritance, or status flags versus a
+  state machine; when a design pattern comes up (strategy, singleton,
+  observer, decorator, visitor); and when designing or reviewing a module,
+  service, or architecture: SOLID, layered, MVC, MVVM, hexagonal, ports and
+  adapters, clean or onion, vertical slices, DDD, aggregates, CQRS, event
+  sourcing, event-driven, modular monolith, microservices. Loads alongside
+  the language skill, whose idioms win where they differ.
 ---
 
 # Software design skill
@@ -29,6 +29,7 @@ Read matching reference BEFORE designing or writing code. Paths are relative to 
 |---|---|
 | naming or renaming functions, variables, booleans, types, interfaces, singletons, DTOs, payloads, entities, view models, events, commands, errors, modules, test names | `references/naming.md` |
 | function size, parameters, flag arguments, nesting, extraction, side effects, pure core, module depth, cohesion, coupling, dependency direction, import cycles, public surface, file size, duplication | `references/functions.md` |
+| choosing plain data, a value type, a class, or a sum type; constructors, named factories, builders, functional options, parameter objects; composition or inheritance; immutability; status fields and state machines; design patterns | `references/types.md` |
 | SOLID, layers, MVC/MVP/MVVM, hexagonal, ports and adapters, clean/onion, vertical slices, DDD, aggregates, CQRS, event sourcing, messaging, modular monolith, microservices, choosing or reviewing an architecture | `references/architecture.md` |
 
 Multiple matches: read all matched. If unsure, read `naming.md` and `functions.md`.
@@ -45,6 +46,8 @@ Multiple matches: read all matched. If unsure, read `naming.md` and `functions.m
 - Names say what a thing is or does in the domain's words. One term per concept across code, API, storage, and logs.
 - One concern per function and per file. Section comments, a name with `And`, or nesting past about 3 levels mean split.
 - More than about 3 or 4 parameters means a missing type. Boolean flag parameters are banned.
+- Construct the cheapest way that fits: a constructor or literal, then defaults and named arguments, a named factory, a parameter object. A builder only for many optional parts in a language without default arguments. Compose to reuse code; inherit only from types built for it.
+- A lifecycle is a status with one transition function, or one type per state, never a set of booleans.
 - Business rules are pure functions over values. I/O, time, and randomness stay at the edges and come in as arguments.
 - Queries do not change anything; commands say in their name what they change.
 - Modules are deep: small public surface, decisions hidden inside, narrowest visibility by default.
@@ -63,6 +66,9 @@ Flag in a diff:
 - A new synonym for an existing concept, or an old name kept as an alias after a rename.
 - `I` prefix or `Impl` suffix; an interface, strategy, factory, or config knob with one implementation or one value (a fake that tests use counts as a second implementation).
 - A function with section comments, nesting past about 3 levels, more than about 4 parameters, or a boolean flag argument.
+- A builder for two or three fields or in a language with default arguments; a factory with one product; a global singleton; a getter and setter class with no rule.
+- Inheritance used to reuse methods; a base class with one subclass.
+- Several booleans describing one lifecycle; a status assigned directly in several places.
 - Steps run together with no blank line between them inside a function, or a ternary nested in another ternary.
 - A query that writes; a side effect missing from the name or signature; I/O or clock reads inside business rules.
 - Pass-through methods or layers; mapping between identical types.

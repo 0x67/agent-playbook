@@ -30,6 +30,7 @@ Loaded via `cpp` SKILL.md routing table. Sources: C++ Core Guidelines (isocpp.gi
 - `override` on every override, without repeating `virtual`. `final` when nothing should derive.
 - Single-argument and conversion constructors `explicit` unless implicit conversion is the point.
 - Defaults as default member initializers; constructor initializer lists in declaration order (`-Wreorder`).
+- Several optional settings: an aggregate with default member initializers, filled with designated initializers in declaration order (`Options{.timeout = 5s, .retries = 3}`, C++20), in place of a builder. Construction that can fail: see `errors.md`.
 - Composition and free functions over inheritance and growing member lists.
 - Strong types for ids and units (`struct UserId { std::uint64_t value; };`, `std::chrono::milliseconds`) instead of bare integers and `bool` parameters.
 - `enum class`, with an explicit underlying type when serialized.
