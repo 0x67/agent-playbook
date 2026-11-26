@@ -17,7 +17,7 @@ description: >
 
 # Services skill
 
-Code that calls over a network or keeps state across restarts fails in ways unit tests rarely show: a call that hangs, a retry that charges twice, a crash between a commit and the request that should follow it. This skill contains the cross-language rules. The language skill's services page (`golang`, `jvm`) holds the libraries and idioms.
+Code that calls over a network or keeps state across restarts fails in ways unit tests rarely show: a call that hangs, a retry that charges twice, a crash between a commit and the request that should follow it. This skill contains the cross-language rules. The language skill's services page (`golang`, `jvm`, `rust`) holds the libraries and idioms.
 
 ## Routing table (mandatory)
 
