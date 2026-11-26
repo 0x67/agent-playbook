@@ -25,6 +25,7 @@ Do not decide final plan. Recommend mode, risk, verification, and handoff risks 
    - Start with `lat locate`/`lat expand` for architecture context
    - Load skill `agent-playbook:software-design` when the plan adds modules, layers, services, or public names
    - Load skill `agent-playbook:services` when the plan adds outbound calls, webhooks, consumers, jobs, or stored status changes
+   - Load skill `agent-playbook:money` when the plan computes, stores, or moves money, or touches a ledger or audit trail
    - Use semble for semantic code search
    - Use the fff MCP tools (`mcp__fff__grep`, `mcp__fff__find_files`, `mcp__fff__multi_grep`) for exact text/file search (fall back to `rg`/`find` if unavailable)
    - Use the `LSP` tool for definitions and references in Go, Rust, C/C++, Java, and Kotlin

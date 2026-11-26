@@ -68,6 +68,8 @@ Naming, function size, module boundaries, and architecture (SOLID, layered, MVC,
 
 Service code (outbound calls, handlers, webhooks, message consumers, background jobs, status changes stored in a database): load skill `services` (`agent-playbook:services`) alongside the language skill for timeouts, retries, idempotency, and the outbox.
 
+Code that computes, stores, or moves money (amounts, rounding, FX, fees, balances, ledgers, payouts, reconciliation, audit trails): load skill `money` (`agent-playbook:money`) alongside the language skill.
+
 # Supply Chain and Outward Actions
 
 - Before adding a dependency, confirm the exact package name in the official registry and the project's docs; typosquats are common. Pin versions.
