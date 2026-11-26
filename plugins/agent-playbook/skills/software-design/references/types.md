@@ -99,7 +99,7 @@ fun Invoice.Sent.markPaid(receipt: ReceiptId) = Invoice.Paid(lines, sentAt, rece
 - Nullable fields filled in only in some states (`paidAt`, `receipt`) mean the states hold different data (level 2).
 - `status = X` assigned in several places scatters the allowed transitions. Route every change through the transition function.
 - A state machine library or framework only where the repo already uses one, or with the user's agreement, like any new layer.
-- State stored in a database with concurrent writers or retries also guards the transition in the database, with a conditional update on the current status (`WHERE status = 'pending'`) or a version column.
+- State stored in a database with concurrent writers or retries also guards the transition in the database, with a conditional update on the current status (`WHERE status = 'pending'`) or a version column. Levels 3 and 4 (guarded transitions in storage, workflow engines): skill `services`, `references/resilience.md`.
 
 ## Classic patterns
 

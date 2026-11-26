@@ -36,6 +36,7 @@ Loaded via `jvm` SKILL.md routing table. Covers Spring Boot (the common case), p
 - Errors map in one `@RestControllerAdvice` to `ProblemDetail` (RFC 9457) responses. Stack traces and SQL never reach the client.
 - Every outbound call has connect and read timeouts. Spring: `RestClient` (Framework 6.1+, Boot 3.2+) for blocking calls, `WebClient` only in reactive apps. Outside Spring: `java.net.http.HttpClient` with `connectTimeout` and a per-request `timeout`.
 - Retries only for idempotent operations, with backoff and a cap; a payment POST is not retried without an idempotency key.
+- Idempotency keys, deduplicating consumers, guarded status changes, and the outbox: skill `services`.
 - Virtual threads for blocking servers: `spring.threads.virtual.enabled=true` (Boot 3.2+, Java 21+).
 
 ## Transactions
