@@ -29,6 +29,7 @@ Read matching reference BEFORE writing code. Paths are relative to this skill's 
 | cargo commands, clippy config, `[lints]`, nextest config, deny/audit, CI, profiles | `references/tooling.md` |
 | choosing APIs for a given `rust-version`/edition, migrating old idioms | `references/modern.md` |
 | benchmarks, profiling, allocation, release profile, PGO | `references/performance.md` |
+| HTTP servers and clients, axum, tower, tower-http, reqwest, sqlx, tracing setup, service config, health endpoints, service shutdown | `references/services.md` |
 
 Multiple matches: read all matched. Unsure: read `style.md` and `errors.md`.
 
@@ -71,4 +72,4 @@ Feature-gated code: every command passes the `--features` it validates. Not done
 
 - Symbols, references, hover, diagnostics: `LSP` tool (rust-analyzer). Never guess signatures; `cargo doc --open` or docs.rs when unsure.
 - Exact text search: `mcp__fff__grep`/`rg`. Semantic: Semble.
-- Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`). Cross-language naming, function size, and architecture: skill `software-design`.
+- Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, terminology guard (`snapshot`/`expected`, never `golden`). Cross-language naming, function size, and architecture: skill `software-design`. Timeouts, retries, idempotency, and service security: skill `services`.
