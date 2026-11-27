@@ -1,0 +1,28 @@
+schema_version: "1.1"
+name: services-retries
+description: A review of provider calls and a webhook handler loads services and names the timeout, retry, idempotency, and transaction problems.
+tags: [design, services]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Review payments.py: the retries around the payment provider call and the webhook handler. Give me a short list of concrete changes. Do not edit anything.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?services"'
+    arm: both
+  - name: names-real-problems
+    type: llm
+    criteria: |
+      PASS if the review flags at least four of: (1) `requests.post` has no timeout; (2) retrying the charge `POST`
+      without an idempotency key can charge the customer twice, especially after a timeout whose outcome is unknown;
+      (3) the retry loop uses a fixed one-second sleep with no exponential backoff or jitter, or retries every non-200
+      answer including `4xx` errors, or swallows the exception; (4) the webhook handler neither deduplicates by event id
+      nor guards the status change, so two deliveries at once can both read `pending` and insert two ledger rows, which
+      calls for a conditional update (`WHERE status = 'pending'`) or a unique constraint; (5) `place_order` calls the
+      provider while its database transaction is open, so the network call should move outside the transaction or
+      behind an outbox or pending status. FAIL if it gives only generic advice without pointing at these.

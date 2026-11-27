@@ -107,6 +107,7 @@ func run(ctx context.Context, cfg Config, log *slog.Logger) error {
 - Check `resp.StatusCode` before decoding. Non-2xx into typed error with status and truncated body.
 - Reuse one `http.Transport`. Tune `MaxIdleConnsPerHost` for high fan-out to one host.
 - Retries: idempotent methods only, exponential backoff with jitter, honor `Retry-After`, bounded by ctx.
+- Idempotency keys, deduplicating consumers, guarded status changes, and the outbox: skill `services`.
 - Client struct wraps base URL, `*http.Client`, auth. Method per endpoint, typed results.
 
 ## JSON
