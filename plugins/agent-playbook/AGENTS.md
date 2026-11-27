@@ -70,6 +70,8 @@ Service code (outbound calls, handlers, webhooks, message consumers, background 
 
 Code that computes, stores, or moves money (amounts, rounding, FX, fees, balances, ledgers, payouts, reconciliation, audit trails): load skill `money` (`agent-playbook:money`) alongside the language skill.
 
+Changes that running code or other teams still depend on (schema migrations, backfills, API or message format changes): load skill `migrations` (`agent-playbook:migrations`) alongside the language skill.
+
 # Supply Chain and Outward Actions
 
 - Before adding a dependency, confirm the exact package name in the official registry and the project's docs; typosquats are common. Pin versions.
@@ -143,7 +145,7 @@ Exception: wire/on-disk layout pins (size, alignment, discriminant, padding, for
 Pre-write gates, same standing as Code Growth Discipline. Apply before writing, not during review.
 
 - No overcomplicated or overlong code. Smallest change that meets the ask. No speculative abstraction: no trait for one impl, generic for one type, builder for two fields, config knob for one value, indirection layer "for later". One concern per fn; if it needs section comments, split it. Plain `match`/`if`/iterator chain beats layered helpers.
-- No backwards compatibility unless user asks. Rename or change signature and fix every call site. No `#[deprecated]` shims, `_v2` twins, old-name re-exports, dual code paths, "legacy" flags, or migration adapters. Breaking inside workspace is fine; git history holds old versions.
+- No backwards compatibility unless user asks. Rename or change signature and fix every call site. Outside the workspace (a schema during a rolling deploy, an API or message format others consume, stored data), use expand and contract from skill `migrations`. No `#[deprecated]` shims, `_v2` twins, old-name re-exports, dual code paths, "legacy" flags, or migration adapters. Breaking inside workspace is fine; git history holds old versions.
 - Readable layout. Put one blank line between the steps of a function (setup, the work, the result), as paragraph breaks, not after every statement. No nested ternaries: use `if`/`else`, a `switch`/`match`, or a small named function. A formatter keeps the blank lines you write and adds none, and leaves a ternary chain on one line when it fits the width.
 - Avoid slop and anti-patterns. Slop: dead code, unused params/imports, `#[allow]` to silence instead of fix, `.clone()` to dodge borrow, `unwrap()`/`expect()` on lib path, stringly-typed state, bool-param flags, `Box<dyn>` where generic fits, newtype with no invariant, re-validating already-typed input, comment narrating code, TODO placeholder instead of finishing, catch-all error swallow. Delete on sight in touched code.
 

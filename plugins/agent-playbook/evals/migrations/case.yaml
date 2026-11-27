@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: migrations
+description: A review of a migration and an API change loads migrations and names the rolling-deploy, locking, backfill, and breaking-change problems.
+tags: [migrations]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Review migrations/0042_orders.sql and the response change in api/orders.py before we deploy; NOTES.md has the context. Give me a short list of concrete changes. Do not edit anything.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?migrations"'
+    arm: both
+  - name: names-real-problems
+    type: llm
+    criteria: |
+      PASS if the review flags at least four of: (1) `RENAME COLUMN` breaks the old instances still running during the
+      rolling deploy, so the rename needs expand and contract (add, copy, switch, drop); (2) the single `UPDATE` of
+      80 million rows should be a batched backfill outside the migration; (3) `SET NOT NULL` on the large table scans it
+      under a lock, so it needs a validated `CHECK ... NOT VALID` first or a default on the new column; (4) `CREATE INDEX`
+      without `CONCURRENTLY` blocks writes; (5) renaming `total` to `total_cents` in the partner API response breaks
+      external callers, so the old field stays or a new version with a deprecation notice is needed. FAIL if it gives
+      only generic advice without pointing at these.
