@@ -62,4 +62,4 @@ Flag in a diff:
 ## Tool preference
 
 - Every call site of the HTTP client, queue publisher, or job enqueue: the `codebase-memory` graph or `LSP` references where connected; fff MCP tools for exact text.
-- Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, Bugs and Design Friction. Types, construction, and in-memory state machines: skill `software-design`.
+- Global rules still apply: Code Growth Discipline, Code Simplicity Discipline, Useless Test Ban, Bugs and Design Friction. Types, construction, and in-memory state machines: skill `software-design`. Amounts, ledgers, and audit trails: skill `money`.
