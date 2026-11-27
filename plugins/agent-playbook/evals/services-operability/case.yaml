@@ -1,0 +1,26 @@
+schema_version: "1.1"
+name: services-operability
+description: A review of config, logging, metrics, and the health check loads services and names the operability problems.
+tags: [services]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Review service.py: its config loading, logging, metrics, and liveness check. Give me a short list of concrete changes. Do not edit anything.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?services"'
+    arm: both
+  - name: names-real-problems
+    type: llm
+    criteria: |
+      PASS if the review flags at least four of: (1) `PAYMENT_TIMEOUT` is read from the environment inside the handler
+      instead of loaded and validated once at startup; (2) `startup` logs the whole environment, which leaks secrets;
+      (3) a missing field from the caller is logged at `ERROR`; (4) the `user_id` and raw `path` labels make metric
+      cardinality unbounded; (5) latency is a gauge holding an average where a histogram belongs; (6) the liveness check
+      queries the database, so a database outage restarts every instance. FAIL if it gives only generic advice without
+      pointing at these.

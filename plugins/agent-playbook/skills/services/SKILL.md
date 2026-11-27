@@ -9,9 +9,11 @@ description: >
   messages, at-least-once delivery, deduplication, circuit breakers,
   bulkheads, rate limits, load shedding, the transactional outbox, sagas,
   workflow engines, durable execution, optimistic locking, version columns,
-  or a status change that concurrent requests or retries can repeat. Loads
-  alongside the language skill and its services page, whose idioms win
-  where they differ.
+  or a status change that concurrent requests or retries can repeat; and
+  for config loading, secrets at runtime, feature flags, log levels and
+  redaction, metrics and label cardinality, tracing, health checks, and
+  graceful shutdown. Loads alongside the language skill and its services
+  page, whose idioms win where they differ.
 ---
 
 # Services skill
@@ -24,6 +26,7 @@ Read matching reference BEFORE designing or writing code. Paths are relative to 
 
 | Task touches | Read |
 |---|---|
+| config loading and validation, secrets at runtime, feature flags, log levels and fields, redaction, metrics, histograms, label cardinality, tracing, liveness and readiness, graceful shutdown | `references/operability.md` |
 | outbound calls, timeouts, deadlines, retries, backoff, idempotency keys, duplicate requests or messages, webhooks, consumers, persisted status changes, optimistic locking, outbox, sagas, workflow engines, circuit breakers, bulkheads, rate limits, load shedding | `references/resilience.md` |
 
 ## Before writing
@@ -42,12 +45,15 @@ Read matching reference BEFORE designing or writing code. Paths are relative to 
 - No network call inside a database transaction. Work that must follow a commit is recorded in the same transaction (an outbox row, or a pending status a job picks up).
 - Every path that sends the same side effect (normal, resume, rescue) builds it with the same function.
 - A dependency that keeps failing gets a circuit breaker or load shedding, so waiting calls do not pile up.
+- Config is loaded and validated once at startup; a bad value stops the service from starting.
+- Logs are structured, include the request or trace id, and never contain secrets or personal data beyond policy.
 
 ## Review checklist
 
 Flag in a diff:
 
-- An outbound call with no timeout, or a downstream timeout longer than the caller's remaining deadline.
+- An outbound call without a timeout.
+- A downstream timeout longer than the caller's remaining deadline.
 - Treating a timeout on a state-changing call as a failure and resending it without the original idempotency key.
 - A retry loop that sleeps a fixed time, lacks jitter or an attempt cap, or retries `4xx` responses besides `408` and `429`.
 - A non-idempotent call (`POST` that creates, charges, or sends) retried without an idempotency key.
@@ -58,6 +64,10 @@ Flag in a diff:
 - A fallback or recovery path that rebuilds a request differently from the normal path.
 - An idempotency key reused with a different payload and sent anyway.
 - A new queue, broker, or workflow engine the user did not agree to.
+- An environment variable read deep in the code; a secret in a log line, a flag, or a committed file.
+- `ERROR` logged for a caller's mistake; an error logged at every layer it passes through.
+- A metric label holding a user id, an order id, or a raw path; a duration recorded as an average.
+- A liveness probe that checks dependencies; shutdown that exits without draining in-flight work.
 
 ## Tool preference
 
