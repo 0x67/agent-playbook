@@ -1,0 +1,27 @@
+schema_version: "1.1"
+name: software-design-types
+description: A review of how types are built loads software-design and names the construction, inheritance, and lifecycle problems.
+tags: [design]
+context:
+  scaffold_script: fixture.sh
+execution:
+  max_turns: 12
+  allowed_tools: [Read, Glob, Grep, Skill]
+  prompt: |
+    Review the type design in shipping.py: plain classes or dataclasses, the builder and the factory, the inheritance, and the status fields. Give me a short list of concrete changes. Do not edit anything.
+graders:
+  - name: skill-fired
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?software-design"'
+    arm: both
+  - name: names-real-problems
+    type: llm
+    criteria: |
+      PASS if the review flags at least four of: (1) `AddressBuilder` is a builder for two fields in a language with
+      keyword arguments, so a constructor or dataclass is enough; (2) `Address` is getters and setters with no rule and
+      should be a (frozen) dataclass or plain data; (3) `Shipment.__init__` takes seven positional parameters including
+      three booleans, which calls for keyword arguments with defaults, a parameter object, or passing an `Address`;
+      (4) the four `is_*` booleans describe one lifecycle and should be a status enum with a transition method;
+      (5) `ShipmentStore` subclasses `dict` to reuse storage and should hold a dict in a field; (6) `ShippingRateFactory`
+      is a factory with one product. FAIL if it gives only generic advice without pointing at these.
