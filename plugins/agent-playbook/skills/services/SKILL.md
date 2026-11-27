@@ -1,19 +1,18 @@
 ---
 name: services
 description: >
-  Language-agnostic rules for code that talks to other systems or keeps state
-  across requests: outbound HTTP and gRPC calls, request handlers, webhooks,
-  message consumers, background jobs, and status changes stored in a
-  database. Use when adding or reviewing timeouts, deadlines, retries,
-  backoff, jitter, Retry-After, idempotency keys, duplicate requests or
-  messages, at-least-once delivery, deduplication, circuit breakers,
-  bulkheads, rate limits, load shedding, the transactional outbox, sagas,
-  workflow engines, durable execution, optimistic locking, version columns,
-  or a status change that concurrent requests or retries can repeat; and
-  for config loading, secrets at runtime, feature flags, log levels and
-  redaction, metrics and label cardinality, tracing, health checks, and
-  graceful shutdown. Loads alongside the language skill and its services
-  page, whose idioms win where they differ.
+  Language-agnostic rules for service code: outbound HTTP and gRPC calls,
+  handlers, webhooks, message consumers, background jobs, and status changes
+  stored in a database. Use when adding or reviewing timeouts, deadlines,
+  retries, backoff, Retry-After, idempotency keys, duplicate requests or
+  messages, deduplication, circuit breakers, bulkheads, rate limits, load
+  shedding, the transactional outbox, sagas, workflow engines, optimistic
+  locking, or a status change that retries can repeat; config loading,
+  secrets at runtime, feature flags, log levels and redaction, metrics,
+  tracing, health checks, graceful shutdown; and input validation, SQL or
+  shell injection, authorization checks, mass assignment, SSRF, webhook
+  signatures, password hashing, and tokens. Loads alongside the language
+  skill and its services page, whose idioms win where they differ.
 ---
 
 # Services skill
@@ -27,6 +26,7 @@ Read matching reference BEFORE designing or writing code. Paths are relative to 
 | Task touches | Read |
 |---|---|
 | config loading and validation, secrets at runtime, feature flags, log levels and fields, redaction, metrics, histograms, label cardinality, tracing, liveness and readiness, graceful shutdown | `references/operability.md` |
+| input validation, mass assignment, SQL, shell, and path injection, deserialization, authorization per object, password hashing, tokens and randomness, constant-time comparison, webhook signatures, SSRF, error responses, CORS and CSRF | `references/security.md` |
 | outbound calls, timeouts, deadlines, retries, backoff, idempotency keys, duplicate requests or messages, webhooks, consumers, persisted status changes, optimistic locking, outbox, sagas, workflow engines, circuit breakers, bulkheads, rate limits, load shedding | `references/resilience.md` |
 
 ## Before writing
@@ -47,6 +47,7 @@ Read matching reference BEFORE designing or writing code. Paths are relative to 
 - A dependency that keeps failing gets a circuit breaker or load shedding, so waiting calls do not pile up.
 - Config is loaded and validated once at startup; a bad value stops the service from starting.
 - Logs are structured, include the request or trace id, and never contain secrets or personal data beyond policy.
+- Parse input into typed values at the edge, bind every query parameter, and authorize each operation against the specific object, with the actor taken from the verified session.
 
 ## Review checklist
 
@@ -68,6 +69,10 @@ Flag in a diff:
 - `ERROR` logged for a caller's mistake; an error logged at every layer it passes through.
 - A metric label holding a user id, an order id, or a raw path; a duration recorded as an average.
 - A liveness probe that checks dependencies; shutdown that exits without draining in-flight work.
+- SQL or a shell command built from input; a request body bound onto an entity; an actor id read from the body.
+- An endpoint that checks login but not whether this user may touch this object.
+- A password stored with a fast hash; a token from a non-cryptographic generator; a secret compared with `==`.
+- A webhook parsed before its signature is checked; a caller-supplied URL fetched without an allowlist.
 
 ## Tool preference
 
